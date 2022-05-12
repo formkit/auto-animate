@@ -1,13 +1,14 @@
 {
   "compilerOptions": {
-    "target": "es2019",
     "module": "esnext",
+    "target": "es2019",
+    "lib": ["es2019", "dom"],
     "strict": true,
     "allowJs": false,
     "moduleResolution": "node",
-    "outDir": "dist",
+    "outDir": "dist"
   },
   "exclude": [
-    "*.vue"
+    "*.vue",
   ]
 }

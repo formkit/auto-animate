@@ -8,12 +8,19 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "dev": "vite --config=./examples/vite.config.ts"
+    "dev": "vite --config=./docs/vite.config.ts",
+    "build": "npx rollup -c rollup.config.js"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^2.3.3",
+    "rollup": "^2.72.1",
+    "rollup-plugin-terser": "^7.0.2",
+    "tslib": "^2.4.0",
     "typescript": "^4.6.4",
     "vite": "^2.9.9",
     "vue": "^3.2.33"
+  },
+  "dependencies": {
+    "@rollup/plugin-typescript": "^8.3.2"
   }
 }
