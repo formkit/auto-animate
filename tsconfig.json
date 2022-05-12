@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "target": "es2019",
+    "module": "esnext",
+    "strict": true,
+    "allowJs": false,
+    "moduleResolution": "node",
+    "outDir": "dist",
+  },
+  "exclude": [
+    "*.vue"
+  ]
+}
