@@ -5,19 +5,7 @@ import TheLogo from "./TheLogo.vue"
 import GitHubLogo from "./GitHubLogo.vue"
 import IconArrow from "./IconArrow.vue"
 import CodeExample from "./CodeExample.vue"
-
-const showIntro = ref(false)
-const showGetStarted = ref(false)
-const showGithub = ref(false)
-
-onMounted(() => {
-  setTimeout(() => {
-    showIntro.value = true
-  }, 800)
-  setTimeout(() => {
-    showGetStarted.value = true
-  }, 1200)
-})
+import introExample from "../examples/intro"
 </script>
 
 <template>
@@ -26,18 +14,18 @@ onMounted(() => {
       <div class="title">
         <TheLogo />
       </div>
-      <p v-if="showIntro">
+      <p>
         Auto Animate is a zero-config animation utility that makes adding smooth
         transitions to your web apps incredibly simple. Because it operates on
         native DOM elements — it works with Vue, React, Svelte, Lit-HTML, and
         plain HTML.
       </p>
-      <div v-if="showGetStarted">
+      <div>
         <a class="button">Get started<IconArrow /></a>
         <a class="button button--alt">Github<GitHubLogo /></a>
       </div>
     </div>
-    <CodeExample />
+    <CodeExample title="App" :examples="introExample" />
   </header>
 </template>
 
@@ -63,14 +51,12 @@ header {
   }
 }
 .intro {
-  padding-bottom: 2em;
   width: 100%;
-  min-height: 23em;
 }
 
 @media (min-width: 28em) {
   header {
-    margin-top: 2em;
+    margin-top: 4em;
   }
   .title {
     width: 60vw;
@@ -80,14 +66,7 @@ header {
   }
 
   .intro {
-    max-width: 37em;
-    min-height: 17em;
-  }
-}
-
-@media (min-width: 40em) {
-  .intro {
-    min-height: 19em;
+    max-width: 34em;
   }
 }
 

@@ -41,6 +41,10 @@ html {
   margin-bottom: 1em;
 }
 
+.button:hover {
+  opacity: .9;
+}
+
 .button svg {
   width: 1em;
   fill: currentColor;
@@ -57,7 +61,20 @@ html {
 
 .button--alt {
   background-color: rgba(255, 255, 255, .5);
-  border-color: grey;
+  border-color: currentColor;
   color: grey;
   box-shadow: none;
 }
+
+.button--alt:hover {
+  color: var(--grey-md);
+}
+
+a:not(.button) {
+  color: var(--primary);
+  text-decoration: none;
+}
+a:not(.button):hover {
+  text-decoration: underline;
+}
+

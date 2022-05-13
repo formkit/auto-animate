@@ -1,19 +1,41 @@
 <script setup lang="ts">
-import hljs from "highlight.js"
 import IconVue from "./IconVue.vue"
 import IconReact from "./IconReact.vue"
 import IconHTML from "./IconHTML.vue"
-import { ref } from "vue"
-import "highlight.js/styles/monokai.css"
+import { computed, PropType, ref } from "vue"
+import { vAutoAnimate } from "../../../src"
+import "../../assets/prism.css"
 
-type Language = { ext: "jsx" | "vue" | "html"; name: "react" | "vue" | "html" }
+type LanguageOption = "react" | "vue" | "html"
 
-const type = ref<Language>({ ext: "vue", name: "react" })
-const html = hljs.highlight("<h1>Hello world</h1>", { language: "html" })
+type Language = {
+  ext: "jsx" | "vue" | "html"
+  example: string
+  title?: string
+  language: string
+}
+
+const current = ref<LanguageOption>("vue")
+
+const type = computed(() => {
+  return props.examples[current.value]
+})
+const syntax = computed(() => {
+  if (typeof window === "undefined") return ""
+  return window.Prism.highlight(
+    type.value.example,
+    window.Prism.languages[type.value.language],
+    type.value.language
+  )
+})
 
 const props = defineProps({
   title: {
     type: String,
+    required: true,
+  },
+  examples: {
+    type: Object as PropType<{ [T in LanguageOption]: Language }>,
     required: true,
   },
 })
@@ -25,14 +47,28 @@ const props = defineProps({
       <div class="control control--close"></div>
       <div class="control control--minimize"></div>
       <div class="control control--expand"></div>
-      <span class="control-title">{{ title }}.{{ type.ext }}</span>
+      <span class="control-title">{{
+        type.title || `${title}.${type.ext}`
+      }}</span>
     </div>
-    <code class="code-example" v-html="html.value"></code>
+    <code class="code-example" v-html="syntax" v-auto-animate></code>
     <div class="window-footer">
       <ul class="frameworks">
-        <li><IconVue />Vue</li>
-        <li><IconReact />React</li>
-        <li><IconHTML />HTML</li>
+        <li @click="current = 'vue'" :data-selected="current === 'vue' || null">
+          <IconVue />Vue
+        </li>
+        <li
+          @click="current = 'react'"
+          :data-selected="current === 'react' || null"
+        >
+          <IconReact />React
+        </li>
+        <li
+          @click="current = 'html'"
+          :data-selected="current === 'html' || null"
+        >
+          <IconHTML />HTML
+        </li>
       </ul>
     </div>
   </div>
@@ -46,9 +82,18 @@ const props = defineProps({
   color: white;
   padding: 1em;
   font-family: courier, monospace;
-  box-shadow: 0 0 2em rgba(0, 0, 0, 0.3), 0 0 1em rgba(71, 17, 222, 0.1);
+  box-shadow: 0 0 2em rgba(0, 0, 0, 0.3);
   display: flex;
   flex-direction: column;
+  margin-bottom: 1em;
+  margin-top: 2em;
+}
+
+@media (min-width: 60em) {
+  .window {
+    margin-left: 2em;
+    margin-top: 0;
+  }
 }
 
 .window-header {
@@ -72,6 +117,13 @@ const props = defineProps({
 .code-example {
   display: block;
   flex-grow: 1;
+  white-space: pre;
+  font-size: 0.9rem;
+  overflow: auto;
+}
+
+.code-example::-webkit-scrollbar {
+  display: none;
 }
 
 .control {
@@ -110,13 +162,15 @@ const props = defineProps({
 .frameworks li {
   display: flex;
   align-items: center;
-  margin-right: 1.5em;
   font-size: 0.75em;
-  padding: 0.75em;
+  padding: 0.75em 1em;
   cursor: pointer;
 }
 .frameworks li:hover {
   background-color: #585a51;
+}
+.frameworks li[data-selected] {
+  background-color: rgba(255, 255, 255, 0.1);
 }
 .frameworks svg {
   display: block;

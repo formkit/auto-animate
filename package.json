@@ -13,6 +13,7 @@
     "build-docs": "cd docs && vite-ssg build --config=./docs/vite.config.ts"
   },
   "devDependencies": {
+    "@types/prismjs": "^1.26.0",
     "@vitejs/plugin-vue": "^2.3.3",
     "rollup": "^2.72.1",
     "rollup-plugin-terser": "^7.0.2",
@@ -25,7 +26,6 @@
   "dependencies": {
     "@rollup/plugin-typescript": "^8.3.2",
     "@vueuse/head": "^0.7.6",
-    "highlight.js": "^11.5.1",
     "vue-router": "4"
   }
 }

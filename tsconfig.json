@@ -6,9 +6,13 @@
     "strict": true,
     "allowJs": false,
     "moduleResolution": "node",
-    "outDir": "dist"
+    "outDir": "dist",
+    "types": [
+      "prismjs"
+    ]
   },
   "exclude": [
     "*.vue",
+    "examples"
   ]
 }
