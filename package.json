@@ -8,8 +8,9 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "dev": "vite --config=./docs/vite.config.ts",
-    "build": "npx rollup -c rollup.config.js"
+    "dev": "cd docs && vite --config=./vite.config.ts",
+    "build": "npx rollup -c rollup.config.js",
+    "build-docs": "cd docs && vite-ssg build --config=./docs/vite.config.ts"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^2.3.3",
@@ -18,9 +19,13 @@
     "tslib": "^2.4.0",
     "typescript": "^4.6.4",
     "vite": "^2.9.9",
+    "vite-ssg": "^0.20.0",
     "vue": "^3.2.33"
   },
   "dependencies": {
-    "@rollup/plugin-typescript": "^8.3.2"
+    "@rollup/plugin-typescript": "^8.3.2",
+    "@vueuse/head": "^0.7.6",
+    "highlight.js": "^11.5.1",
+    "vue-router": "4"
   }
 }

@@ -4,6 +4,7 @@ const animations = new WeakMap<Element, Animation>()
 const options = new WeakMap<Element, AutoAnimateOptions>()
 const tgt = "__aa_target"
 const del = "__aa_del"
+
 /**
  * Callback for handling all mutations.
  * @param mutations - A mutation list
@@ -19,7 +20,10 @@ const handleMutations: MutationCallback = (mutations) => {
 /**
  * The mutation observer responsible for watching each root element.
  */
-const observer = new MutationObserver(handleMutations)
+const observer =
+  typeof window !== "undefined"
+    ? new MutationObserver(handleMutations)
+    : undefined
 
 /**
  * Retrieves all the elements that may have been affected by the last mutation
@@ -158,6 +162,7 @@ function getTransitionSizes(
  * @returns
  */
 function flip(el: Element) {
+  if (el.tagName === "P") console.log("flipping p")
   const oldCoords = coords.get(el)
   const newCoords = el.getBoundingClientRect()
   if (!oldCoords) return
@@ -280,6 +285,12 @@ export default function autoAnimate(
   if (typeof window !== "undefined") {
     updateCoords(el)
     options.set(el, { duration: 250, easing: "ease-in-out", ...config })
-    observer.observe(el, { childList: true })
+    observer!.observe(el, { childList: true })
   }
+}
+
+export const vAutoAnimate = {
+  mounted: (el: Element, binding: { value: Partial<AutoAnimateOptions> }) => {
+    autoAnimate(el, binding.value || {})
+  },
 }

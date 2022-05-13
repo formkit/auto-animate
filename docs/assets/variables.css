@@ -1,0 +1,10 @@
+:root {
+  --system-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  --primary: #4711de;
+  --ui-green: #28c840;
+  --ui-red: #ff5f57;
+  --ui-yellow: #febc2e;
+  --gray-l: #cbcbcb;
+  --gray-md: #585a51;
+  --gray-d: #414339;
+}

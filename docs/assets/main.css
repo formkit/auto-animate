@@ -1,0 +1,63 @@
+@import './fonts.css';
+@import './variables.css';
+
+body {
+  font-family: 'silka', sans-serif;
+  padding: 0;
+  margin: 0;
+}
+
+html {
+  min-height: 100%;
+  background: url('./img/pattern.svg') repeat 4px 4px, linear-gradient(to bottom, rgb(103 0 255 / 4%), transparent) no-repeat, linear-gradient(to bottom left, rgb(255 0 201 / 2%), transparent) no-repeat;
+}
+
+.container {
+  width: calc(100% - 2em);
+  max-width: 70em;
+  margin: 0 auto;
+}
+
+
+@media (min-width: 28em) {
+  .container {
+    width: calc(100% - 4em);
+  }
+}
+
+
+.button {
+  appearance: none;
+  background-color: var(--primary);
+  border: 2px solid var(--primary);
+  color: white;
+  padding: 0.75em 2em;
+  border-radius: 0.5em;
+  box-shadow: 0 0 1em rgba(90, 41, 228, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  margin-bottom: 1em;
+}
+
+.button svg {
+  width: 1em;
+  fill: currentColor;
+  display: block;
+  margin-left: .5em;
+}
+
+@media (min-width: 23em) {
+  .button {
+    display: inline-flex;
+    margin-right: 1em;
+  }
+}
+
+.button--alt {
+  background-color: rgba(255, 255, 255, .5);
+  border-color: grey;
+  color: grey;
+  box-shadow: none;
+}

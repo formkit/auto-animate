@@ -1,0 +1,29 @@
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 2581.1 379.3">
+  <defs>
+    <style>
+      .cls-1 {
+        isolation: isolate;
+        font-size: 347px;
+        fill: #111;
+        font-family: Silka-Medium, Silka;
+        font-weight: 500;
+        letter-spacing: -0.03em;
+      }
+
+      .cls-2 {
+        letter-spacing: -0.02em;
+      }
+
+      .cls-3 {
+        fill-rule: evenodd;
+        fill: url(#linear-gradient);
+      }
+    </style>
+    <linearGradient id="linear-gradient" x1="763.77" y1="186.2" x2="761.78" y2="186.2" gradientTransform="matrix(1, 0, 0, -1, 0, 382)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#6511de"/>
+      <stop offset="1" stop-color="#4f11b1"/>
+    </linearGradient>
+  </defs>
+  <text class="cls-1" transform="translate(330.85 294.95)">A<tspan class="cls-2" x="227.98" y="0">uto Animate</tspan></text>
+  <path id="Combined-Shape" class="cls-3" d="M300,295.8v50H150v-50Zm-250-50v50H0v-50Zm50-50v50H50v-50Zm50-50v50H100v-50Zm-50-50v50H50v-50Zm-50-50v50H0v-50Z"/>
+</svg>
