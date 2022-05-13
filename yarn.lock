@@ -589,6 +589,11 @@ get-caller-file@^2.0.5:
   resolved "https://registry.yarnpkg.com/get-caller-file/-/get-caller-file-2.0.5.tgz#4f94412a82db32f36e3b0b9741f8a97feb031f7e"
   integrity sha512-DyFP3BM/3YHTQOCUL/w0OZHR0lpKeGrxotcHWcqNEdnltqFwXVfhEBQ94eIo34AfQpo0rGki4cyIiftY06h2Fg==
 
+github-buttons@^2.21.1:
+  version "2.21.1"
+  resolved "https://registry.yarnpkg.com/github-buttons/-/github-buttons-2.21.1.tgz#9e55eb83b70c9149a21c235db2e971c53d4d98a2"
+  integrity sha512-n9bCQ8sj+5oX1YH5NeyWGbAclRDtHEhMBzqw2ctsWpdEHOwVgfruRu0VIVy01Ah10dd/iFajMHYU71L7IBWBOw==
+
 graceful-fs@^4.1.6, graceful-fs@^4.2.0:
   version "4.2.10"
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.10.tgz#147d3a006da4ca3ce14728c7aefc287c367d7a6c"
@@ -1129,6 +1134,13 @@ vite@^2.9.9:
     rollup "^2.59.0"
   optionalDependencies:
     fsevents "~2.3.2"
+
+vue-github-button@^3.0.3:
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/vue-github-button/-/vue-github-button-3.0.3.tgz#073bdfe9d27f1ccd8b5e9f3633fe60cc7449d780"
+  integrity sha512-O2Kv5HxRMn1qqgt2sSy8N7y2C6WGOeICzgGj6y+JFcnLjorTTzNR8vY5abiPOYDiW03WZ/9hUIn7Gm9CG9pIuA==
+  dependencies:
+    github-buttons "^2.21.1"
 
 vue-router@4:
   version "4.0.15"

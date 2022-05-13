@@ -11,18 +11,19 @@ import introExample from "../examples/intro"
 <template>
   <header>
     <div class="intro" v-auto-animate="{ duration: 300 }">
-      <div class="title">
-        <TheLogo />
-      </div>
+      <h1 class="title">The easiest way to add motion to your apps.</h1>
       <p>
-        Auto Animate is a zero-config animation utility that makes adding smooth
-        transitions to your web apps incredibly simple. Because it operates on
-        native DOM elements — it works with Vue, React, Svelte, Lit-HTML, and
-        plain HTML.
+        Auto Animate is a zero-config, drop-in, animation utility automatically
+        adds smooth transitions to your web app. You can use it with Vue, React,
+        or any other JavaScript app type.
       </p>
       <div>
-        <a class="button">Get started<IconArrow /></a>
-        <a class="button button--alt">Github<GitHubLogo /></a>
+        <a class="button" href="#installation">Get started<IconArrow /></a>
+        <a
+          class="button button--alt"
+          href="https://github.com/formkit/auto-animation"
+          >Github<GitHubLogo
+        /></a>
       </div>
     </div>
     <CodeExample title="App" :examples="introExample" />
@@ -35,21 +36,6 @@ header {
   margin-top: 1em;
 }
 
-.title {
-  display: block;
-  padding: 0;
-  margin: 0;
-  width: 100%;
-  height: 15vw;
-  margin-bottom: 1.5em;
-}
-
-@media (min-width: 24em) {
-  .title {
-    width: 70vw;
-    height: 9vw;
-  }
-}
 .intro {
   width: 100%;
 }
@@ -58,15 +44,11 @@ header {
   header {
     margin-top: 4em;
   }
-  .title {
-    width: 60vw;
-    height: 10vw;
-    max-width: 27em;
-    max-height: 4.5em;
-  }
-
   .intro {
     max-width: 34em;
+  }
+  .title {
+    font-size: 2.5em;
   }
 }
 

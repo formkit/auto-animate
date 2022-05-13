@@ -26,6 +26,7 @@
   "dependencies": {
     "@rollup/plugin-typescript": "^8.3.2",
     "@vueuse/head": "^0.7.6",
+    "vue-github-button": "^3.0.3",
     "vue-router": "4"
   }
 }

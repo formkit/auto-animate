@@ -1,10 +1,24 @@
 <script setup lang="ts">
 import TheLogo from "./TheLogo.vue"
+import IconDiscord from "./IconDiscord.vue"
+import IconTwitter from "./IconTwitter.vue"
+import GithubButton from "vue-github-button"
 </script>
 
 <template>
   <header>
     <TheLogo class="logo" />
+    <div class="buttons">
+      <a href="https://discord.gg/Vhu97pAC76"><IconDiscord class="icon" /></a>
+      <a href="https://twitter.com/useFormKit"><IconTwitter class="icon" /></a>
+      <GithubButton
+        href="https://github.com/formkit/auto-animate"
+        data-size="large"
+        data-show-count="true"
+        aria-label="Star formkit/auto-animate on GitHub"
+        >Star</GithubButton
+      >
+    </div>
   </header>
 </template>
 
@@ -13,8 +27,34 @@ header {
   height: 4em;
   display: flex;
   align-items: center;
+  justify-content: space-between;
 }
 .logo {
-  width: 13em;
+  width: 8em;
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+}
+
+.buttons a:hover {
+  text-decoration: none;
+}
+
+.icon {
+  width: 1.25em;
+  fill: var(--gray-m);
+  margin-right: 1em;
+}
+
+.buttons a:hover .icon {
+  fill: var(--primary);
+}
+
+@media (min-width: 30em) {
+  .logo {
+    width: 10em;
+  }
 }
 </style>

@@ -1,8 +1,11 @@
 <script setup lang="ts">
+import TheHeader from "../components/TheHeader.vue"
 import HeroTitle from "../components/HeroTitle.vue"
+import SectionInstallation from "../sections/SectionInstallation.vue"
 </script>
 
 <template>
+  <TheHeader />
   <HeroTitle />
   <nav>
     <ul>
@@ -12,6 +15,7 @@ import HeroTitle from "../components/HeroTitle.vue"
       <li><a href="#examples">Examples</a></li>
     </ul>
   </nav>
+  <SectionInstallation />
 </template>
 
 <style scoped>

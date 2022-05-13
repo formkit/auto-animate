@@ -2,6 +2,9 @@
 import IconVue from "./IconVue.vue"
 import IconReact from "./IconReact.vue"
 import IconHTML from "./IconHTML.vue"
+import IconYarn from "./IconYarn.vue"
+import IconNPM from "./IconNPM.vue"
+import IconPNPM from "./IconPNPM.vue"
 import { computed, PropType, ref } from "vue"
 import { vAutoAnimate } from "../../../src"
 import "../../assets/prism.css"
@@ -15,7 +18,7 @@ type Language = {
   language: string
 }
 
-const current = ref<LanguageOption>("vue")
+const current = ref<LanguageOption>(Object.keys(props.examples)[0])
 
 const type = computed(() => {
   return props.examples[current.value]
@@ -54,20 +57,47 @@ const props = defineProps({
     <code class="code-example" v-html="syntax" v-auto-animate></code>
     <div class="window-footer">
       <ul class="frameworks">
-        <li @click="current = 'vue'" :data-selected="current === 'vue' || null">
+        <li
+          v-if="'vue' in props.examples"
+          @click="current = 'vue'"
+          :data-selected="current === 'vue' || null"
+        >
           <IconVue />Vue
         </li>
         <li
+          v-if="'react' in props.examples"
           @click="current = 'react'"
           :data-selected="current === 'react' || null"
         >
           <IconReact />React
         </li>
         <li
+          v-if="'html' in props.examples"
           @click="current = 'html'"
           :data-selected="current === 'html' || null"
         >
           <IconHTML />HTML
+        </li>
+        <li
+          v-if="'yarn' in props.examples"
+          @click="current = 'yarn'"
+          :data-selected="current === 'yarn' || null"
+        >
+          <IconYarn />yarn
+        </li>
+        <li
+          v-if="'npm' in props.examples"
+          @click="current = 'npm'"
+          :data-selected="current === 'npm' || null"
+        >
+          <IconNPM />npm
+        </li>
+        <li
+          v-if="'pnpm' in props.examples"
+          @click="current = 'pnpm'"
+          :data-selected="current === 'pnpm' || null"
+        >
+          <IconPNPM />pnpm
         </li>
       </ul>
     </div>
@@ -120,6 +150,7 @@ const props = defineProps({
   white-space: pre;
   font-size: 0.9rem;
   overflow: auto;
+  background-color: transparent;
 }
 
 .code-example::-webkit-scrollbar {
@@ -177,5 +208,6 @@ const props = defineProps({
   width: 0.9em;
   margin-right: 0.5em;
   font-size: 1rem;
+  max-height: 1em;
 }
 </style>

@@ -18,6 +18,14 @@ html {
   margin: 0 auto;
 }
 
+h1 {
+  margin: 0 0 .75em;
+}
+
+p {
+  font-weight: 300;
+  line-height: 1.5;
+}
 
 @media (min-width: 28em) {
   .container {
@@ -25,6 +33,14 @@ html {
   }
 }
 
+code {
+  font-size: .9em;
+  padding: .2em;
+  background-color: rgba(0, 0, 0, .1);
+  border-radius: .1em .2em;
+  line-height: 1;
+  font-family: courier, monospace;
+}
 
 .button {
   appearance: none;
@@ -39,6 +55,7 @@ html {
   align-items: center;
   cursor: pointer;
   margin-bottom: 1em;
+  text-decoration: none;
 }
 
 .button:hover {
