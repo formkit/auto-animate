@@ -117,11 +117,11 @@ const props = defineProps({
   flex-direction: column;
   margin-bottom: 1em;
   margin-top: 2em;
+  max-width: 35em;
 }
 
 @media (min-width: 60em) {
   .window {
-    margin-left: 2em;
     margin-top: 0;
   }
 }
@@ -131,7 +131,7 @@ const props = defineProps({
   display: flex;
   margin: -1em -1em 0 -1em;
   padding: 0.75em 1em;
-  margin-bottom: 1.5em;
+  margin-bottom: 0.5em;
   font-weight: 300;
   align-items: center;
   justify-content: flex-start;

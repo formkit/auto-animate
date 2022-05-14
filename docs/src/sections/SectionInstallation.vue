@@ -19,3 +19,15 @@ import CodeExample from "../components/CodeExample.vue"
     </p>
   </section>
 </template>
+
+<style scoped>
+section {
+  padding-top: 5.5em;
+}
+
+@media (min-width: 42em) {
+  section {
+    padding-top: 0em;
+  }
+}
+</style>

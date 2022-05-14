@@ -9,7 +9,7 @@ import introExample from "../examples/intro"
 </script>
 
 <template>
-  <header>
+  <section id="hero">
     <div class="intro" v-auto-animate="{ duration: 300 }">
       <h1 class="title">The easiest way to add motion to your apps.</h1>
       <p>
@@ -26,14 +26,15 @@ import introExample from "../examples/intro"
         /></a>
       </div>
     </div>
-    <CodeExample title="App" :examples="introExample" />
-  </header>
+    <CodeExample title="App" :examples="introExample" class="example" />
+  </section>
 </template>
 
 <style scoped>
-header {
+section {
   display: block;
   margin-top: 1em;
+  margin-bottom: 3em;
 }
 
 .intro {
@@ -41,8 +42,9 @@ header {
 }
 
 @media (min-width: 28em) {
-  header {
+  section {
     margin-top: 4em;
+    margin-bottom: 3em;
   }
   .intro {
     max-width: 34em;
@@ -62,8 +64,11 @@ header {
 }
 
 @media (min-width: 60em) {
-  header {
+  section {
     display: flex;
+  }
+  .example {
+    margin-left: 2em;
   }
 }
 

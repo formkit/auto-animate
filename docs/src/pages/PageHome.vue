@@ -1,39 +1,43 @@
 <script setup lang="ts">
 import TheHeader from "../components/TheHeader.vue"
 import HeroTitle from "../components/HeroTitle.vue"
+import Navigation from "../components/Navigation.vue"
 import SectionInstallation from "../sections/SectionInstallation.vue"
+import SectionHow from "../sections/SectionHow.vue"
+import SectionUsage from "../sections/SectionUsage.vue"
 </script>
 
 <template>
   <TheHeader />
   <HeroTitle />
-  <nav>
-    <ul>
-      <li><a href="#installation">Installation</a></li>
-      <li><a href="#how-it-works">How it works</a></li>
-      <li><a href="#usage">Usage</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-  </nav>
-  <SectionInstallation />
+  <div class="documentation">
+    <Navigation />
+    <SectionInstallation />
+    <SectionUsage />
+    <SectionHow />
+  </div>
 </template>
 
 <style scoped>
-nav {
-  background-color: white;
-  box-shadow: 0 0 1em rgba(0, 0, 0, 0.1);
-  border-radius: 0.75em;
-  padding: 0.5em 0;
-  margin: 3em 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
+.documentation {
+  position: relative;
 }
 
-a {
-  display: block;
-  padding: 0.25em 1em;
+@media (min-width: 42em) {
+  .documentation {
+    padding-left: 12em;
+  }
+}
+
+@media (min-width: 50em) {
+  .documentation {
+    padding-left: 18em;
+  }
+}
+
+@media (min-width: 60em) {
+  .documentation {
+    margin-top: 6em;
+  }
 }
 </style>

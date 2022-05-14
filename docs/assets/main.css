@@ -18,19 +18,30 @@ html {
   margin: 0 auto;
 }
 
-h1 {
-  margin: 0 0 .75em;
-}
-
-p {
-  font-weight: 300;
-  line-height: 1.5;
-}
-
 @media (min-width: 28em) {
   .container {
     width: calc(100% - 4em);
   }
+}
+
+h1, h2, h3, h4{
+  margin: 0 0 .75em;
+}
+
+@media (min-width: 20em) {
+  h2 {
+    font-size: 1.75em;
+  }
+}
+
+@media (min-width: 42em) {
+  h2 {
+    font-size: 2em;
+  }
+}
+p {
+  font-weight: 300;
+  line-height: 1.5;
 }
 
 code {
@@ -41,7 +52,9 @@ code {
   line-height: 1;
   font-family: courier, monospace;
 }
-
+section {
+  margin-bottom: 3em;
+}
 .button {
   appearance: none;
   background-color: var(--primary);
