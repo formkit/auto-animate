@@ -5,6 +5,7 @@ import IconHTML from "./IconHTML.vue"
 import IconYarn from "./IconYarn.vue"
 import IconNPM from "./IconNPM.vue"
 import IconPNPM from "./IconPNPM.vue"
+import IconJavaScript from "./IconJavaScript.vue"
 import { computed, PropType, ref } from "vue"
 import { vAutoAnimate } from "../../../src"
 import "../../assets/prism.css"
@@ -23,13 +24,21 @@ const current = ref<LanguageOption>(Object.keys(props.examples)[0])
 const type = computed(() => {
   return props.examples[current.value]
 })
-const syntax = computed(() => {
+const allExamples = computed(() => {
   if (typeof window === "undefined") return ""
-  return window.Prism.highlight(
-    type.value.example,
-    window.Prism.languages[type.value.language],
-    type.value.language
-  )
+  const parsedExamples = {}
+  for (const key in props.examples) {
+    const example = props.examples[key]
+    parsedExamples[key] = {
+      ...example,
+      highlighted: window.Prism.highlight(
+        example.example,
+        window.Prism.languages[example.language],
+        example.language
+      ),
+    }
+  }
+  return parsedExamples
 })
 
 const props = defineProps({
@@ -54,7 +63,16 @@ const props = defineProps({
         type.title || `${title}.${type.ext}`
       }}</span>
     </div>
-    <code class="code-example" v-html="syntax" v-auto-animate></code>
+    <div class="code-block" v-auto-animate>
+      <template v-for="(currentExample, key) in allExamples" :key="key">
+        <code
+          v-if="key === current"
+          class="code-example"
+          :key="key"
+          v-html="currentExample.highlighted"
+        ></code>
+      </template>
+    </div>
     <div class="window-footer">
       <ul class="frameworks">
         <li
@@ -70,6 +88,13 @@ const props = defineProps({
           :data-selected="current === 'react' || null"
         >
           <IconReact />React
+        </li>
+        <li
+          v-if="'js' in props.examples"
+          @click="current = 'js'"
+          :data-selected="current === 'js' || null"
+        >
+          <IconJavaScript />Native JS
         </li>
         <li
           v-if="'html' in props.examples"
@@ -115,15 +140,7 @@ const props = defineProps({
   box-shadow: 0 0 2em rgba(0, 0, 0, 0.3);
   display: flex;
   flex-direction: column;
-  margin-bottom: 1em;
-  margin-top: 2em;
-  max-width: 35em;
-}
-
-@media (min-width: 60em) {
-  .window {
-    margin-top: 0;
-  }
+  margin: 2em 0;
 }
 
 .window-header {
@@ -144,13 +161,19 @@ const props = defineProps({
   padding-right: 2.4rem;
 }
 
+.code-block {
+  flex-grow: 1;
+  overflow: hidden;
+  display: flex;
+}
+
 .code-example {
   display: block;
-  flex-grow: 1;
   white-space: pre;
   font-size: 0.9rem;
   overflow: auto;
   background-color: transparent;
+  line-height: 1.25;
 }
 
 .code-example::-webkit-scrollbar {

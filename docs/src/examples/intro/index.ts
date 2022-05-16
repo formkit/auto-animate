@@ -13,7 +13,7 @@ export default {
     ext: "jsx",
     language: "jsx",
   },
-  html: {
+  js: {
     example: htmlExample,
     ext: "html",
     language: "html",

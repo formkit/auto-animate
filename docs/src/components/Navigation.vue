@@ -53,6 +53,7 @@ nav {
   float: left;
   width: 100%;
   margin-left: -100%;
+  z-index: 100;
 }
 
 @media (min-width: 42em) {

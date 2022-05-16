@@ -69,6 +69,8 @@ section {
   }
   .example {
     margin-left: 2em;
+    margin-top: 0;
+    margin-bottom: 0;
   }
 }
 

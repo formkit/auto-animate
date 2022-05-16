@@ -5,6 +5,7 @@ body {
   font-family: 'silka', sans-serif;
   padding: 0;
   margin: 0;
+  color: var(--text);
 }
 
 html {
@@ -45,16 +46,57 @@ p {
 }
 
 code {
-  font-size: .9em;
-  padding: .2em;
+  font-size: 0.9375em;
+  padding: .1em .2em;
   background-color: rgba(0, 0, 0, .1);
-  border-radius: .1em .2em;
+  border-radius: .25em;
   line-height: 1;
   font-family: courier, monospace;
 }
 section {
   margin-bottom: 3em;
 }
+
+section > ul {
+  line-height: 1.5;
+  list-style-type: none;
+}
+section > ul li {
+  margin-bottom: .5em;
+}
+section > ul li::before {
+  content: '';
+  display: block;
+  width: 5px;
+  height: 5px;
+  border-radius: 5px;
+  background-color: var(--primary);
+  position: absolute;
+  margin-left: -1em;
+  margin-top: .55em;
+}
+
+aside {
+  display: block;
+  padding: 1em;
+  background-color: var(--purple-l);
+  border-radius: .5em;
+  margin: 2em 0;
+}
+
+aside p {
+  margin: 0;
+  vertical-align: middle;
+  font-size: .9em;
+}
+
+aside svg {
+  width: 1.5em;
+  display: inline-block;
+  vertical-align: middle;
+  fill: var(--purple-d);
+}
+
 .button {
   appearance: none;
   background-color: var(--primary);
@@ -108,3 +150,9 @@ a:not(.button):hover {
   text-decoration: underline;
 }
 
+
+.important {
+  display: block;
+  margin: 1em;
+  font-size: 1.1em;
+}

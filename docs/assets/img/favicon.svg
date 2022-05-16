@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 64 64">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: url(#AutoAnimateGradient);
+        fill-rule: evenodd;
+      }
+    </style>
+    <linearGradient id="AutoAnimateGradient" x1="0" y1="32" x2="64" y2="32" gradientTransform="matrix(1, 0, 0, 1, 0, 0)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#4711de"/>
+      <stop offset=".29" stop-color="#4711d9"/>
+      <stop offset=".6" stop-color="#4a11cd"/>
+      <stop offset=".92" stop-color="#4d11b7"/>
+      <stop offset="1" stop-color="#4f11b1"/>
+    </linearGradient>
+  </defs>
+  <path id="mark" class="cls-1" d="M64,53.33v10.67H32v-10.67h32ZM10.67,42.67v10.67H0v-10.67H10.67Zm10.67-10.67v10.67H10.67v-10.67h10.67Zm10.67-10.67v10.67h-10.67v-10.67h10.67Zm-10.67-10.67v10.67H10.67V10.67h10.67ZM10.67,0V10.67H0V0H10.67Z"/>
+</svg>
