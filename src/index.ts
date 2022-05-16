@@ -20,23 +20,22 @@ const siblings = new WeakMap<Element, [prev: Node | null, next: Node | null]>()
  * Animations that are currently running.
  */
 const animations = new WeakMap<Element, Animation>()
-
+/**
+ * A map of existing intersection observers used to track element movements.
+ */
 const intersections = new WeakMap<Element, IntersectionObserver>()
 /**
  * The configuration options for each group of elements.
  */
-const options = new WeakMap<Element, AutoAnimateOptions>()
-
+const options = new WeakMap<Element, AutoAnimateOptions | AutoAnimationPlugin>()
 /**
  * Debounce counters by id, used to debounce calls to update positions.
  */
 const debounces = new WeakMap<Element, NodeJS.Timeout>()
-
 /**
  * The document used to calculate transitions.
  */
 const root = document.documentElement
-
 /**
  * Used to sign an element as the target.
  */
@@ -104,50 +103,22 @@ function observePosition(el: Element) {
 }
 
 /**
- * TODO - remove, for debugging only
- * @param rootMargin - Draw the root margins
- */
-function drawMargins(rootMargin: string, invocations: number) {
-  const color = randomHexColor()
-  rootMargin
-    .split(" ")
-    .map(raw)
-    .map((value) => -1 * value)
-    .forEach((pos, i) => {
-      const line = document.createElement("div")
-      line.setAttribute(
-        "style",
-        `border: 1px solid ${color}; opacity: .5; z-index: 100; pointer-events:none; position: absolute; ${
-          ["top", "right", "bottom", "left"][i]
-        }: ${pos}px; ${i % 2 ? "height: 100%;" : "width: 100%"}`
-      )
-      line.setAttribute("data-deets", `pos(${pos}) i(${i})`)
-      document.body.prepend(line)
-    })
-}
-var randomHexColor = function () {
-  var color = "#",
-    i = 5
-  do {
-    color += "0123456789abcdef".substr(Math.random() * 16, 1)
-  } while (i--)
-  return color
-}
-/**
  * Update the exact position of a given element.
  * @param el - An element to update the position of.
  */
 function updatePos(el: Element) {
   clearTimeout(debounces.get(el))
   const currentAnimation = animations.get(el)
+  const optionsOrPlugin = getOptions(el)
+  const delay =
+    typeof optionsOrPlugin === "function" ? 500 : optionsOrPlugin.duration
   if (!currentAnimation || currentAnimation.finished) {
     debounces.set(
       el,
       setTimeout(() => {
-        console.log("updating Coords")
         coords.set(el, getCoords(el))
         observePosition(el)
-      }, getOptions(el).duration || 500)
+      }, delay)
     )
   }
 }
@@ -235,7 +206,7 @@ function animate(el: Element) {
     animations.get(el)?.cancel()
   }
   if (preExisting && isMounted) {
-    flip(el)
+    remain(el)
   } else if (preExisting && !isMounted) {
     remove(el)
   } else {
@@ -275,7 +246,7 @@ function getCoords(el: Element): Coordinates {
  * @param newCoords - New set of Coordinates coordinates
  * @returns
  */
-function getTransitionSizes(
+export function getTransitionSizes(
   el: Element,
   oldCoords: Coordinates,
   newCoords: Coordinates
@@ -304,37 +275,45 @@ function getTransitionSizes(
 }
 
 /**
- * Performs a flip animation on the element.
+ * The element in question is remaining in the DOM.
  * @param el - Element to flip
  * @returns
  */
-function flip(el: Element) {
-  if (el.tagName === "P") console.log("flipping p")
+function remain(el: Element) {
   const oldCoords = coords.get(el)
   const newCoords = getCoords(el)
+  let animation: Animation
   if (!oldCoords) return
-  const deltaX = oldCoords.left - newCoords.left
-  const deltaY = oldCoords.top - newCoords.top
-  const [widthFrom, widthTo, heightFrom, heightTo] = getTransitionSizes(
-    el,
-    oldCoords,
-    newCoords
-  )
-  const start: Record<string, any> = {
-    transform: `translate(${deltaX}px, ${deltaY}px)`,
+  const pluginOrOptions = getOptions(el)
+  if (typeof pluginOrOptions !== "function") {
+    const deltaX = oldCoords.left - newCoords.left
+    const deltaY = oldCoords.top - newCoords.top
+    const [widthFrom, widthTo, heightFrom, heightTo] = getTransitionSizes(
+      el,
+      oldCoords,
+      newCoords
+    )
+    const start: Record<string, any> = {
+      transform: `translate(${deltaX}px, ${deltaY}px)`,
+    }
+    const end: Record<string, any> = {
+      transform: `translate(0, 0)`,
+    }
+    if (widthFrom !== widthTo) {
+      start.width = `${widthFrom}px`
+      end.width = `${widthTo}px`
+    }
+    if (heightFrom !== heightTo) {
+      start.height = `${heightFrom}px`
+      end.height = `${heightTo}px`
+    }
+    animation = el.animate([start, end], pluginOrOptions)
+  } else {
+    animation = new Animation(
+      pluginOrOptions(el, "remain", oldCoords, newCoords)
+    )
+    animation.play()
   }
-  const end: Record<string, any> = {
-    transform: `translate(0, 0)`,
-  }
-  if (widthFrom !== widthTo) {
-    start.width = `${widthFrom}px`
-    end.width = `${widthTo}px`
-  }
-  if (heightFrom !== heightTo) {
-    start.height = `${heightFrom}px`
-    end.height = `${heightTo}px`
-  }
-  const animation = el.animate([start, end], getOptions(el))
   animations.set(el, animation)
   coords.set(el, newCoords)
   animation.addEventListener("finish", updatePos.bind(null, el))
@@ -347,17 +326,24 @@ function flip(el: Element) {
 function add(el: Element) {
   const newCoords = getCoords(el)
   coords.set(el, newCoords)
-  const animation = el.animate(
-    [
-      { transform: "scale(.98)", opacity: 0 },
-      { transform: "scale(0.98)", opacity: 0, offset: 0.5 },
-      { transform: "scale(1)", opacity: 1 },
-    ],
-    {
-      duration: getOptions(el).duration * 1.5,
-      easing: "ease-in",
-    }
-  )
+  const pluginOrOptions = getOptions(el)
+  let animation: Animation
+  if (typeof pluginOrOptions !== "function") {
+    animation = el.animate(
+      [
+        { transform: "scale(.98)", opacity: 0 },
+        { transform: "scale(0.98)", opacity: 0, offset: 0.5 },
+        { transform: "scale(1)", opacity: 1 },
+      ],
+      {
+        duration: pluginOrOptions.duration * 1.5,
+        easing: "ease-in",
+      }
+    )
+  } else {
+    animation = new Animation(pluginOrOptions(el, "add", newCoords))
+    animation.play()
+  }
   animations.set(el, animation)
   animation.addEventListener("finish", updatePos.bind(null, el))
 }
@@ -367,14 +353,18 @@ function add(el: Element) {
  * @param el - Element to remove
  */
 function remove(el: Element) {
-  if (siblings.has(el) && coords.has(el)) {
-    const [prev, next] = siblings.get(el)!
-    Object.defineProperty(el, DEL, { value: true })
-    if (next && next.parentNode && next.parentNode instanceof Element) {
-      next.parentNode.insertBefore(el, next)
-    } else if (prev && prev.parentNode) {
-      prev.parentNode.appendChild(el)
-    }
+  if (!siblings.has(el) || !coords.has(el)) return
+
+  const [prev, next] = siblings.get(el)!
+  Object.defineProperty(el, DEL, { value: true })
+  if (next && next.parentNode && next.parentNode instanceof Element) {
+    next.parentNode.insertBefore(el, next)
+  } else if (prev && prev.parentNode) {
+    prev.parentNode.appendChild(el)
+  }
+  const optionsOrPlugin = getOptions(el)
+  let animation: Animation
+  if (typeof optionsOrPlugin !== "function") {
     const [widthFrom, _widthTo, heightFrom, _heightTo] = getTransitionSizes(
       el,
       coords.get(el)!,
@@ -384,22 +374,25 @@ function remove(el: Element) {
       "style",
       `position: absolute; width: ${widthFrom}px; height: ${heightFrom}px; pointer-events: none; transform-origin: top center; `
     )
-    const animation = el.animate(
+    animation = el.animate(
       [
         { transform: "scale(1)", opacity: 1 },
         { transform: "scale(.98)", opacity: 0 },
       ],
-      { duration: getOptions(el).duration, easing: "ease-out" }
+      { duration: optionsOrPlugin.duration, easing: "ease-out" }
     )
-    animations.set(el, animation)
-    animation.addEventListener("finish", () => {
-      el.remove()
-      coords.delete(el)
-      siblings.delete(el)
-      animations.delete(el)
-      intersections.get(el)?.disconnect()
-    })
+  } else {
+    animation = new Animation(optionsOrPlugin(el, "remove"))
+    animation.play()
   }
+  animations.set(el, animation)
+  animation.addEventListener("finish", () => {
+    el.remove()
+    coords.delete(el)
+    siblings.delete(el)
+    animations.delete(el)
+    intersections.get(el)?.disconnect()
+  })
 }
 
 /**
@@ -407,7 +400,7 @@ function remove(el: Element) {
  * @param el - Element to retrieve options for.
  * @returns
  */
-function getOptions(el: Element): AutoAnimateOptions {
+function getOptions(el: Element): AutoAnimateOptions | AutoAnimationPlugin {
   return TGT in el && options.has((el as Element & { __aa_tgt: Element })[TGT])
     ? options.get((el as Element & { __aa_tgt: Element })[TGT])!
     : { duration: 250, easing: "ease-in-out" }
@@ -454,6 +447,18 @@ export interface AutoAnimateOptions {
 }
 
 /**
+ * A custom plugin that determines what the effects to run
+ */
+export interface AutoAnimationPlugin {
+  <T extends "add" | "remove" | "remain">(
+    el: Element,
+    action: T,
+    newCoordinates?: T extends "add" | "remain" ? Coordinates : undefined,
+    oldCoordinates?: T extends "remain" ? Coordinates : undefined
+  ): KeyframeEffect
+}
+
+/**
  * A function that automatically adds animation effects to itself and its
  * immediate children. Specifically it adds effects for adding, moving, and
  * removing DOM elements.
@@ -462,7 +467,7 @@ export interface AutoAnimateOptions {
  */
 export default function autoAnimate(
   el: Element,
-  config: Partial<AutoAnimateOptions> = {}
+  config: Partial<AutoAnimateOptions> | AutoAnimationPlugin = {}
 ) {
   if (mutations) {
     forEach(el, updatePos)
@@ -476,7 +481,10 @@ export default function autoAnimate(
  * The vue directive.
  */
 export const vAutoAnimate = {
-  mounted: (el: Element, binding: { value: Partial<AutoAnimateOptions> }) => {
+  mounted: (
+    el: Element,
+    binding: { value: Partial<AutoAnimateOptions> | AutoAnimationPlugin }
+  ) => {
     autoAnimate(el, binding.value || {})
   },
 }
