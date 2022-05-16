@@ -4,6 +4,7 @@ import { vAutoAnimate } from "../../../src/index"
 import TheLogo from "./TheLogo.vue"
 import GitHubLogo from "./GitHubLogo.vue"
 import IconArrow from "./IconArrow.vue"
+import FormKitLogo from "./FormKitLogo.vue"
 import CodeExample from "./CodeExample.vue"
 import introExample from "../examples/intro"
 </script>
@@ -25,6 +26,9 @@ import introExample from "../examples/intro"
           >Github<GitHubLogo
         /></a>
       </div>
+      <a class="byline" href="https://www.formkit.com">
+        <FormKitLogo class="formkit" /> made with love by the FormKit team.
+      </a>
     </div>
     <CodeExample title="App" :examples="introExample" class="example" />
   </section>
@@ -91,5 +95,28 @@ section {
   display: inline-block;
   width: 15vw;
   margin-top: 1em;
+}
+
+.byline {
+  display: flex;
+  vertical-align: center;
+  font-size: 0.875em;
+  color: var(--gray-m);
+  font-weight: 300;
+  margin-top: 1em;
+}
+.byline:hover {
+  text-decoration: none;
+  color: var(--primary);
+}
+.formkit {
+  display: block;
+  width: 1rem;
+  fill: var(--gray-m);
+  margin-right: 0.5em;
+}
+
+.byline:hover .formkit {
+  fill: var(--primary);
 }
 </style>

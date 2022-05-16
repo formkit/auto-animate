@@ -12,7 +12,7 @@ const dropdown = () => {
   const reveal = () => setShow(!show)
 
   return <div ref={dropdown}>
-    <strong class="dropdown-label" onClick={reveal}>My Dropdown</strong>
+    <strong class="dropdown-label" onClick={reveal}>Click me to open!</strong>
     { show && <p class="dropdown-content" >Lorum ipsum...</p> }
   </div>
 }

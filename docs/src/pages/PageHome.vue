@@ -3,8 +3,10 @@ import TheHeader from "../components/TheHeader.vue"
 import HeroTitle from "../components/HeroTitle.vue"
 import Navigation from "../components/Navigation.vue"
 import SectionInstallation from "../sections/SectionInstallation.vue"
-import SectionHow from "../sections/SectionHow.vue"
+import SectionWhy from "../sections/SectionWhy.vue"
 import SectionUsage from "../sections/SectionUsage.vue"
+import SectionExamples from "../sections/SectionExamples.vue"
+import SectionPlugins from "../sections/SectionPlugins.vue"
 </script>
 
 <template>
@@ -14,7 +16,9 @@ import SectionUsage from "../sections/SectionUsage.vue"
     <Navigation />
     <SectionInstallation />
     <SectionUsage />
-    <SectionHow />
+    <SectionExamples />
+    <SectionPlugins />
+    <SectionWhy />
   </div>
 </template>
 

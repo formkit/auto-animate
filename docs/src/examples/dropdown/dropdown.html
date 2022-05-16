@@ -1,0 +1,18 @@
+<div id="dropdown" class="dropdown">
+  <strong class="dropdown-label" onclick="toggle">
+    Click me to open!
+  </strong>
+</div>
+
+<script type="module">
+  import autoAnimate from './js/autoAnimate.js'
+  const dropdown = document.getElementById('dropdown')
+  autoAnimate(dropdown)
+
+  const p = document.createElement('p')
+  p.innerText = "Lorum ipsum..."
+
+  function toggle () {
+    dropdown.contains(p) ? p.remove() : dropdown.appendChild(p)
+  }
+</script>

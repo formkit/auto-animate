@@ -41,12 +41,16 @@ import ActualDropdown from "../examples/dropdown/ActualDropdown.vue"
     Auto Animate is intended to be used with zero configuration. We believe the
     default configuration falls inline with the project’s objective:
     <em class="important"
-      >Auto Animation’s goal is to substantiality improve user experience for
-      negligible developer time or performance budget.</em
+      >Auto Animation’s goal is to substantiality improve user experience with a
+      miniscule impact on implementation time or performance budget.</em
     >
     However, some minor configuration options are available. As a second
     argument to <code>autoAnimate</code> you may pass an object with the
     following options:
   </p>
   <CodeExample :examples="config" />
+  <p>
+    If you really feel its necessary to dramatically change the default
+    animations <a href="#plugins">checkout plugins</a>.
+  </p>
 </template>

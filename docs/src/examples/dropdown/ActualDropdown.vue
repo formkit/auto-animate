@@ -12,7 +12,9 @@ onMounted(() => {
 
 <template>
   <div ref="dropdown" class="dropdown">
-    <strong class="dropdown-label" @click="show = !show">My Dropdown</strong>
+    <strong class="dropdown-label" @click="show = !show"
+      >Click me to open!</strong
+    >
     <p class="dropdown-content" v-if="show">
       Sea of Tranquility a mote of dust suspended in a sunbeam hundreds of
       thousands concept of the number one realm of the galaxies radio telescope.
