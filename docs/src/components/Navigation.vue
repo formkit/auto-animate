@@ -55,6 +55,7 @@ nav {
   width: 100%;
   margin-left: -100%;
   z-index: 100;
+  user-select: none;
 }
 
 @media (min-width: 42em) {

@@ -2,31 +2,35 @@
   "name": "@formkit/auto-animate",
   "version": "1.0.0-alpha.1",
   "type": "module",
-  "description": "Automatically animate your html.",
+  "description": "Automatically animate your .",
   "main": "dist/index.mjs",
   "module": "dist/index.mjs",
   "repository": "https://github.com/formkit/auto-animate.git",
   "author": "Justin Schroeder <justin@formkit.com>",
   "license": "MIT",
-  "private": true,
   "scripts": {
     "dev": "cd docs && vite --config=./vite.config.ts",
-    "build": "npx rollup -c rollup.config.js && FRAMEWORK=vue npx rollup -c rollup.config.js",
+    "build": "./.build.sh",
     "build-docs": "cd docs && vite-ssg build --config=./docs/vite.config.ts"
   },
   "exports": {
     "./vue": {
       "import": "./dist/vue.mjs"
     },
+    "./react": {
+      "import": "./dist/react.mjs"
+    },
     ".": {
       "import": "./dist/index.mjs"
     }
   },
   "devDependencies": {
+    "@types/node": "^17.0.33",
     "@types/prismjs": "^1.26.0",
+    "@types/react": "^18.0.9",
     "@vitejs/plugin-vue": "^2.3.3",
+    "react": "^18.1.0",
     "rollup": "^2.72.1",
-    "rollup-plugin-terser": "^7.0.2",
     "tslib": "^2.4.0",
     "typescript": "^4.6.4",
     "vite": "^2.9.9",
@@ -40,8 +44,8 @@
     "vue-router": "4"
   },
   "peerDependencies": {
-    "vue": "^3.0.0",
-    "react": "^16.8.0"
+    "react": "^16.8.0",
+    "vue": "^3.0.0"
   },
   "peerDependenciesMeta": {
     "vue": {

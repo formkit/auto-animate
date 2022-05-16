@@ -14,7 +14,7 @@ import introExample from "../examples/intro"
     <div class="intro" v-auto-animate="{ duration: 300 }">
       <h1 class="title">The easiest way to add motion to your apps.</h1>
       <p>
-        Auto Animate is a zero-config, drop-in, animation utility automatically
+        AutoAnimate is a zero-config, drop-in, animation utility automatically
         adds smooth transitions to your web app. You can use it with Vue, React,
         or any other JavaScript app type.
       </p>
@@ -117,6 +117,6 @@ section {
 }
 
 .byline:hover .formkit {
-  fill: var(--primary);
+  fill: var(--orange);
 }
 </style>

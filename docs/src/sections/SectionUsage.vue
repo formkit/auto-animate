@@ -38,7 +38,7 @@ import ActualDropdown from "../examples/dropdown/ActualDropdown.vue"
   </section>
   <h3>Configuration</h3>
   <p>
-    Auto Animate is intended to be used with zero configuration. We believe the
+    AutoAnimate is intended to be used with zero configuration. We believe the
     default configuration falls inline with the project’s objective:
     <em class="important"
       >Auto Animation’s goal is to substantiality improve user experience with a

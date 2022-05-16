@@ -7,7 +7,11 @@ interface Coordinates {
   width: number
   height: number
 }
-
+/**
+ * A set of all the parents currently being observe. This is the only non weak
+ * registry.
+ */
+const parents = new Set<Element>()
 /**
  * Element coordinates that is constantly kept up to date.
  */
@@ -24,6 +28,10 @@ const animations = new WeakMap<Element, Animation>()
  * A map of existing intersection observers used to track element movements.
  */
 const intersections = new WeakMap<Element, IntersectionObserver>()
+/**
+ * Intervals for automatically checking the position of elements occasionally.
+ */
+const intervals = new WeakMap<Element, NodeJS.Timeout>()
 /**
  * The configuration options for each group of elements.
  */
@@ -63,6 +71,7 @@ const handleMutations: MutationCallback = (mutations) => {
  */
 const handleResizes: ResizeObserverCallback = (entries) => {
   entries.forEach((entry) => {
+    if (entry.target === root) updateAllPos()
     if (coords.has(entry.target)) updatePos(entry.target)
   })
 }
@@ -72,7 +81,8 @@ const handleResizes: ResizeObserverCallback = (entries) => {
  * @param el - The element to observe the position of.
  */
 function observePosition(el: Element) {
-  intersections.get(el)?.disconnect()
+  const oldObserver = intersections.get(el)
+  oldObserver?.disconnect()
   let rect = coords.get(el)
   let invocations = 0
   const buffer = 5
@@ -91,7 +101,9 @@ function observePosition(el: Element) {
     .map((px) => `${-1 * Math.floor(px)}px`)
     .join(" ")
   const observer = new IntersectionObserver(
-    () => ++invocations > 1 && updatePos(el),
+    () => {
+      ++invocations > 1 && updatePos(el)
+    },
     {
       root,
       threshold: 1,
@@ -124,6 +136,44 @@ function updatePos(el: Element) {
 }
 
 /**
+ * Updates all positions that are currently being tracked.
+ */
+function updateAllPos() {
+  parents.forEach((parent) =>
+    forEach(parent, (el) => lowPriority(() => updatePos(el)))
+  )
+}
+
+/**
+ * Its possible for a quick scroll or other fast events to get past the
+ * intersection observer, so occasionally we need want "cold-poll" for the
+ * latests and greatest position. We try to do this in the most non-disruptive
+ * fashion possible. First we only do this ever couple seconds, staggard by a
+ * random offset.
+ * @param el - Element
+ */
+function poll(el: Element) {
+  setTimeout(() => {
+    intervals.set(
+      el,
+      setInterval(() => lowPriority(updatePos.bind(null, el)), 2000)
+    )
+  }, Math.round(2000 * Math.random()))
+}
+
+/**
+ * Perform some operation that is non critical at some point.
+ * @param callback
+ */
+function lowPriority(callback: CallableFunction) {
+  if (typeof requestIdleCallback === "function") {
+    requestIdleCallback(() => callback())
+  } else {
+    requestAnimationFrame(() => callback())
+  }
+}
+
+/**
  * The mutation observer responsible for watching each root element.
  */
 let mutations: MutationObserver | undefined
@@ -139,6 +189,7 @@ let resize: ResizeObserver | undefined
 if (typeof window !== "undefined") {
   mutations = new MutationObserver(handleMutations)
   resize = new ResizeObserver(handleResizes)
+  resize.observe(root)
 }
 /**
  * Retrieves all the elements that may have been affected by the last mutation
@@ -413,25 +464,15 @@ function getOptions(el: Element): AutoAnimateOptions | AutoAnimationPlugin {
  */
 function forEach(
   parent: Element,
-  callback: (el: Element, isRoot?: boolean) => void
+  ...callbacks: Array<(el: Element, isRoot?: boolean) => void>
 ) {
-  callback(parent, options.has(parent))
+  callbacks.forEach((callback) => callback(parent, options.has(parent)))
   for (let i = 0; i < parent.children.length; i++) {
     const child = parent.children.item(i)
     if (child) {
-      callback(child, options.has(child))
+      callbacks.forEach((callback) => callback(child, options.has(child)))
     }
   }
-}
-
-/**
- * Adds observers to a parent and its children.
- */
-function observeRects(parent: Element) {
-  forEach(parent, (el) => {
-    resize?.observe(el)
-    observePosition(el)
-  })
 }
 
 export interface AutoAnimateOptions {
@@ -469,11 +510,11 @@ export default function autoAnimate(
   el: Element,
   config: Partial<AutoAnimateOptions> | AutoAnimationPlugin = {}
 ) {
-  if (mutations) {
-    forEach(el, updatePos)
-    observeRects(el)
+  if (mutations && resize) {
+    forEach(el, updatePos, poll, (element) => resize?.observe(element))
     options.set(el, { duration: 250, easing: "ease-in-out", ...config })
     mutations.observe(el, { childList: true })
+    parents.add(el)
   }
 }
 
