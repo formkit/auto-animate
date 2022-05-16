@@ -1,10 +1,20 @@
 import typescript from "@rollup/plugin-typescript"
+import { env } from "process"
 import { terser } from "rollup-plugin-terser"
 
+const FRAMEWORK = process.env.FRAMEWORK || "index"
+
+const external = ["vue", "react"]
+
+if (FRAMEWORK) {
+  external.push("./index")
+}
+
 export default {
-  input: "./src/index.ts",
+  external,
+  input: `./src/${FRAMEWORK}.ts`,
   output: {
-    dir: "./dist",
+    file: `./dist/${FRAMEWORK}.mjs`,
     format: "esm",
   },
   plugins: [
@@ -15,6 +25,6 @@ export default {
       include: ["./src/**/*"],
       exclude: ["./docs"],
     }),
-    terser(),
+    // terser(),
   ],
 }

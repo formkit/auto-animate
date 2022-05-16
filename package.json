@@ -1,16 +1,26 @@
 {
   "name": "@formkit/auto-animate",
   "version": "1.0.0-alpha.1",
+  "type": "module",
   "description": "Automatically animate your html.",
   "main": "dist/index.mjs",
+  "module": "dist/index.mjs",
   "repository": "https://github.com/formkit/auto-animate.git",
   "author": "Justin Schroeder <justin@formkit.com>",
   "license": "MIT",
   "private": true,
   "scripts": {
     "dev": "cd docs && vite --config=./vite.config.ts",
-    "build": "npx rollup -c rollup.config.js",
+    "build": "npx rollup -c rollup.config.js && FRAMEWORK=vue npx rollup -c rollup.config.js",
     "build-docs": "cd docs && vite-ssg build --config=./docs/vite.config.ts"
+  },
+  "exports": {
+    "./vue": {
+      "import": "./dist/vue.mjs"
+    },
+    ".": {
+      "import": "./dist/index.mjs"
+    }
   },
   "devDependencies": {
     "@types/prismjs": "^1.26.0",
@@ -28,5 +38,17 @@
     "@vueuse/head": "^0.7.6",
     "vue-github-button": "^3.0.3",
     "vue-router": "4"
+  },
+  "peerDependencies": {
+    "vue": "^3.0.0",
+    "react": "^16.8.0"
+  },
+  "peerDependenciesMeta": {
+    "vue": {
+      "optional": true
+    },
+    "react": {
+      "optional": true
+    }
   }
 }
