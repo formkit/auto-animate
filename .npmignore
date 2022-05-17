@@ -6,3 +6,7 @@ __tests__
 rollup.config.js
 tsconfig.json
 yarn.lock
+dist
+docs
+.prettierrc
+.build.sh
