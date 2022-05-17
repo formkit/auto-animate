@@ -18,7 +18,7 @@ onMounted(() => {
         type="text"
         label="Username"
         help="Pick a new username."
-        validation="length:5,15|*matches:/[0-9]/"
+        validation="required|length:5,15|matches:/[0-9]/"
         validation-visibility="dirty"
         :validation-messages="{
           matches: 'Must include at least one number',
@@ -27,8 +27,9 @@ onMounted(() => {
       <FormKit
         type="password"
         label="Password"
+        name="password"
         help="Pick a new password."
-        validation="length:5,15|*matches:/[0-9]/"
+        validation="required|length:5,15|matches:/[0-9]/"
         validation-visibility="dirty"
         :validation-messages="{
           matches: 'Must include at least one number',
@@ -36,9 +37,11 @@ onMounted(() => {
       />
       <FormKit
         type="password"
+        name="password_confirm"
         label="Confirm password"
         help="Pick a new password."
-        validation="length:5,15|*matches:/[0-9]/"
+        validation="required|confirm"
+        validation-label="password confirmation"
         validation-visibility="dirty"
         :validation-messages="{
           matches: 'Must include at least one number',
@@ -65,5 +68,10 @@ onMounted(() => {
 
 .example::v-deep .formkit-outer[data-type="submit"] {
   margin-bottom: 0;
+}
+
+.example::v-deep input {
+  width: 100%;
+  box-sizing: border-box;
 }
 </style>
