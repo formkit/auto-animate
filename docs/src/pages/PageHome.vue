@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import TheHeader from "../components/TheHeader.vue"
+import TheFooter from "../components/TheFooter.vue"
 import HeroTitle from "../components/HeroTitle.vue"
 import Navigation from "../components/Navigation.vue"
 import SectionInstallation from "../sections/SectionInstallation.vue"
@@ -20,6 +21,7 @@ import SectionPlugins from "../sections/SectionPlugins.vue"
     <SectionPlugins />
     <SectionWhy />
   </div>
+  <TheFooter />
 </template>
 
 <style scoped>
