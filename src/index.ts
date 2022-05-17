@@ -1,4 +1,3 @@
-import { drawMargins } from "./debug-utils"
 /**
  * Absolute coordinate positions adjusted for scroll.
  */
@@ -113,7 +112,6 @@ function observePosition(el: Element) {
   )
   observer.observe(el)
   intersections.set(el, observer)
-  // if (el.tagName === "CODE") drawMargins(observer, oldObserver)
 }
 
 /**
