@@ -90,6 +90,14 @@ function createCard(card) {
   flex: 100% 0 0;
   margin: 0.5em;
 }
+[data-dark-mode="true"] .card {
+  background: linear-gradient(
+    to bottom,
+    rgba(170, 170, 239, 0.2),
+    rgba(91, 91, 228, 0.1)
+  );
+  border: 2px solid rgba(159, 159, 254, 0.1);
+}
 
 @media (min-width: 38em) {
   .card {

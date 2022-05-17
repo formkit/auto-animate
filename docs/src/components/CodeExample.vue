@@ -204,6 +204,7 @@ const props = defineProps({
   margin: 1em -1em -1em -1em;
   font-family: var(--system-stack);
   -webkit-font-smoothing: anti-aliased;
+  overflow: hidden;
 }
 
 .frameworks {
@@ -222,7 +223,7 @@ const props = defineProps({
   margin-bottom: 0;
 }
 .frameworks li:hover {
-  background-color: #585a51;
+  background-color: var(--gray-m);
 }
 .frameworks li[data-selected] {
   background-color: rgba(255, 255, 255, 0.1);

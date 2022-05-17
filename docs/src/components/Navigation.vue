@@ -59,6 +59,9 @@ nav {
   z-index: 100;
   user-select: none;
 }
+[data-dark-mode="true"] nav {
+  background-color: var(--purple-d);
+}
 
 @media (min-width: 42em) {
   nav {
@@ -88,12 +91,19 @@ ul {
   z-index: 2;
   border-top: 1px solid var(--ui-light);
 }
+[data-dark-mode="true"] ul {
+  border-top: none
+}
 
 a,
 .active-title {
   display: block;
   padding: 0.5em 1em;
   color: var(--primary);
+}
+[data-dark-mode="true"] li a,
+[data-dark-mode="true"] li .active-title  {
+  color: var(--text);
 }
 
 li:last-child {

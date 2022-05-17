@@ -125,6 +125,9 @@ section {
   font-weight: 300;
   margin-top: 1em;
 }
+[data-dark-mode="true"] .byline {
+  color: var(--gray-l);
+}
 .byline span,
 .byline svg {
   position: relative;
@@ -139,6 +142,9 @@ section {
   text-decoration: none;
   color: var(--primary);
   filter: grayscale(0);
+}
+[data-dark-mode="true"] .byline:hover {
+  color: var(--text);
 }
 .formkit {
   display: block;

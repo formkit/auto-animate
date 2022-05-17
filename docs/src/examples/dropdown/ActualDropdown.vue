@@ -33,6 +33,11 @@ onMounted(() => {
   border: 2px solid var(--gray-l);
   border-radius: 0.5em;
   background-color: white;
+  margin-bottom: 2em;
+}
+[data-dark-mode="true"] .dropdown {
+  border-color: var(--purple-md);
+  background-color: var(--purple-d);
 }
 .dropdown strong {
   display: block;
