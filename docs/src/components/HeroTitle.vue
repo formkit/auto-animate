@@ -49,6 +49,16 @@ section {
   width: 100%;
 }
 
+.title {
+  font-size: 2em;
+}
+
+@media (min-width: 24em) {
+  .title {
+    font-size: 2.25em;
+  }
+}
+
 .title .highlight {
   font-size: inherit;
   color: var(--primary);
