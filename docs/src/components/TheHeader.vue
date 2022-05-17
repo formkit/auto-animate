@@ -36,11 +36,15 @@ import GithubButton from "vue-github-button"
 header {
   height: 4em;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
+  padding-top: 1em;
+  padding-bottom: 2em;
   justify-content: space-between;
 }
 .logo {
-  width: 8em;
+  width: 10em;
+  margin-right: 1em;
 }
 
 .buttons {
@@ -74,7 +78,7 @@ header {
 
 @media (min-width: 30em) {
   .logo {
-    width: 10em;
+    width: 12em;
   }
 }
 </style>
