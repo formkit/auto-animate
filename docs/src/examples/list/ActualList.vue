@@ -10,7 +10,7 @@ const list = ref<HTMLElement>()
 const fruitBasket = [
   "🍓 Strawberry",
   "🥥 Coconut",
-  "🥝Kiwi",
+  "🥝 Kiwi",
   "🍇 Grape",
   "🍉 Watermelon",
   "🍍 Pineapple",

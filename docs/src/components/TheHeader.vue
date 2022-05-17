@@ -15,8 +15,16 @@ import GithubButton from "vue-github-button"
         href="https://github.com/formkit/auto-animate"
         data-size="large"
         data-show-count="true"
+        data-icon="star"
         aria-label="Star formkit/auto-animate on GitHub"
         >Star</GithubButton
+      >
+      <GithubButton
+        href="https://github.com/sponsors/formkit"
+        data-size="large"
+        data-icon="heart"
+        aria-label="Sponsor FormKit on GitHub"
+        >Sponsor</GithubButton
       >
     </div>
   </header>
@@ -46,6 +54,13 @@ header {
   width: 1.25em;
   fill: var(--gray-m);
   margin-right: 1em;
+}
+
+.buttons span {
+  margin-right: 1em;
+}
+.buttons span:last-child {
+  margin-right: 0;
 }
 
 .buttons a:hover .icon {

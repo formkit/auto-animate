@@ -13,28 +13,28 @@ import ActualVueApp from "../examples/vue/ActualVueApp.vue"
   <section id="usage">
     <h2>Usage</h2>
     <p>
-      AutoAnimate is fundamentally a single function
-      <code>autoAnimation</code> that accepts a parent element. Automatic
-      animations will be applied to the parent and its immediate children.
+      AutoAnimate is fundamentally a single function —
+      <code>autoAnimation</code> — that accepts a parent element. Automatic
+      animations will be applied to the parent element and its immediate children.
       Animations are specifically triggered when one of three events occurs:
     </p>
     <ul>
-      <li>An child is added in the DOM.</li>
-      <li>An child is removed in the DOM.</li>
-      <li>An child is moved in the DOM.</li>
+      <li>A child is <strong>added</strong> in the DOM.</li>
+      <li>A child is <strong>removed</strong> in the DOM.</li>
+      <li>A child is <strong>moved</strong> in the DOM.</li>
     </ul>
     <p>
       Let’s see what this looks like in practice. For now we'll use the
-      <code>autoAnimation</code> function itself. Vue and React users — you’ll
-      get some additional syntactic sugar later on but for now lets learn the
+      <code>autoAnimation</code> function directly. React and Vue users — you’ll
+      get some additional syntactic sugar later on — but for now lets learn the
       fundamentals.
     </p>
     <CodeExample :examples="dropdown" title="Dropdown" />
     <ActualDropdown />
     <p>
-      Too easy. A gentle and smooth height and opacity shift without adding any
-      transition classes. A notable upgrade for end users.
-      <a href="#examples">Checkout the examples</a>
+      Too easy! A gentle, smooth height and opacity shift without adding any
+      transition classes or custom CSS. This is a notable upgrade for end users
+      with minimal developer effort required. <a href="#examples">Checkout the examples</a>
       to see other use cases.
     </p>
 
@@ -65,49 +65,48 @@ import ActualVueApp from "../examples/vue/ActualVueApp.vue"
     </ul>
     <h3>Configuration</h3>
     <p>
-      AutoAnimate is intended to be used with zero configuration. We believe the
-      default configuration falls inline with the project’s objective:
+      AutoAnimate is intended to be used with <em>zero-configuration</em>. We believe the
+      default configuration falls in line with the project’s objective:
       <em class="important"
-        >AutoAnimate’s goal is to substantiality improve user experience with a
-        miniscule impact on implementation time or performance budget.</em
+        >AutoAnimate’s goal is to substantiality improve an application’s user-experience
+        without impacting the developer’s implementation time or performance budget.</em
       >
-      However, some minor configuration options are available. As a second
-      argument to <code>autoAnimate</code> you may pass an object with the
-      following options:
+      That said, some minor configuration options are available. AutoAnimate allows you to pass
+      a second argument to <code>autoAnimate</code> with the following options:
     </p>
     <CodeExample :examples="config" title="config" />
     <p>
-      If you really feel its necessary to dramatically change the default
-      animations <a href="#plugins">checkout plugins</a>.
+      If your project’s specific requirements make it necessary to dramatically change the default
+      animations then you should <a href="#plugins">check out the plugins documentation</a>.
     </p>
-    <AsideTip>
-      You can pass options by setting the directive’s value
-      <code>&lt;ul v-auto-animate="{ duration: 100 }"&gt;</code>
-    </AsideTip>
 
-    <h3 id="usage-react">React hook</h3>
+    <h2 id="usage-react">React hook</h2>
     <p>
-      React can use the hook <code>useAutoAnimate</code> by importing it from
+      React users can use the hook <code>useAutoAnimate</code> by importing it from
       <code>@formkit/auto-animation/react</code>. This hook returns a ref to
       apply to the parent element.
     </p>
     <CodeExample :examples="reactHook" title="App" />
     <ActualReactApp />
 
-    <h3 id="usage-vue">Vue Plugin</h3>
+    <h2 id="usage-vue">Vue Plugin</h2>
     <p>
-      Vue users can opt into globally registering the
-      <code>v-auto-animate</code> directive. This makes adding adding
-      transitions and animations as easy as applying an attribute. To use the
-      plugin, simply import the vue plugin from `@formkit/auto-animate/vue` and
+      Vue users can opt-in to globally registering the
+      <code>v-auto-animate</code> directive. This makes adding
+      transitions and animations as easy as applying an attribute.
+      Import the vue plugin from <code>@formkit/auto-animate/vue</code> and
       register it with your Vue app.
     </p>
     <CodeExample :examples="vueDirectiveMain" title="main" />
     <p>
-      Once you’ve registered the plugin, it can be applied anywhere in the
-      application by adding <code>v-auto-animate</code> to the parent element.
+      Once you’ve registered the plugin, it can be applied anywhere in your
+      application by adding the <code>v-auto-animate</code> directive to the parent element.
     </p>
     <CodeExample :examples="vueDirectiveApp" title="App" />
     <ActualVueApp />
+    <AsideTip>
+      Vue users can pass options by directly setting the directive’s value
+      <code>&lt;ul v-auto-animate="{ duration: 100 }"&gt;</code>
+    </AsideTip>
   </section>
 </template>

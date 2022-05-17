@@ -10,7 +10,12 @@ body {
 
 html {
   min-height: 100%;
-  background: url('./img/pattern.svg') repeat 4px 4px, linear-gradient(to bottom, rgb(103 0 255 / 4%), transparent) no-repeat, linear-gradient(to bottom left, rgb(255 0 201 / 2%), transparent) no-repeat;
+  background-image:
+    url('./img/pattern.svg'),
+    linear-gradient(to bottom, rgb(103 0 255 / 4%), transparent),
+    linear-gradient(to bottom left, rgb(255 0 201 / 2%), transparent);
+  background-size: 4px 4px, 100vw 200vh, 100vw 100vh;
+  background-repeat: repeat, no-repeat, no-repeat;
   scroll-behavior: smooth;
 }
 
@@ -30,6 +35,14 @@ h1, h2, h3, h4{
   margin: 0 0 .75em;
   letter-spacing: -0.045em;
   line-height: 1.2;
+}
+
+h2 {
+  margin-top: 1.5em;
+}
+
+h3 {
+  margin-top: 2.5em;
 }
 
 h3 a:not(.button) {
@@ -79,9 +92,13 @@ section {
 section > ul {
   line-height: 1.5;
   list-style-type: none;
+  margin: 1.5em 0;
 }
 section > ul li {
   margin-bottom: .5em;
+  font-size: 1rem;
+  font-weight: 300;
+  color: currentColor;
 }
 section > ul li::before {
   content: '';
@@ -116,6 +133,9 @@ aside svg {
   display: inline-block;
   vertical-align: middle;
   fill: var(--purple-d);
+}
+aside code {
+  display: inline-block;
 }
 
 .button {
@@ -174,8 +194,10 @@ a:not(.button):hover {
 
 .important {
   display: block;
-  margin: 1em;
-  font-size: 1.1em;
+  margin: 1.5em 2em;
+  line-height: 1.4;
+  font-size: 1.25em;
+  opacity: 0.75;
 }
 
 .example {

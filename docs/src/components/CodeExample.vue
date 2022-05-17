@@ -198,7 +198,7 @@ const props = defineProps({
 }
 
 .window-footer {
-  padding: 0 0.5em;
+  padding: 0;
   border-radius: 0 0 0.5em 0.5em;
   background-color: var(--gray-d);
   margin: 1em -1em -1em -1em;
