@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react"
 import autoAnimate, { AutoAnimateOptions, AutoAnimationPlugin } from "./index"
 
 /**
- * Auto Animation hook for adding dead-simple transitions and animations to react.
+ * AutoAnimate hook for adding dead-simple transitions and animations to react.
  * @param options - Auto animate options or a plugin
  * @returns
  */

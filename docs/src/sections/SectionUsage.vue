@@ -13,7 +13,7 @@ import ActualVueApp from "../examples/vue/ActualVueApp.vue"
   <section id="usage">
     <h2>Usage</h2>
     <p>
-      Auto Animation is fundamentally a single function
+      AutoAnimate is fundamentally a single function
       <code>autoAnimation</code> that accepts a parent element. Automatic
       animations will be applied to the parent and its immediate children.
       Animations are specifically triggered when one of three events occurs:
@@ -37,13 +37,39 @@ import ActualVueApp from "../examples/vue/ActualVueApp.vue"
       <a href="#examples">Checkout the examples</a>
       to see other use cases.
     </p>
+
+    <h3>Tips for success</h3>
+    <ul>
+      <li>
+        It’s ok to still use other kinds of transitions. For example, if you are
+        making stylistic changes with just css (like a hover effect) use
+        standard CSS transitions for these kinds of styling tweaks.
+      </li>
+      <li>
+        Animations are only triggered when children of the parent element (the
+        one you passed to <code>autoAnimate</code>) are added or removed or
+        moved.
+      </li>
+      <li>
+        The parent element will automatically receive
+        <code>position: relative</code> if it is positioned statically. Keep
+        this in mind when writing your styles.
+      </li>
+      <li>
+        Sometimes flexbox layouts don’t resize their children immediately. A
+        child with a <code>flex-grow: 1</code> property waits for the
+        surrounding content before snapping to its full width. AutoAnimate
+        doesn’t work well in these cases, but if you give the element a more
+        explicit width it should work like a charm.
+      </li>
+    </ul>
     <h3>Configuration</h3>
     <p>
       AutoAnimate is intended to be used with zero configuration. We believe the
       default configuration falls inline with the project’s objective:
       <em class="important"
-        >Auto Animation’s goal is to substantiality improve user experience with
-        a miniscule impact on implementation time or performance budget.</em
+        >AutoAnimate’s goal is to substantiality improve user experience with a
+        miniscule impact on implementation time or performance budget.</em
       >
       However, some minor configuration options are available. As a second
       argument to <code>autoAnimate</code> you may pass an object with the
@@ -58,6 +84,7 @@ import ActualVueApp from "../examples/vue/ActualVueApp.vue"
       You can pass options by setting the directive’s value
       <code>&lt;ul v-auto-animate="{ duration: 100 }"&gt;</code>
     </AsideTip>
+
     <h3 id="usage-react">React hook</h3>
     <p>
       React can use the hook <code>useAutoAnimate</code> by importing it from
@@ -66,6 +93,7 @@ import ActualVueApp from "../examples/vue/ActualVueApp.vue"
     </p>
     <CodeExample :examples="reactHook" title="App" />
     <ActualReactApp />
+
     <h3 id="usage-vue">Vue Plugin</h3>
     <p>
       Vue users can opt into globally registering the

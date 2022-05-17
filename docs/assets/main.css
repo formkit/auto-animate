@@ -94,7 +94,9 @@ section > ul li::before {
   margin-left: -1em;
   margin-top: .55em;
 }
-
+section h3 {
+  margin: 1.5em 0 1em 0;
+}
 aside {
   display: block;
   padding: 1em;

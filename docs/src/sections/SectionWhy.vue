@@ -7,15 +7,15 @@ import examples from "../examples/basic"
     <h2>Why not...</h2>
     <p>
       There are loads of Animation libraries available for JavaScript and each
-      has its place. Auto animation is not a tradition animation library — think
-      of it more as "Prettier for motion" — it is an easy to implement standard
-      you can quickly apply to your projects.
+      has its place. AutoAnimate is not a tradition animation library — think of
+      it more as "Prettier for motion" — it is an easy to implement standard you
+      can quickly apply to your projects.
     </p>
     <p>
-      Auto Animation helps smooth out changes to the DOM that that are confusing
+      AutoAnimate helps smooth out changes to the DOM that that are confusing
       for end users. For example, when a user sorts a list it can be very
       difficult to visualize how the items in the list move — but with a simple
-      animation it makes intuitive sense. Auto Animation was made to solve these
+      animation it makes intuitive sense. AutoAnimate was made to solve these
       kinds of problems via a drop-in solution with zero config.
     </p>
     <!-- <ul>
@@ -23,7 +23,7 @@ import examples from "../examples/basic"
         <a href="https://greensock.com/">Green Sock</a> is perhaps the most
         robust animation library available. You can create truly world class web
         compatible animations — it solves a class of problems entirely different
-        than Auto Animation.
+        than AutoAnimate.
       </li>
       <li>
         <a
