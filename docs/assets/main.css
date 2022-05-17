@@ -57,7 +57,16 @@ h1, h2, h3, h4{
 }
 
 h2 {
-  margin-top: 1.5em;
+  padding-top: 2.5em;
+}
+@media (min-width: 42em) {
+  h2 {
+    padding-top: 1.5em;
+  }
+}
+
+h2.no-margin {
+  padding-top: 0 !important;
 }
 
 h3 {
