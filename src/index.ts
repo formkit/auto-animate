@@ -43,7 +43,7 @@ const debounces = new WeakMap<Element, NodeJS.Timeout>()
 /**
  * The document used to calculate transitions.
  */
-const root = document.documentElement
+let root: HTMLElement
 /**
  * Used to sign an element as the target.
  */
@@ -193,6 +193,7 @@ let resize: ResizeObserver | undefined
  * If this is in a browser, initialize our Web APIs
  */
 if (typeof window !== "undefined") {
+  root = document.documentElement
   mutations = new MutationObserver(handleMutations)
   resize = new ResizeObserver(handleResizes)
   resize.observe(root)
