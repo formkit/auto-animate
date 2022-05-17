@@ -5,15 +5,21 @@ import autoAnimate from "../../../../src"
 const example = ref()
 
 onMounted(() => {
-  example.value.querySelectorAll(".formkit-outer").forEach((el) => {
-    autoAnimate(el)
-  })
+  example.value.querySelectorAll(".formkit-outer").forEach(autoAnimate)
 })
+
+const submit = () => {
+  alert("Success!")
+}
 </script>
 
 <template>
   <div class="example" ref="example">
-    <FormKit type="form" :submit-attrs="{ inputClass: 'button' }">
+    <FormKit
+      type="form"
+      :submit-attrs="{ inputClass: 'button' }"
+      @submit="submit"
+    >
       <FormKit
         type="text"
         label="Username"
@@ -60,18 +66,22 @@ onMounted(() => {
   width: 100%;
   box-sizing: border-box;
   max-width: 24.375em;
+  margin: 2em auto;
 }
 
-.example::v-deep button {
+.example:deep(button) {
   margin-bottom: 0;
 }
 
-.example::v-deep .formkit-outer[data-type="submit"] {
+.example:deep(.formkit-outer[data-type="submit"]) {
   margin-bottom: 0;
 }
 
-.example::v-deep input {
+.example:deep(input) {
   width: 100%;
   box-sizing: border-box;
+}
+.example:deep(.formkit-messages + .formkit-actions) {
+  margin-top: 1em;
 }
 </style>

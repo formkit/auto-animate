@@ -268,3 +268,8 @@ li.formkit-message {
   font-weight: 300;
   margin: 0;
 }
+
+.formkit-actions {
+  margin-top: 0;
+  transition: margin-top .25s;
+}
