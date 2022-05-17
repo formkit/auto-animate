@@ -15,7 +15,7 @@ const faq = ref([
     question: "Is it open source?",
     answer: `It sure is! AutoAnimate is MIT licensed, which basically means you
     are free to take it and do whatever you want with it. If you find it useful
-    consider supporting our opensource efforts`,
+    consider <a href="https://github.com/sponsors/formkit">supporting our open source efforts</a>.`,
   },
   {
     id: "who",
@@ -58,6 +58,7 @@ li {
   display: block;
   background-color: var(--ui-light);
   border-radius: 0.5em;
+  overflow: hidden;
 }
 
 .question {
