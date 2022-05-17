@@ -26,7 +26,7 @@ import GithubButton from "vue-github-button"
       Sponsor
     </GithubButton>
     <AsideTip>
-      If you are using React you can use the <code><a href="#react-hook">useAutoAnimate</a></code> hook.
+      If you are using React you can use the <code><a href="#usage-react">useAutoAnimate</a></code> hook.
       If you are using Vue you can use the <code><a href="#usage-vue">v-auto-animate</a></code> directive.
     </AsideTip>
   </section>
