@@ -15,7 +15,7 @@ import introExample from "../examples/intro"
       <h1 class="title">The easiest way to add <span class="highlight">motion</span> to your apps.</h1>
       <p>
         AutoAnimate is a zero-config, drop-in animation utility that
-        adds smooth transitions to your web app. You can use it with Vue, React,
+        adds smooth transitions to your web app. You can use it with React, Vue,
         or any other JavaScript application.
       </p>
       <div>
