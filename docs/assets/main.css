@@ -32,6 +32,22 @@ h1, h2, h3, h4{
   line-height: 1.2;
 }
 
+h3 a:not(.button) {
+  color: var(--text);
+  display: inline-flex;
+  align-items: center;
+}
+
+h3 a:not(.button) svg {
+  width: .875em;
+  display: block;
+  margin-left: .5em;
+}
+
+h3 a:not(.button):hover svg {
+  fill: var(--primary);
+}
+
 @media (min-width: 20em) {
   h2 {
     font-size: 1.75em;
