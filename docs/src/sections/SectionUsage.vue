@@ -14,7 +14,7 @@ import ActualVueApp from "../examples/vue/ActualVueApp.vue"
     <h2>Usage</h2>
     <p>
       AutoAnimate is fundamentally a single function —
-      <code>autoAnimation</code> — that accepts a parent element. Automatic
+      <code>autoAnimate</code> — that accepts a parent element. Automatic
       animations will be applied to the parent element and its immediate children.
       Animations are specifically triggered when one of three events occurs:
     </p>
@@ -25,7 +25,7 @@ import ActualVueApp from "../examples/vue/ActualVueApp.vue"
     </ul>
     <p>
       Let’s see what this looks like in practice. For now we'll use the
-      <code>autoAnimation</code> function directly. React and Vue users — you’ll
+      <code>autoAnimate</code> function directly. React and Vue users — you’ll
       get some additional syntactic sugar later on — but for now lets learn the
       fundamentals.
     </p>

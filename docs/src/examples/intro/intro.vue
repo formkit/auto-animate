@@ -1,5 +1,5 @@
 <template>
-  <ul v-animate-auto>
+  <ul v-auto-animate>
     <!-- 🪄 Magic animations for your list -->
   </ul>
 </template>
