@@ -12,7 +12,7 @@ import introExample from "../examples/intro"
 <template>
   <section id="hero">
     <div class="intro">
-      <h1 class="title">The easiest way to add motion to your apps.</h1>
+      <h1 class="title">The easiest way to add <span class="highlight">motion</span> to your apps.</h1>
       <p>
         AutoAnimate is a zero-config, drop-in animation utility that
         adds smooth transitions to your web app. You can use it with Vue, React,
@@ -43,6 +43,15 @@ section {
 
 .intro {
   width: 100%;
+}
+
+.title .highlight {
+  font-size: inherit;
+  color: var(--primary);
+  padding-right: 0.1em;
+  background-image: linear-gradient(-45deg, var(--primary), var(--purple-m));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 @media (min-width: 28em) {
