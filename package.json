@@ -1,6 +1,6 @@
 {
   "name": "@formkit/auto-animate",
-  "version": "1.0.0-alpha.1",
+  "version": "1.0.0-pre-alpha.1",
   "type": "module",
   "description": "The easiest way to add motion to your apps.",
   "keywords": [

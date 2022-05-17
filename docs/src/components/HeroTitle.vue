@@ -12,11 +12,14 @@ import introExample from "../examples/intro"
 <template>
   <section id="hero">
     <div class="intro">
-      <h1 class="title">The easiest way to add <span class="highlight">motion</span> to your apps.</h1>
+      <h1 class="title">
+        The easiest way to add <span class="highlight">motion</span> to your
+        apps.
+      </h1>
       <p>
-        AutoAnimate is a zero-config, drop-in animation utility that
-        adds smooth transitions to your web app. You can use it with React, Vue,
-        or any other JavaScript application.
+        AutoAnimate is a zero-config, drop-in animation utility that adds smooth
+        transitions to your web app. You can use it with React, Vue, or any
+        other JavaScript application.
       </p>
       <div>
         <a class="button" href="#installation">Get started<IconArrow /></a>
@@ -27,7 +30,8 @@ import introExample from "../examples/intro"
         /></a>
       </div>
       <a class="byline" href="https://www.formkit.com">
-        <FormKitLogo class="formkit" /> made with <span>❤️</span> by the FormKit team.
+        <FormKitLogo class="formkit" width="16" height="16" /> made with
+        <span>❤️</span> by the FormKit team.
       </a>
     </div>
     <CodeExample title="App" :examples="introExample" class="example" />
@@ -136,6 +140,11 @@ section {
 .byline span {
   margin-right: 0.66em;
   margin-left: 0.25em;
+}
+
+.byline svg {
+  position: relative;
+  top: 0px;
 }
 
 .byline:hover {
