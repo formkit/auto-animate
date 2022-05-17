@@ -2,6 +2,7 @@
 import installation from "../examples/installation"
 import CodeExample from "../components/CodeExample.vue"
 import AsideTip from "../components/AsideTip.vue"
+import GithubButton from "vue-github-button"
 </script>
 
 <template>
@@ -12,7 +13,18 @@ import AsideTip from "../components/AsideTip.vue"
       <code>@formkit/auto-animate</code> to your project.
     </p>
     <CodeExample title="~/my-app" :examples="installation"></CodeExample>
-    <p>Aaaaand, you’re done! That was fast.</p>
+    <p>Aaaaand, you’re done! That was fast. 🐇</p>
+    <p>
+      Is AutoAnimate saving you time? Consider sponsoring with a recurring or one-time donation! 💙
+    </p>
+    <GithubButton
+      href="https://github.com/sponsors/formkit"
+      data-size="large"
+      data-icon="heart"
+      aria-label="Sponsor FormKit on GitHub"
+    >
+      Sponsor
+    </GithubButton>
     <AsideTip>
       If you are using React you can use the <code><a href="#react-hook">useAutoAnimate</a></code> hook.
       If you are using Vue you can use the <code><a href="#usage-vue">v-auto-animate</a></code> directive.
