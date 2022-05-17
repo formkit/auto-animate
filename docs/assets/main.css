@@ -28,6 +28,8 @@ html {
 
 h1, h2, h3, h4{
   margin: 0 0 .75em;
+  letter-spacing: -0.045em;
+  line-height: 1.2;
 }
 
 @media (min-width: 20em) {

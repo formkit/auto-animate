@@ -219,6 +219,7 @@ const props = defineProps({
   font-size: 0.75em;
   padding: 0.75em 1em;
   cursor: pointer;
+  margin-bottom: 0;
 }
 .frameworks li:hover {
   background-color: #585a51;
