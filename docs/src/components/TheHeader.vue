@@ -38,14 +38,16 @@ header {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  padding-top: 1em;
-  padding-bottom: 2em;
+  padding-top: 2em;
+  margin-bottom: 6em;
   justify-content: space-between;
   user-select: none;
 }
 .logo {
-  width: 10em;
+  width: 90%;
+  max-width: 15em;
   margin-right: 1em;
+  margin-bottom: 1em
 }
 
 .buttons {
@@ -77,9 +79,14 @@ header {
   fill: var(--primary);
 }
 
-@media (min-width: 30em) {
+@media (min-width: 700px) {
+  header {
+    padding-top: 1em;
+    margin-bottom: 3em;
+  }
   .logo {
-    width: 12em;
+    max-width: 12em;
+    margin-bottom: 0;
   }
 }
 </style>
