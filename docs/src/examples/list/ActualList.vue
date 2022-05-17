@@ -79,6 +79,9 @@ li {
   box-shadow: 0 0 0.5em rgba(0, 0, 0, 0.1);
   font-size: 0.875em;
 }
+[data-dark-mode="true"] li {
+  background-color: var(--purple-md);
+}
 
 li::before {
   display: none;
@@ -98,5 +101,8 @@ li button {
 li button svg {
   width: 1.2em;
   fill: red;
+}
+[data-dark-mode="true"] li button svg {
+  fill: rgb(244, 67, 67);
 }
 </style>

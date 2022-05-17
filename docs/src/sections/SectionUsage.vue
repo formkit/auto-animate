@@ -32,7 +32,7 @@ import ActualVueApp from "../examples/vue/ActualVueApp.vue"
     <CodeExample :examples="dropdown" title="Dropdown" />
     <ActualDropdown />
     <p>
-      Too easy! A gentle, smooth height and opacity shift without adding any
+      Too easy! A gentle, smooth shift without adding any
       transition classes or custom CSS. This is a notable upgrade for end users
       with minimal developer effort required. <a href="#examples">Checkout the examples</a>
       to see other use cases.

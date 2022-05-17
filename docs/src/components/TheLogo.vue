@@ -114,6 +114,9 @@ onMounted(() => {
 .cls-2 {
   fill: #111;
 }
+[data-dark-mode="true"] .cls-2 {
+  fill: #eee;
+}
 
 .cls-3 {
   isolation: isolate;

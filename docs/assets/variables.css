@@ -16,3 +16,16 @@
   --purple-d: #6500bf;
   --orange: #fcaa5e;
 }
+
+html[data-dark-mode="true"] {
+  --ui-green: #5bc553;
+  --text: #f5f5f5;
+  --primary: #6232e6;
+  --purple-m: #8c57e3;
+  --purple-md: #432d68;
+  --purple-d: #350b5a;
+  --gray-l: #c6c4d0;
+  --gray-m: #7d7483;
+  --gray-md: #55515a;
+  --gray-d: #3d3943;
+}

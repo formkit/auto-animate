@@ -2,6 +2,7 @@
 import TheLogo from "./TheLogo.vue"
 import IconDiscord from "./IconDiscord.vue"
 import IconTwitter from "./IconTwitter.vue"
+import ColorModeToggle from "./ColorModeToggle.vue"
 import GithubButton from "vue-github-button"
 </script>
 
@@ -26,6 +27,7 @@ import GithubButton from "vue-github-button"
         aria-label="Sponsor FormKit on GitHub"
         >Sponsor</GithubButton
       >
+      <ColorModeToggle />
     </div>
   </header>
 </template>
@@ -54,6 +56,9 @@ header {
   width: 1.25em;
   fill: var(--gray-m);
   margin-right: 1em;
+}
+[data-dark-mode="true"] .icon {
+  fill: var(--gray-l);
 }
 
 .buttons span {

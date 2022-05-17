@@ -28,6 +28,16 @@ html {
   scroll-behavior: smooth;
 }
 
+html[data-dark-mode="true"] {
+  background: #160430;
+  background-image:
+    url('./img/pattern-dark.svg'),
+    linear-gradient(to bottom, rgb(103 0 255 / 15%), transparent),
+    linear-gradient(to bottom left, rgb(255 0 201 / 10%), transparent);
+  background-size: 4px 4px, 100vw 200vh, 100vw 100vh;
+  background-repeat: repeat, no-repeat, no-repeat;
+}
+
 .container {
   width: calc(100% - 2em);
   max-width: 70em;
@@ -94,6 +104,15 @@ code {
   line-height: 1;
   font-family: courier, monospace;
 }
+[data-dark-mode="true"] p code {
+  background-color: rgba(255, 255, 255, .15);
+  border: 1px solid var(--purple-md);
+}
+[data-dark-mode="true"] code > a:not(.button),
+[data-dark-mode="true"] a:not(.button) > code {
+  color: var(--purple-lm);
+  text-decoration: underline;
+}
 section {
   margin-bottom: 3em;
 }
@@ -120,6 +139,9 @@ section > ul li::before {
   margin-left: -1em;
   margin-top: .55em;
 }
+[data-dark-mode="true"] section > ul li::before {
+  background-color: var(--purple-m);
+}
 section h3 {
   margin: 1.5em 0 1em 0;
 }
@@ -129,6 +151,10 @@ aside {
   background-color: var(--purple-l);
   border-radius: .5em;
   margin: 2em 0;
+}
+[data-dark-mode="true"] aside {
+  background-color: transparent;
+  border: 2px solid var(--ui-green);
 }
 
 aside p {
@@ -142,6 +168,9 @@ aside svg {
   display: inline-block;
   vertical-align: middle;
   fill: var(--purple-d);
+}
+[data-dark-mode="true"] aside svg {
+  fill: var(--ui-green);
 }
 aside code {
   display: inline-block;
@@ -187,14 +216,26 @@ aside code {
   color: grey;
   box-shadow: none;
 }
+[data-dark-mode="true"] .button--alt {
+  background-color: var(--gray-l);
+  border-color: #ddd;
+  color: var(--gray-d);
+}
 
 .button--alt:hover {
   color: var(--grey-md);
+}
+[data-dark-mode="true"] .button--alt:hover {
+  color: var(--gray-d);
+  background: #fff;
 }
 
 a:not(.button) {
   color: var(--primary);
   text-decoration: none;
+}
+[data-dark-mode="true"] a:not(.button) {
+  color: var(--purple-m);
 }
 a:not(.button):hover {
   text-decoration: underline;
