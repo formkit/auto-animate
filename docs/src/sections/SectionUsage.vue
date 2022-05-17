@@ -91,7 +91,7 @@ import ActualVueApp from "../examples/vue/ActualVueApp.vue"
 
     <h2 id="usage-vue">Vue Directive</h2>
     <p>
-      Vue users can opt-in to globally registering the
+      Vue users can globally register the
       <code>v-auto-animate</code> directive. This makes adding
       transitions and animations as easy as applying an attribute.
       Import the vue plugin from <code>@formkit/auto-animate/vue</code> and
