@@ -71,28 +71,6 @@ function createCard(card) {
   flex-wrap: wrap;
 }
 
-.form::v-deep textarea,
-.form::v-deep input {
-  appearance: none;
-  border: 1px solid var(--gray-l);
-  padding: 0.5em;
-  font-size: 0.875rem;
-  width: 250px;
-  max-width: 100%;
-  border-radius: 0.5em;
-  font-family: "silka";
-  font-weight: 300;
-}
-
-.form::v-deep label {
-  font-weight: bold;
-  font-size: 0.875em;
-}
-
-.form::v-deep .formkit-outer {
-  margin-bottom: 0.5em;
-}
-
 .example {
   margin-top: 2em;
 }

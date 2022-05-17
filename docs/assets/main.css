@@ -216,3 +216,55 @@ a:not(.button):hover {
 .example li {
   margin-bottom: .5em;
 }
+
+.formkit-outer {
+  margin-bottom: 1em;
+}
+
+.formkit-label {
+  display: block;
+  margin-bottom: .25em;
+}
+
+.formkit-outer textarea,
+.formkit-outer input {
+  appearance: none;
+  border: 1px solid var(--gray-l);
+  padding: 0.75em;
+  font-size: 0.875rem;
+  width: 250px;
+  max-width: 100%;
+  border-radius: 0.5em;
+  font-family: "silka";
+  font-weight: 300;
+}
+
+.formkit-help {
+  font-size: .75em;
+  color: var(--gray-m);
+  font-weight: 300;
+  margin-top: .5em;
+}
+
+.formkit-outer label {
+  font-weight: bold;
+  font-size: 0.875em;
+}
+
+.formkit-outer .formkit-outer {
+  margin-bottom: 0.5em;
+}
+
+.formkit-messages {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+li.formkit-message {
+  font-size: .75em;
+  padding-top: .25em;
+  color: red;
+  font-weight: 300;
+  margin: 0;
+}

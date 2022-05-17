@@ -3,6 +3,7 @@ import ActualCards from "../examples/cards/ActualCards.vue"
 import ActualList from "../examples/list/ActualList.vue"
 import ActualBoxes from "../examples/boxes/ActualBoxes.vue"
 import ActualAccordion from "../examples/accordion/ActualAccordion.vue"
+import ActualFormKit from "../examples/formkit/ActualFormKit.vue"
 import IconOutbound from "../components/IconOutbound.vue"
 </script>
 
@@ -37,7 +38,7 @@ import IconOutbound from "../components/IconOutbound.vue"
     </p>
     <ActualList />
 
-    <h3 id="example-list">
+    <h3 id="example-boxes">
       <a
         href="https://github.com/formkit/auto-animate/blob/master/docs/src/examples/boxes/ActualBoxes.vue"
       >
@@ -52,7 +53,7 @@ import IconOutbound from "../components/IconOutbound.vue"
     </p>
     <ActualBoxes />
 
-    <h3 id="example-list">
+    <h3 id="example-accordion">
       <a
         href="https://github.com/formkit/auto-animate/blob/master/docs/src/examples/accordion/ActualAcordion.vue"
       >
@@ -67,5 +68,19 @@ import IconOutbound from "../components/IconOutbound.vue"
       more!
     </p>
     <ActualAccordion />
+    <h3 id="example-validation">
+      <a
+        href="https://github.com/formkit/auto-animate/blob/master/docs/src/examples/accordion/ActualAcordion.vue"
+      >
+        FormKit validation example<IconOutbound
+      /></a>
+    </h3>
+    <p>
+      You don’t have to use <a href="https://formkit.com">FormKit</a> to use
+      AutoAnimate, but if you are a FormKit user there are some neat things you
+      can do. For example, you can use AutoAnimate to animate validation
+      messages being added and removed from an input.
+    </p>
+    <ActualFormKit />
   </section>
 </template>
