@@ -85,6 +85,8 @@ section {
     margin-top: 0;
     margin-bottom: 0;
     max-width: 26.7em;
+    flex-shrink: 0;
+    width: 50%;
   }
 }
 
