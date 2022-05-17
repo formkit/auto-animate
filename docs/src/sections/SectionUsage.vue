@@ -56,6 +56,18 @@ import ActualVueApp from "../examples/vue/ActualVueApp.vue"
       If you really feel its necessary to dramatically change the default
       animations <a href="#plugins">checkout plugins</a>.
     </p>
+    <AsideTip>
+      You can pass options by setting the directive’s value
+      <code>&lt;ul v-auto-animate="{ duration: 100 }"&gt;</code>
+    </AsideTip>
+    <h3>React hook</h3>
+    <p>
+      React can use the hook <code>useAutoAnimate</code> by importing it from
+      <code>@formkit/auto-animation/react</code>. This hook returns a ref to
+      apply to the parent element.
+    </p>
+    <CodeExample :examples="reactHook" title="App" />
+    <ActualReactApp />
     <h3>Vue Plugin</h3>
     <p>
       Vue users can opt into globally registering the
@@ -71,17 +83,5 @@ import ActualVueApp from "../examples/vue/ActualVueApp.vue"
     </p>
     <CodeExample :examples="vueDirectiveApp" title="App" />
     <ActualVueApp />
-    <AsideTip>
-      You can pass options by setting the directive’s value
-      <code>&lt;ul v-auto-animate="{ duration: 100 }"&gt;</code>
-    </AsideTip>
-    <h3>React hook</h3>
-    <p>
-      React can use the hook <code>useAutoAnimate</code> by importing it from
-      <code>@formkit/auto-animation/react</code>. This hook returns a ref to
-      apply to the parent element.
-    </p>
-    <CodeExample :examples="reactHook" title="App" />
-    <ActualReactApp />
   </section>
 </template>

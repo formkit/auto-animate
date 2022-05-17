@@ -76,18 +76,18 @@ const props = defineProps({
     <div class="window-footer">
       <ul class="frameworks">
         <li
-          v-if="'vue' in props.examples"
-          @click="current = 'vue'"
-          :data-selected="current === 'vue' || null"
-        >
-          <IconVue />Vue
-        </li>
-        <li
           v-if="'react' in props.examples"
           @click="current = 'react'"
           :data-selected="current === 'react' || null"
         >
           <IconReact />React
+        </li>
+        <li
+          v-if="'vue' in props.examples"
+          @click="current = 'vue'"
+          :data-selected="current === 'vue' || null"
+        >
+          <IconVue />Vue
         </li>
         <li
           v-if="'js' in props.examples"

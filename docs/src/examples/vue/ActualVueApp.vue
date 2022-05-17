@@ -33,11 +33,14 @@ function removeItem(toRemove) {
 </script>
 
 <template>
-  <ul v-auto-animate>
-    <li v-for="item in items" :key="item" @click="removeItem(item)">
-      {{ item }}
-    </li>
-  </ul>
+  <div class="example">
+    <h5>Click emojis to remove them.</h5>
+    <ul v-auto-animate>
+      <li v-for="item in items" :key="item" @click="removeItem(item)">
+        {{ item }}
+      </li>
+    </ul>
+  </div>
 </template>
 
 <style scoped>
@@ -50,7 +53,8 @@ ul {
   position: relative;
 }
 li {
-  border: 1px solid black;
+  border: 1px solid var(--gray-m);
+  border-radius: 5px;
   width: 2em;
   height: 2em;
   display: flex;

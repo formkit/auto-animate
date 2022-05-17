@@ -3,15 +3,15 @@ import reactExample from "./intro.jsx?raw"
 import htmlExample from "./intro.html?raw"
 
 export default {
-  vue: {
-    ext: "vue",
-    language: "html",
-    example: vueExample,
-  },
   react: {
     example: reactExample,
     ext: "jsx",
     language: "jsx",
+  },
+  vue: {
+    ext: "vue",
+    language: "html",
+    example: vueExample,
   },
   js: {
     example: htmlExample,

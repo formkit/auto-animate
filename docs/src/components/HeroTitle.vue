@@ -75,6 +75,13 @@ section {
     margin-left: 2em;
     margin-top: 0;
     margin-bottom: 0;
+    max-width: 26.7em;
+  }
+}
+
+@media (min-width: 65em) {
+  .example {
+    max-width: none;
   }
 }
 

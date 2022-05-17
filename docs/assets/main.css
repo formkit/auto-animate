@@ -157,3 +157,11 @@ a:not(.button):hover {
   margin: 1em;
   font-size: 1.1em;
 }
+
+.example {
+  margin-bottom: 2em;
+}
+
+.example li {
+  margin-bottom: .5em;
+}

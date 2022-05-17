@@ -21,6 +21,7 @@ const items = ref([1, 2, 3])
 </script>
 
 <template>
+  <h5>Click emojis to remove them.</h5>
   <ul v-auto-animate>
     <li
       v-for="item in items"

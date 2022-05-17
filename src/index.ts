@@ -148,7 +148,7 @@ function updateAllPos() {
       parents.forEach((parent) =>
         forEach(parent, (el) => lowPriority(() => updatePos(el)))
       )
-    }, 250)
+    }, 100)
   )
 }
 
@@ -161,12 +161,12 @@ function updateAllPos() {
  * @param el - Element
  */
 function poll(el: Element) {
-  setTimeout(() => {
-    intervals.set(
-      el,
-      setInterval(() => lowPriority(updatePos.bind(null, el)), 2000)
-    )
-  }, Math.round(2000 * Math.random()))
+  // setTimeout(() => {
+  //   intervals.set(
+  //     el,
+  //     setInterval(() => lowPriority(updatePos.bind(null, el)), 2000)
+  //   )
+  // }, Math.round(2000 * Math.random()))
 }
 
 /**
@@ -319,22 +319,22 @@ export function getTransitionSizes(
 
   if (sizing === "content-box") {
     const paddingY =
-      raw(styles.getPropertyValue("padding-top")) +
-      raw(styles.getPropertyValue("padding-bottom")) +
-      raw(styles.getPropertyValue("border-top-width")) +
-      raw(styles.getPropertyValue("border-bottom-width"))
+      raw(styles.paddingTop) +
+      raw(styles.paddingBottom) +
+      raw(styles.borderTopWidth) +
+      raw(styles.borderBottomWidth)
     const paddingX =
-      raw(styles.getPropertyValue("padding-left")) +
-      raw(styles.getPropertyValue("padding-right")) +
-      raw(styles.getPropertyValue("border-right-width")) +
-      raw(styles.getPropertyValue("border-left-width"))
+      raw(styles.paddingLeft) +
+      raw(styles.paddingRight) +
+      raw(styles.borderRightWidth) +
+      raw(styles.borderLeftWidth)
     widthFrom -= paddingX
     widthTo -= paddingX
     heightFrom -= paddingY
     heightTo -= paddingY
   }
 
-  return [widthFrom, widthTo, heightFrom, heightTo]
+  return [widthFrom, widthTo, heightFrom, heightTo].map(Math.round)
 }
 
 /**
@@ -454,17 +454,18 @@ function remove(el: Element) {
   } else if (prev && prev.parentNode) {
     prev.parentNode.appendChild(el)
   }
+  const [top, left, width, height] = deletePosition(el)
   const optionsOrPlugin = getOptions(el)
   const oldCoords = coords.get(el)!
   let animation: Animation
   if (typeof optionsOrPlugin !== "function") {
-    const [top, left, width, height] = deletePosition(el)
     Object.assign((el as HTMLElement).style, {
       position: "absolute",
       top: `${top}px`,
       left: `${left}px`,
       width: `${width}px`,
       height: `${height}px`,
+      margin: 0,
       pointerEvents: "none",
       transformOrigin: "center",
       zIndex: 100,
@@ -511,10 +512,14 @@ function deletePosition(
     offsetParent = offsetParent.parentElement
   }
   if (!offsetParent) offsetParent = document.body
-  console.log(offsetParent)
-  const posCoords = getCoords(offsetParent)
-  const top = oldCoords.top - posCoords.top
-  const left = oldCoords.left - posCoords.left
+  const parentStyles = getComputedStyle(offsetParent)
+  const parentCoords = coords.get(offsetParent) || getCoords(offsetParent)
+  const top =
+    Math.round(oldCoords.top - parentCoords.top) -
+    raw(parentStyles.borderTopWidth)
+  const left =
+    Math.round(oldCoords.left - parentCoords.left) -
+    raw(parentStyles.borderLeftWidth)
   return [top, left, width, height]
 }
 
@@ -552,10 +557,13 @@ export interface AutoAnimationPlugin {
  * @param options - An optional object of options.
  */
 export default function autoAnimate(
-  el: Element,
+  el: HTMLElement,
   config: Partial<AutoAnimateOptions> | AutoAnimationPlugin = {}
 ) {
   if (mutations && resize) {
+    if (getComputedStyle(el).position === "static") {
+      Object.assign(el.style, { position: "relative" })
+    }
     forEach(el, updatePos, poll, (element) => resize?.observe(element))
     options.set(el, { duration: 250, easing: "ease-in-out", ...config })
     mutations.observe(el, { childList: true })
@@ -568,7 +576,7 @@ export default function autoAnimate(
  */
 export const vAutoAnimate = {
   mounted: (
-    el: Element,
+    el: HTMLElement,
     binding: { value: Partial<AutoAnimateOptions> | AutoAnimationPlugin }
   ) => {
     autoAnimate(el, binding.value || {})
