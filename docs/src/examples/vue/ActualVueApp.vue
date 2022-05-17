@@ -37,7 +37,7 @@ function removeItem(toRemove) {
     <h5>Click emojis to remove them.</h5>
     <ul v-auto-animate>
       <li v-for="item in items" :key="item" @click="removeItem(item)">
-        {{ item }}
+        <span>{{ item }}</span>
       </li>
     </ul>
   </div>
@@ -61,6 +61,15 @@ li {
   align-items: center;
   justify-content: center;
   margin-right: 0.5em;
+  cursor: pointer;
+}
+li span {
+  margin-left: -0.25em;
+  margin-top: -0.15em;
+}
+li:hover {
+  background: var(--purple-l);
+  border-color: var(--purple-m);
 }
 li::before {
   display: none;

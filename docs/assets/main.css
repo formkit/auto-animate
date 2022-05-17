@@ -8,6 +8,15 @@ body {
   color: var(--text);
 }
 
+::selection {
+  background: var(--purple-m); /* WebKit/Blink Browsers */
+  color: #fff;
+}
+::-moz-selection {
+  background: var(--purple-m); /* Gecko Browsers */
+  color: #fff;
+}
+
 html {
   min-height: 100%;
   background-image:
