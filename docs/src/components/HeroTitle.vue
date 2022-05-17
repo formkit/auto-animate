@@ -25,7 +25,7 @@ import introExample from "../examples/intro"
         <a class="button" href="#installation">Get started<IconArrow /></a>
         <a
           class="button button--alt"
-          href="https://github.com/formkit/auto-animation"
+          href="https://github.com/formkit/auto-animate"
           >Github<GitHubLogo
         /></a>
       </div>

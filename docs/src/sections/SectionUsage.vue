@@ -83,7 +83,7 @@ import ActualVueApp from "../examples/vue/ActualVueApp.vue"
     <h2 id="usage-react">React hook</h2>
     <p>
       React users can use the hook <code>useAutoAnimate</code> by importing it from
-      <code>@formkit/auto-animation/react</code>. This hook returns a ref to
+      <code>@formkit/auto-animate/react</code>. This hook returns a ref to
       apply to the parent element.
     </p>
     <CodeExample :examples="reactHook" title="App" />
