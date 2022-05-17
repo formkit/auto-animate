@@ -68,6 +68,17 @@ const submit = () => {
   max-width: 24.375em;
   margin: 2em auto;
 }
+[data-dark-mode="true"] .example {
+  background: var(--purple-d);
+}
+
+[data-dark-mode="true"] .example:deep(.formkit-help) {
+  color: var(--gray-l)
+}
+[data-dark-mode="true"] .example:deep(.formkit-message[data-message-type="validation"]),
+[data-dark-mode="true"] .example:deep(.formkit-message[data-message-type="ui"]) {
+  color: var(--ui-red)
+}
 
 .example:deep(button) {
   margin-bottom: 0;

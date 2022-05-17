@@ -60,6 +60,9 @@ li {
   border-radius: 0.5em;
   overflow: hidden;
 }
+[data-dark-mode="true"] li {
+  background-color: var(--purple-d);
+}
 
 .question {
   padding: 1em;
@@ -72,6 +75,9 @@ li {
   font-size: 1.5em;
   margin-right: 0.5em;
   color: var(--primary);
+}
+[data-dark-mode="true"] .question::before {
+  color: var(--purple-m);
 }
 .answer {
   margin: 0 1rem;

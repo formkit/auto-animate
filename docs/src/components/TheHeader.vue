@@ -41,6 +41,7 @@ header {
   padding-top: 1em;
   padding-bottom: 2em;
   justify-content: space-between;
+  user-select: none;
 }
 .logo {
   width: 10em;
