@@ -1,4 +1,4 @@
-# AutoAnimate
+![autoanimate](https://user-images.githubusercontent.com/2946356/168898931-6300f6f9-f394-495b-ac02-64d268a4bb31.jpg) 
 
 ## The easiest way to add motion to your apps.
 
