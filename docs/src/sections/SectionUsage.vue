@@ -58,7 +58,7 @@ import ActualVueApp from "../examples/vue/ActualVueApp.vue"
       You can pass options by setting the directive’s value
       <code>&lt;ul v-auto-animate="{ duration: 100 }"&gt;</code>
     </AsideTip>
-    <h3>React hook</h3>
+    <h3 id="usage-react">React hook</h3>
     <p>
       React can use the hook <code>useAutoAnimate</code> by importing it from
       <code>@formkit/auto-animation/react</code>. This hook returns a ref to
@@ -66,7 +66,7 @@ import ActualVueApp from "../examples/vue/ActualVueApp.vue"
     </p>
     <CodeExample :examples="reactHook" title="App" />
     <ActualReactApp />
-    <h3>Vue Plugin</h3>
+    <h3 id="usage-vue">Vue Plugin</h3>
     <p>
       Vue users can opt into globally registering the
       <code>v-auto-animate</code> directive. This makes adding adding
@@ -77,7 +77,7 @@ import ActualVueApp from "../examples/vue/ActualVueApp.vue"
     <CodeExample :examples="vueDirectiveMain" title="main" />
     <p>
       Once you’ve registered the plugin, it can be applied anywhere in the
-      application by adding `v-auto-animate` to the parent element.
+      application by adding <code>v-auto-animate</code> to the parent element.
     </p>
     <CodeExample :examples="vueDirectiveApp" title="App" />
     <ActualVueApp />

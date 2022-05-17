@@ -1,4 +1,5 @@
 import { ViteSSG } from "vite-ssg"
+import { plugin, defaultConfig } from "@formkit/vue"
 import App from "./App.vue"
 import PageHome from "./pages/PageHome.vue"
 import PageList from "./pages/PageList.vue"
@@ -10,4 +11,6 @@ const routes: RouteRecordRaw[] = [
   { path: "/lists", component: PageList },
 ]
 
-export const createApp = ViteSSG(App, { routes }, (app) => {})
+export const createApp = ViteSSG(App, { routes }, ({ app }) => {
+  app.use(plugin, defaultConfig)
+})

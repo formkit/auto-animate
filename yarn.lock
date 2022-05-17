@@ -7,6 +7,81 @@
   resolved "https://registry.yarnpkg.com/@babel/parser/-/parser-7.17.10.tgz#873b16db82a8909e0fbd7f115772f4b739f6ce78"
   integrity sha512-n2Q6i+fnJqzOaq2VkdXxy2TCPCWQZHiCo0XqmrCvDWcZQKRyZzYi4Z0yxlBuN0w+r2ZHmre+Q087DSrw3pbJDQ==
 
+"@formkit/core@1.0.0-beta.8":
+  version "1.0.0-beta.8"
+  resolved "https://registry.yarnpkg.com/@formkit/core/-/core-1.0.0-beta.8.tgz#51d789fe8630adc16149e81336b976ef652d2931"
+  integrity sha512-oHOfdKM0DX4gwxdzwdYHjmb02v62A/zR+eVVhGLes14ObhGvW9HD1mQqUgMZRKB5mEvgu6262v0nTcXZTFlEPQ==
+  dependencies:
+    "@formkit/utils" "1.0.0-beta.8"
+
+"@formkit/dev@1.0.0-beta.8":
+  version "1.0.0-beta.8"
+  resolved "https://registry.yarnpkg.com/@formkit/dev/-/dev-1.0.0-beta.8.tgz#c9b64eaf29088a94c8545096078c0b73e7953a60"
+  integrity sha512-ZlEpPBmxwvdvXlUoY7Cmon1lrflBB3/wg80/6LT5vlkWBswk9BSbRlk+hwYko8xYH6TDA4s6r1jcYOObNYTkGw==
+  dependencies:
+    "@formkit/core" "1.0.0-beta.8"
+    "@formkit/utils" "1.0.0-beta.8"
+
+"@formkit/i18n@1.0.0-beta.8":
+  version "1.0.0-beta.8"
+  resolved "https://registry.yarnpkg.com/@formkit/i18n/-/i18n-1.0.0-beta.8.tgz#a45803cf47d888c47fe029e75d50699fb54b6f3b"
+  integrity sha512-hMnXdv2zobkEMUxJba40RY3pm4pAevQGgZe3PUniujdHxlK0h+RgqIIbhWroAf4qP1RPOOy9RZdOgVJw3qNYEA==
+  dependencies:
+    "@formkit/core" "1.0.0-beta.8"
+    "@formkit/utils" "1.0.0-beta.8"
+    "@formkit/validation" "1.0.0-beta.8"
+
+"@formkit/inputs@1.0.0-beta.8":
+  version "1.0.0-beta.8"
+  resolved "https://registry.yarnpkg.com/@formkit/inputs/-/inputs-1.0.0-beta.8.tgz#ba4e36b31bd5216f9f328634d7dde52857866676"
+  integrity sha512-cmIVxU2WQMqneKN6ZIxN6mfAGEi2xDt/H9tNZCumz4/Zvgau75zu4+E9lT/ptexCeWKe1hUjSrOutTDKWJ/JGw==
+  dependencies:
+    "@formkit/core" "1.0.0-beta.8"
+
+"@formkit/observer@1.0.0-beta.8":
+  version "1.0.0-beta.8"
+  resolved "https://registry.yarnpkg.com/@formkit/observer/-/observer-1.0.0-beta.8.tgz#38b13dec1fa64ad0cebcd60adcd55b69b287b64e"
+  integrity sha512-e7BFqWG+XOAnTHECe0QRvOmQGNGsTz2vw8yQayDk4DmxrvZ/DPO8js6mhQ18t2CdnsZaFg2ETnW7n4hFAfAZXQ==
+  dependencies:
+    "@formkit/core" "1.0.0-beta.8"
+    "@formkit/utils" "1.0.0-beta.8"
+
+"@formkit/rules@1.0.0-beta.8":
+  version "1.0.0-beta.8"
+  resolved "https://registry.yarnpkg.com/@formkit/rules/-/rules-1.0.0-beta.8.tgz#1832b6bc366981dbce26f68aadab36b949d39dcd"
+  integrity sha512-0or3seb3xuw7Gz3fAedXmo5iJz/0elYLQ0XOoxhNAlmg7o691VwJCVf49l5pdHjTF8Fbu5SnNAENOar4oroyCQ==
+  dependencies:
+    "@formkit/core" "1.0.0-beta.8"
+    "@formkit/utils" "1.0.0-beta.8"
+    "@formkit/validation" "1.0.0-beta.8"
+
+"@formkit/utils@1.0.0-beta.8":
+  version "1.0.0-beta.8"
+  resolved "https://registry.yarnpkg.com/@formkit/utils/-/utils-1.0.0-beta.8.tgz#07e58c8188045b90b668e3a4de35ac3fed29db79"
+  integrity sha512-ahAHFJBGIJvNWGuIQuAwUceblzKWO+c5MrNMQa3Xcl/CJtKQSgscSVcj2aZvV1KRUKxKZh3Ou73zrWK28SNFGw==
+
+"@formkit/validation@1.0.0-beta.8":
+  version "1.0.0-beta.8"
+  resolved "https://registry.yarnpkg.com/@formkit/validation/-/validation-1.0.0-beta.8.tgz#000212c4e90869d6867b33b1cf59fd4ce213946a"
+  integrity sha512-gwfclfozBt6QdpYF3KdT823VKK261of8HwEVLHnYFUyEOFRjROjqWrnRdDJsC0GkQb6rWNJZZJciv9/RRo7ifQ==
+  dependencies:
+    "@formkit/core" "1.0.0-beta.8"
+    "@formkit/observer" "1.0.0-beta.8"
+
+"@formkit/vue@^1.0.0-beta.8":
+  version "1.0.0-beta.8"
+  resolved "https://registry.yarnpkg.com/@formkit/vue/-/vue-1.0.0-beta.8.tgz#0c522cd94123155365b29f67165f2c43ad7e7f37"
+  integrity sha512-KuWGKcSwrdkvaeuBB40kAyBzEoIGDTehcrmF0MfhMkalphZHvotR/jBzIymx9zxMWxU6traEtQ2V/d+1Kov0IQ==
+  dependencies:
+    "@formkit/core" "1.0.0-beta.8"
+    "@formkit/dev" "1.0.0-beta.8"
+    "@formkit/i18n" "1.0.0-beta.8"
+    "@formkit/inputs" "1.0.0-beta.8"
+    "@formkit/observer" "1.0.0-beta.8"
+    "@formkit/rules" "1.0.0-beta.8"
+    "@formkit/utils" "1.0.0-beta.8"
+    "@formkit/validation" "1.0.0-beta.8"
+
 "@rollup/plugin-typescript@^8.3.2":
   version "8.3.2"
   resolved "https://registry.yarnpkg.com/@rollup/plugin-typescript/-/plugin-typescript-8.3.2.tgz#e1b719e2ed3e752bbc092001656c48378f2d15f0"
