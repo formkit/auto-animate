@@ -32,6 +32,14 @@ h1, h2, h3, h4{
   line-height: 1.2;
 }
 
+h2 {
+  margin-top: 1.5em;
+}
+
+h3 {
+  margin-top: 2.5em;
+}
+
 h3 a:not(.button) {
   color: var(--text);
   display: inline-flex;
@@ -79,9 +87,13 @@ section {
 section > ul {
   line-height: 1.5;
   list-style-type: none;
+  margin: 1.5em 0;
 }
 section > ul li {
   margin-bottom: .5em;
+  font-size: 1rem;
+  font-weight: 300;
+  color: currentColor;
 }
 section > ul li::before {
   content: '';
@@ -116,6 +128,9 @@ aside svg {
   display: inline-block;
   vertical-align: middle;
   fill: var(--purple-d);
+}
+aside code {
+  display: inline-block;
 }
 
 .button {
@@ -174,8 +189,10 @@ a:not(.button):hover {
 
 .important {
   display: block;
-  margin: 1em;
-  font-size: 1.1em;
+  margin: 1.5em 2em;
+  line-height: 1.4;
+  font-size: 1.25em;
+  opacity: 0.75;
 }
 
 .example {

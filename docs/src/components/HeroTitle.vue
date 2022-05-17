@@ -14,9 +14,9 @@ import introExample from "../examples/intro"
     <div class="intro">
       <h1 class="title">The easiest way to add motion to your apps.</h1>
       <p>
-        AutoAnimate is a zero-config, drop-in, animation utility that automatically
+        AutoAnimate is a zero-config, drop-in, animation utility that
         adds smooth transitions to your web app. You can use it with Vue, React,
-        or any other JavaScript app type.
+        or any other JavaScript application.
       </p>
       <div>
         <a class="button" href="#installation">Get started<IconArrow /></a>
