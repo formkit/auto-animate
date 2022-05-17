@@ -10,7 +10,12 @@ body {
 
 html {
   min-height: 100%;
-  background: url('./img/pattern.svg') repeat 4px 4px, linear-gradient(to bottom, rgb(103 0 255 / 4%), transparent) no-repeat, linear-gradient(to bottom left, rgb(255 0 201 / 2%), transparent) no-repeat;
+  background-image:
+    url('./img/pattern.svg'),
+    linear-gradient(to bottom, rgb(103 0 255 / 4%), transparent),
+    linear-gradient(to bottom left, rgb(255 0 201 / 2%), transparent);
+  background-size: 4px 4px, 100vw 200vh, 100vw 100vh;
+  background-repeat: repeat, no-repeat, no-repeat;
   scroll-behavior: smooth;
 }
 
