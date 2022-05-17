@@ -24,7 +24,8 @@ import GithubButton from "vue-github-button"
   <section id="support">
     <h2>Support Us</h2>
     <p>
-      Is AutoAnimate saving you time? Please consider supporting us with a recurring or one-time donation! 🙏
+      Is AutoAnimate saving you time?<br>
+      Please consider supporting us with a recurring or one-time donation! 🙏
     </p>
     <GithubButton
       href="https://github.com/sponsors/formkit"
