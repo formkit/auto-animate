@@ -31,7 +31,7 @@ import introExample from "../examples/intro"
       </div>
       <a class="byline" href="https://www.formkit.com">
         <FormKitLogo class="formkit" width="16" height="16" /> made with
-        <span>❤️</span> by the FormKit team.
+        ♥ by the FormKit team.
       </a>
     </div>
     <CodeExample title="App" :examples="introExample" class="example" />
@@ -145,16 +145,16 @@ section {
 .byline span,
 .byline svg {
   position: relative;
-  top: -0.33em;
 }
 .byline span {
-  margin-right: 0.66em;
+  font-size: 1em;
+  max-height: 16px;
+  margin-right: 0.4em;
   margin-left: 0.25em;
 }
 
 .byline svg {
-  position: relative;
-  top: 0px;
+  top: .15em;
 }
 
 .byline:hover {
