@@ -87,7 +87,6 @@ function createCard(card) {
   box-shadow: 0 0 1em rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
   width: 100%;
-  flex: 100% 0 0;
   margin: 0.5em;
 }
 [data-dark-mode="true"] .card {
@@ -101,8 +100,8 @@ function createCard(card) {
 
 @media (min-width: 38em) {
   .card {
-    width: calc(50% - 2em);
-    flex: calc(50% - 2em) 0 0;
+    width: calc(50% - 1em);
+    flex: calc(50% - 1em) 0 0;
   }
 }
 
