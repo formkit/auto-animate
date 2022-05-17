@@ -122,19 +122,19 @@ function observePosition(el: Element) {
  */
 function updatePos(el: Element) {
   clearTimeout(debounces.get(el))
-  const currentAnimation = animations.get(el)
   const optionsOrPlugin = getOptions(el)
   const delay =
     typeof optionsOrPlugin === "function" ? 500 : optionsOrPlugin.duration
-  if (!currentAnimation || currentAnimation.finished) {
-    debounces.set(
-      el,
-      setTimeout(() => {
+  debounces.set(
+    el,
+    setTimeout(() => {
+      const currentAnimation = animations.get(el)
+      if (!currentAnimation || currentAnimation.finished) {
         coords.set(el, getCoords(el))
         observePosition(el)
-      }, delay)
-    )
-  }
+      }
+    }, delay)
+  )
 }
 
 /**
@@ -161,12 +161,12 @@ function updateAllPos() {
  * @param el - Element
  */
 function poll(el: Element) {
-  // setTimeout(() => {
-  //   intervals.set(
-  //     el,
-  //     setInterval(() => lowPriority(updatePos.bind(null, el)), 2000)
-  //   )
-  // }, Math.round(2000 * Math.random()))
+  setTimeout(() => {
+    intervals.set(
+      el,
+      setInterval(() => lowPriority(updatePos.bind(null, el)), 2000)
+    )
+  }, Math.round(2000 * Math.random()))
 }
 
 /**

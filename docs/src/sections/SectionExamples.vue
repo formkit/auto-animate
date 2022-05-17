@@ -1,6 +1,7 @@
 <script setup>
 import ActualCards from "../examples/cards/ActualCards.vue"
 import ActualList from "../examples/list/ActualList.vue"
+import ActualBoxes from "../examples/boxes/ActualBoxes.vue"
 import IconOutbound from "../components/IconOutbound.vue"
 </script>
 
@@ -34,5 +35,20 @@ import IconOutbound from "../components/IconOutbound.vue"
       and unshifting.
     </p>
     <ActualList />
+
+    <h3 id="example-list">
+      <a
+        href="https://github.com/formkit/auto-animate/blob/master/docs/src/examples/list/ActualBoxes.vue"
+      >
+        Boxes (x/y axis) example<IconOutbound
+      /></a>
+    </h3>
+    <p>
+      An important feature of AutoAnimate is that it operates on both the x and
+      y axis. Items that are moved in the dom from one location to another, or
+      are wrapping at the end of a line will automatically be translated to
+      their respective position.
+    </p>
+    <ActualBoxes />
   </section>
 </template>
