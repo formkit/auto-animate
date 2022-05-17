@@ -14,6 +14,10 @@ function applySizing() {
   }
 }
 
+const handleClick = () => {
+  show.value = window.innerWidth >= 672
+}
+
 let resizeTimer
 if (typeof window !== "undefined") {
   show.value = window.innerWidth >= 672
@@ -32,7 +36,7 @@ if (typeof window !== "undefined") {
     </div>
     <ul
       v-if="show"
-      @click="show = false"
+      @click="handleClick"
     >
       <li><a href="#installation">Installation</a></li>
       <li><a href="#usage">Usage</a></li>
