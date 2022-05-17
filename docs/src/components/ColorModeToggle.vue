@@ -9,7 +9,9 @@ const toggleDarkMode = () =>{
   localStorage.setItem('darkMode', isDark.value);
 }
 const setColorAttribute = () => {
-  document.documentElement.setAttribute('data-dark-mode', isDark.value)
+  if (typeof document !== undefined) {
+    document.documentElement.setAttribute('data-dark-mode', isDark.value)
+  }
 }
 
 onMounted(() => {
