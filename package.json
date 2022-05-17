@@ -2,7 +2,13 @@
   "name": "@formkit/auto-animate",
   "version": "1.0.0-alpha.1",
   "type": "module",
-  "description": "Automatically animate your .",
+  "description": "The easiest way to add motion to your apps.",
+  "keywords": [
+    "animation",
+    "transition",
+    "react",
+    "vue"
+  ],
   "main": "dist/index.mjs",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
