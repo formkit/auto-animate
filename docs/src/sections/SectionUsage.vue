@@ -25,12 +25,10 @@ import ActualVueApp from "../examples/vue/ActualVueApp.vue"
     </ul>
     <p>
       Let’s see what this looks like in practice. For now we'll use the
-      <code>autoAnimation</code> function itself.
+      <code>autoAnimation</code> function itself. Vue and React users — you’ll
+      get some additional syntactic sugar later on but for now lets learn the
+      fundamentals.
     </p>
-    <AsideTip>
-      Vue and React users — you’ll get some additional syntactic sugar later on
-      but for now lets learn the fundamentals.
-    </AsideTip>
     <CodeExample :examples="dropdown" title="Dropdown" />
     <ActualDropdown />
     <p>

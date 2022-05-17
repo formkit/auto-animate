@@ -1,6 +1,7 @@
 <script setup>
 import installation from "../examples/installation"
 import CodeExample from "../components/CodeExample.vue"
+import AsideTip from "../components/AsideTip.vue"
 </script>
 
 <template>
@@ -12,11 +13,11 @@ import CodeExample from "../components/CodeExample.vue"
     </p>
     <CodeExample title="~/my-app" :examples="installation"></CodeExample>
     <p>Aaaaand, you’re done! That was fast.</p>
-    <h3>Vue directive</h3>
-    <p>
-      If you are using Vue — you can also install a the Vue directive on your
-      app that makes adding animations even easier.
-    </p>
+    <AsideTip>
+      If you are using Vue you may also install the a plugin that adds the
+      <code>v-auto-animate</code> directive, this is
+      <a href="#usage-vue">covered a bit later</a>.
+    </AsideTip>
   </section>
 </template>
 
