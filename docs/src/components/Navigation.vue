@@ -4,7 +4,7 @@ import IconDown from "./IconDown.vue"
 import { vAutoAnimate } from "../../../src/index"
 
 const show = ref(false)
-const activeTitle = ref("Installation")
+const activeTitle = ref("Docs Navigation")
 
 function applySizing() {
   if (window.innerWidth >= 672) {
@@ -30,7 +30,10 @@ if (typeof window !== "undefined") {
       <span class="active-title">{{ activeTitle }}</span>
       <IconDown class="down" />
     </div>
-    <ul v-if="show">
+    <ul
+      v-if="show"
+      @click="show = false"
+    >
       <li><a href="#installation">Installation</a></li>
       <li><a href="#usage">Usage</a></li>
       <li><a href="#usage-react">React hook</a></li>
@@ -102,7 +105,7 @@ a,
   color: var(--primary);
 }
 [data-dark-mode="true"] li a,
-[data-dark-mode="true"] li .active-title  {
+[data-dark-mode="true"] .active-title  {
   color: var(--text);
 }
 
@@ -128,5 +131,8 @@ li:last-child {
   top: 50%;
   transform: translateY(-50%);
   right: 1em;
+}
+[data-dark-mode="true"] .down {
+  fill: var(--text);
 }
 </style>

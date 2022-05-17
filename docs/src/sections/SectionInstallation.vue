@@ -7,7 +7,7 @@ import GithubButton from "vue-github-button"
 
 <template>
   <section id="installation">
-    <h2>Installation</h2>
+    <h2  class="no-margin">Installation</h2>
     <p>
       Install using your package manager of choice to add
       <code>@formkit/auto-animate</code> to your project.
