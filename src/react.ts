@@ -11,7 +11,8 @@ export function useAutoAnimate(
 ) {
   const element = useRef<Element>(null)
   useEffect(() => {
-    if (element.current) autoAnimate(element.current, options)
+    if (element.current instanceof HTMLElement)
+      autoAnimate(element.current, options)
   }, [element])
   return element
 }

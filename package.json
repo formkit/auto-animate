@@ -5,6 +5,7 @@
   "description": "Automatically animate your .",
   "main": "dist/index.mjs",
   "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
   "repository": "https://github.com/formkit/auto-animate.git",
   "author": "Justin Schroeder <justin@formkit.com>",
   "license": "MIT",
@@ -15,10 +16,12 @@
   },
   "exports": {
     "./vue": {
-      "import": "./dist/vue.mjs"
+      "import": "./dist/vue.mjs",
+      "types": "./dist/vue.d.ts"
     },
     "./react": {
-      "import": "./dist/react.mjs"
+      "import": "./dist/react.mjs",
+      "types": "./dist/react.d.ts"
     },
     ".": {
       "import": "./dist/index.mjs"
