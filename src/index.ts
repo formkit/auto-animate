@@ -1,3 +1,4 @@
+import { drawMargins } from "./debug-utils"
 /**
  * Absolute coordinate positions adjusted for scroll.
  */
@@ -112,6 +113,7 @@ function observePosition(el: Element) {
   )
   observer.observe(el)
   intersections.set(el, observer)
+  // if (el.tagName === "CODE") drawMargins(observer, oldObserver)
 }
 
 /**
@@ -139,8 +141,14 @@ function updatePos(el: Element) {
  * Updates all positions that are currently being tracked.
  */
 function updateAllPos() {
-  parents.forEach((parent) =>
-    forEach(parent, (el) => lowPriority(() => updatePos(el)))
+  clearTimeout(debounces.get(root))
+  debounces.set(
+    root,
+    setTimeout(() => {
+      parents.forEach((parent) =>
+        forEach(parent, (el) => lowPriority(() => updatePos(el)))
+      )
+    }, 250)
   )
 }
 
@@ -312,10 +320,14 @@ export function getTransitionSizes(
   if (sizing === "content-box") {
     const paddingY =
       raw(styles.getPropertyValue("padding-top")) +
-      raw(styles.getPropertyValue("padding-bottom"))
+      raw(styles.getPropertyValue("padding-bottom")) +
+      raw(styles.getPropertyValue("border-top-width")) +
+      raw(styles.getPropertyValue("border-bottom-width"))
     const paddingX =
       raw(styles.getPropertyValue("padding-left")) +
-      raw(styles.getPropertyValue("padding-right"))
+      raw(styles.getPropertyValue("padding-right")) +
+      raw(styles.getPropertyValue("border-right-width")) +
+      raw(styles.getPropertyValue("border-left-width"))
     widthFrom -= paddingX
     widthTo -= paddingX
     heightFrom -= paddingY
@@ -323,6 +335,35 @@ export function getTransitionSizes(
   }
 
   return [widthFrom, widthTo, heightFrom, heightTo]
+}
+
+/**
+ * Retrieves animation options for the current element.
+ * @param el - Element to retrieve options for.
+ * @returns
+ */
+function getOptions(el: Element): AutoAnimateOptions | AutoAnimationPlugin {
+  return TGT in el && options.has((el as Element & { __aa_tgt: Element })[TGT])
+    ? options.get((el as Element & { __aa_tgt: Element })[TGT])!
+    : { duration: 250, easing: "ease-in-out" }
+}
+
+/**
+ * Iterate over the children of a given parent.
+ * @param parent - A parent element
+ * @param callback - A callback
+ */
+function forEach(
+  parent: Element,
+  ...callbacks: Array<(el: Element, isRoot?: boolean) => void>
+) {
+  callbacks.forEach((callback) => callback(parent, options.has(parent)))
+  for (let i = 0; i < parent.children.length; i++) {
+    const child = parent.children.item(i)
+    if (child) {
+      callbacks.forEach((callback) => callback(child, options.has(child)))
+    }
+  }
 }
 
 /**
@@ -414,26 +455,35 @@ function remove(el: Element) {
     prev.parentNode.appendChild(el)
   }
   const optionsOrPlugin = getOptions(el)
+  const oldCoords = coords.get(el)!
   let animation: Animation
   if (typeof optionsOrPlugin !== "function") {
-    const [widthFrom, _widthTo, heightFrom, _heightTo] = getTransitionSizes(
-      el,
-      coords.get(el)!,
-      getCoords(el)
-    )
-    el.setAttribute(
-      "style",
-      `position: absolute; width: ${widthFrom}px; height: ${heightFrom}px; pointer-events: none; transform-origin: top center; `
-    )
+    const [top, left, width, height] = deletePosition(el)
+    Object.assign((el as HTMLElement).style, {
+      position: "absolute",
+      top: `${top}px`,
+      left: `${left}px`,
+      width: `${width}px`,
+      height: `${height}px`,
+      pointerEvents: "none",
+      transformOrigin: "center",
+      zIndex: 100,
+    })
     animation = el.animate(
       [
-        { transform: "scale(1)", opacity: 1 },
-        { transform: "scale(.98)", opacity: 0 },
+        {
+          transform: "scale(1)",
+          opacity: 1,
+        },
+        {
+          transform: "scale(.98)",
+          opacity: 0,
+        },
       ],
       { duration: optionsOrPlugin.duration, easing: "ease-out" }
     )
   } else {
-    animation = new Animation(optionsOrPlugin(el, "remove"))
+    animation = new Animation(optionsOrPlugin(el, "remove", oldCoords))
     animation.play()
   }
   animations.set(el, animation)
@@ -446,33 +496,26 @@ function remove(el: Element) {
   })
 }
 
-/**
- * Retrieves animation options for the current element.
- * @param el - Element to retrieve options for.
- * @returns
- */
-function getOptions(el: Element): AutoAnimateOptions | AutoAnimationPlugin {
-  return TGT in el && options.has((el as Element & { __aa_tgt: Element })[TGT])
-    ? options.get((el as Element & { __aa_tgt: Element })[TGT])!
-    : { duration: 250, easing: "ease-in-out" }
-}
+function deletePosition(
+  el: Element
+): [top: number, left: number, width: number, height: number] {
+  const oldCoords = coords.get(el)!
+  const [width, , height] = getTransitionSizes(el, oldCoords, getCoords(el))
 
-/**
- * Iterate over the children of a given parent.
- * @param parent - A parent element
- * @param callback - A callback
- */
-function forEach(
-  parent: Element,
-  ...callbacks: Array<(el: Element, isRoot?: boolean) => void>
-) {
-  callbacks.forEach((callback) => callback(parent, options.has(parent)))
-  for (let i = 0; i < parent.children.length; i++) {
-    const child = parent.children.item(i)
-    if (child) {
-      callbacks.forEach((callback) => callback(child, options.has(child)))
-    }
+  let offsetParent: Element | null = el.parentElement
+  while (
+    offsetParent &&
+    (getComputedStyle(offsetParent).position === "static" ||
+      offsetParent instanceof HTMLBodyElement)
+  ) {
+    offsetParent = offsetParent.parentElement
   }
+  if (!offsetParent) offsetParent = document.body
+  console.log(offsetParent)
+  const posCoords = getCoords(offsetParent)
+  const top = oldCoords.top - posCoords.top
+  const left = oldCoords.left - posCoords.left
+  return [top, left, width, height]
 }
 
 export interface AutoAnimateOptions {
@@ -494,7 +537,9 @@ export interface AutoAnimationPlugin {
   <T extends "add" | "remove" | "remain">(
     el: Element,
     action: T,
-    newCoordinates?: T extends "add" | "remain" ? Coordinates : undefined,
+    newCoordinates?: T extends "add" | "remain" | "remove"
+      ? Coordinates
+      : undefined,
     oldCoordinates?: T extends "remain" ? Coordinates : undefined
   ): KeyframeEffect
 }

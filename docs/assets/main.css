@@ -11,6 +11,7 @@ body {
 html {
   min-height: 100%;
   background: url('./img/pattern.svg') repeat 4px 4px, linear-gradient(to bottom, rgb(103 0 255 / 4%), transparent) no-repeat, linear-gradient(to bottom left, rgb(255 0 201 / 2%), transparent) no-repeat;
+  scroll-behavior: smooth;
 }
 
 .container {

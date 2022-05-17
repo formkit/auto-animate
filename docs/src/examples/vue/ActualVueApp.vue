@@ -1,0 +1,64 @@
+<script setup>
+import { vAutoAnimate } from "../../../../src/index"
+import { ref } from "vue"
+const items = ref([
+  "😏",
+  "😐",
+  "😑",
+  "😒",
+  "😕",
+  "😖",
+  "😗",
+  "😘",
+  "😙",
+  "😚",
+  "😛",
+  "😜",
+  "😟",
+  "😠",
+  "😦",
+  "😨",
+  "😬",
+  "😭",
+  "😮",
+  "😰",
+  "😴",
+  "😵",
+  "😶",
+])
+
+function removeItem(toRemove) {
+  items.value = items.value.filter((item) => item !== toRemove)
+}
+</script>
+
+<template>
+  <ul v-auto-animate>
+    <li v-for="item in items" :key="item" @click="removeItem(item)">
+      {{ item }}
+    </li>
+  </ul>
+</template>
+
+<style scoped>
+ul {
+  list-style-type: none;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0;
+  user-select: none;
+  position: relative;
+}
+li {
+  border: 1px solid black;
+  width: 2em;
+  height: 2em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 0.5em;
+}
+li::before {
+  display: none;
+}
+</style>

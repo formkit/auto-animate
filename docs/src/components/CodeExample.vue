@@ -48,7 +48,7 @@ const props = defineProps({
   },
   examples: {
     type: Object as PropType<{ [T in LanguageOption]: Language }>,
-    required: true,
+    required: false,
   },
 })
 </script>
