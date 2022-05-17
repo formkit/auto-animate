@@ -2,6 +2,7 @@
 import ActualCards from "../examples/cards/ActualCards.vue"
 import ActualList from "../examples/list/ActualList.vue"
 import ActualBoxes from "../examples/boxes/ActualBoxes.vue"
+import ActualAccordion from "../examples/accordion/ActualAccordion.vue"
 import IconOutbound from "../components/IconOutbound.vue"
 </script>
 
@@ -38,7 +39,7 @@ import IconOutbound from "../components/IconOutbound.vue"
 
     <h3 id="example-list">
       <a
-        href="https://github.com/formkit/auto-animate/blob/master/docs/src/examples/list/ActualBoxes.vue"
+        href="https://github.com/formkit/auto-animate/blob/master/docs/src/examples/boxes/ActualBoxes.vue"
       >
         Boxes (x/y axis) example<IconOutbound
       /></a>
@@ -50,5 +51,21 @@ import IconOutbound from "../components/IconOutbound.vue"
       their respective position.
     </p>
     <ActualBoxes />
+
+    <h3 id="example-list">
+      <a
+        href="https://github.com/formkit/auto-animate/blob/master/docs/src/examples/accordion/ActualAcordion.vue"
+      >
+        FAQ accordion example<IconOutbound
+      /></a>
+    </h3>
+    <p>
+      We’ve all had to create accordions before. Pretty easy on the surface, but
+      adding motion to the open/close sequence can be frustrating to say the
+      least, and if you hack it together using
+      <code>max-height</code> transitions you are sure to loose your easing. No
+      more!
+    </p>
+    <ActualAccordion />
   </section>
 </template>
