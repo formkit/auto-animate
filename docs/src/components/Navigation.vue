@@ -52,17 +52,17 @@ if (typeof window !== "undefined") {
 <style scoped>
 nav {
   background-color: white;
-  box-shadow: 0 0 1em rgba(0, 0, 0, 0.1);
-  border-radius: 0.75em;
-  padding: 0;
+  box-shadow: 0 0 1em rgb(0 0 0 / 10%);
+  border-radius: 0 0 0.25em 0.25em;
+  padding: 0 2em;
   position: sticky;
-  top: 1em;
+  top: 0;
   left: 100%;
-  box-sizing: border-box;
   opacity: 0.98;
   float: left;
-  width: 100%;
-  margin-left: -100%;
+  width: calc(100% + 2em);
+  margin-left: calc(-100% + 2em);
+  margin-right: -3em;
   z-index: 100;
   user-select: none;
 }
@@ -75,11 +75,22 @@ nav {
     top: 2em;
     width: 10em;
     margin-left: -12em;
+    margin-right: 0;
+    box-sizing: border-box;
     margin-top: 0;
     left: 0;
+    padding: 0 1em;
+    border-radius: 0.75em;
   }
   .active {
     display: none;
+  }
+  nav ul {
+    border-top: none;
+  }
+  nav a {
+    padding-left: 0;
+    padding-right: 0;
   }
 }
 
@@ -87,12 +98,13 @@ nav {
   nav {
     width: 14em;
     margin-left: -18em;
+    padding: 0.5em 2em;
   }
 }
 
 ul {
   list-style-type: none;
-  padding: 0.5em 0 0 0;
+  padding: 0.5em 0;
   margin: 0;
   position: relative;
   z-index: 2;

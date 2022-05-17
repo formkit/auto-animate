@@ -57,7 +57,7 @@ h1, h2, h3, h4{
 }
 
 h2 {
-  padding-top: 2.5em;
+  padding-top: 1em;
 }
 @media (min-width: 42em) {
   h2 {
