@@ -3,6 +3,7 @@
   "version": "1.0.0-pre-alpha.2",
   "type": "module",
   "description": "The easiest way to add motion to your apps.",
+  "private": true,
   "keywords": [
     "animation",
     "transition",
@@ -17,15 +18,18 @@
   "license": "MIT",
   "scripts": {
     "dev": "cd docs && vite --config=./vite.config.ts",
-    "build": "./.build.sh",
-    "build-docs": "cd docs && vite-ssg build --config=./docs/vite.config.ts"
+    "build": "node ./.build.mjs",
+    "build-docs": "cd docs && vite-ssg build --config=./docs/vite.config.ts",
+    "publish": "node ./.build.mjs --publish"
   },
   "exports": {
     "./vue": {
-      "import": "./vue/index.mjs"
+      "import": "./vue/index.mjs",
+      "types": "./vue/index.d.ts"
     },
     "./react": {
-      "import": "./react/index.mjs"
+      "import": "./react/index.mjs",
+      "types": "./react/index.d.ts"
     },
     ".": {
       "import": "./index.mjs"
@@ -39,6 +43,9 @@
     "@types/react": "^18.0.9",
     "@vitejs/plugin-vue": "^2.3.3",
     "@vueuse/head": "^0.7.6",
+    "chalk": "^5.0.1",
+    "execa": "^6.1.0",
+    "prompts": "^2.4.2",
     "react": "^18.1.0",
     "rollup": "^2.72.1",
     "tslib": "^2.4.0",
