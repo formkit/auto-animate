@@ -457,18 +457,18 @@ function remove(el: Element) {
   const optionsOrPlugin = getOptions(el)
   const oldCoords = coords.get(el)!
   let animation: Animation
+  Object.assign((el as HTMLElement).style, {
+    position: "absolute",
+    top: `${top}px`,
+    left: `${left}px`,
+    width: `${width}px`,
+    height: `${height}px`,
+    margin: 0,
+    pointerEvents: "none",
+    transformOrigin: "center",
+    zIndex: 100,
+  })
   if (typeof optionsOrPlugin !== "function") {
-    Object.assign((el as HTMLElement).style, {
-      position: "absolute",
-      top: `${top}px`,
-      left: `${left}px`,
-      width: `${width}px`,
-      height: `${height}px`,
-      margin: 0,
-      pointerEvents: "none",
-      transformOrigin: "center",
-      zIndex: 100,
-    })
     animation = el.animate(
       [
         {
