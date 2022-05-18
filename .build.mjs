@@ -156,7 +156,7 @@ async function publish() {
     },
   ])
   if (response.value) {
-    execSync("npm publish ./dist --dry-run")
+    execSync("npm publish ./dist")
   }
 }
 
