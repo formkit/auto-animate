@@ -1,6 +1,6 @@
 <img width="300" height="37" alt="AutoAnimate Logo" src="https://cdn.formk.it/web-assets/logo-auto-animate.svg" >
 
-# The easiest way to add motion to your apps.
+# Add motion to your apps in a single line of code.
 
 AutoAnimate is a zero-config, drop-in animation utility that adds smooth transitions to your web app. You can use it with Vue, React, or any other JavaScript application.
 
