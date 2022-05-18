@@ -1,18 +1,20 @@
-import React, { useRef, useEffect } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import autoAnimate from '@formkit/auto-animate'
 
-const dropdown = () => {
+const Dropdown = () => {
   const [show, setShow] = useState(false)
-  const dropdown = useRef(null)
+  const parent = useRef(null)
 
   useEffect(() => {
-    autoAnimate(animationParent.current)
-  }, parent)
+    parent.current && autoAnimate(parent.current)
+  }, [parent])
 
   const reveal = () => setShow(!show)
 
-  return <div ref={dropdown}>
-    <strong class="dropdown-label" onClick={reveal}>Click me to open!</strong>
-    { show && <p class="dropdown-content" >Lorum ipsum...</p> }
+  return <div ref={parent}>
+    <strong className="dropdown-label" onClick={reveal}>Click me to open!</strong>
+    { show && <p className="dropdown-content" >Lorum ipsum...</p> }
   </div>
 }
+
+export default Dropdown
