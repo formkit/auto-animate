@@ -9,7 +9,7 @@ import AsideTip from "../components/AsideTip.vue"
     <h2  class="no-margin">Installation</h2>
     <p>
       Install using your package manager of choice to add
-      <code>@formkit/auto-animate</code> to your project.
+      <code>@formkit/auto-animate</code> to your project:
     </p>
     <CodeExample title="~/my-app" :examples="installation"></CodeExample>
     <p>Aaaaand, you’re done! That was fast. 🐇</p>
