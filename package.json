@@ -1,7 +1,6 @@
 {
   "name": "@formkit/auto-animate",
   "version": "1.0.0-alpha.1",
-  "type": "module",
   "description": "Add motion to your apps with a single line of code.",
   "private": true,
   "keywords": [
@@ -20,7 +19,8 @@
     "dev": "cd docs && vite --config=./vite.config.ts",
     "build": "node ./.build.mjs",
     "build-docs": "cd docs && vite-ssg build --config=./docs/vite.config.ts",
-    "publish": "node ./.build.mjs --publish"
+    "publish": "node ./.build.mjs --publish",
+    "cypress:server": "cd docs && npx vite --config=./vite.config.ts --port=5555"
   },
   "exports": {
     "./vue": {
@@ -45,6 +45,7 @@
     "@vueuse/head": "^0.7.6",
     "brotli-size": "^4.0.0",
     "chalk": "^5.0.1",
+    "cypress": "^9.6.1",
     "execa": "^6.1.0",
     "pretty-bytes": "^6.0.0",
     "prompts": "^2.4.2",

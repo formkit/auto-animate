@@ -5,7 +5,7 @@ const items = ref([0, 1, 2])
 </script>
 
 <template>
-  <div class="example">
+  <div class="example react-example">
     <ul v-auto-animate>
       <li v-for="item in items" :key="item">{{ item }}</li>
     </ul>

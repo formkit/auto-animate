@@ -74,8 +74,8 @@ async function vueBuild() {
    */
   let raw = await fs.readFile(resolve(rootDir, "dist/vue/index.mjs"), "utf8")
   raw = raw.replace(
-    "import autoAnimate from '../index';",
-    "import autoAnimate from '../index.mjs';"
+    "import { vAutoAnimate } from '../index'",
+    "import { vAutoAnimate } from '../index.mjs'"
   )
   await fs.writeFile(resolve(rootDir, "dist/vue/index.mjs"), raw)
 }

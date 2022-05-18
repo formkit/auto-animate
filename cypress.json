@@ -1,0 +1,5 @@
+{
+  "projectId": "8h51b4",
+  "pluginsFile": "./cypress/plugins/index.cjs",
+  "waitForAnimations": false
+}
