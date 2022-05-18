@@ -5,10 +5,13 @@ import { execa } from "execa"
 import { execSync } from "child_process"
 import chalk from "chalk"
 import prompts from "prompts"
+import brotliSize from "brotli-size"
+import prettyBytes from "pretty-bytes"
 
 const info = (m) => console.log(chalk.blue(m))
 const error = (m) => console.log(chalk.red(m))
 const success = (m) => console.log(chalk.green(m))
+const details = (m) => console.log(chalk.pink(m))
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
@@ -22,6 +25,17 @@ async function clean() {
 async function baseBuild() {
   info("Rolling up primary package")
   await execa("npx", ["rollup", "-c", "rollup.config.js"])
+}
+
+async function baseBuildMin() {
+  info("Minifying primary package")
+  await execa("npx", [
+    "rollup",
+    "-c",
+    "rollup.config.js",
+    "--environment",
+    "MIN:true",
+  ])
 }
 
 async function reactBuild() {
@@ -164,13 +178,20 @@ async function publish() {
   }
 }
 
+async function outputSize() {
+  const raw = await fs.readFile(resolve(rootDir, "dist/index.min.js"), "utf8")
+  console.log("Brotli size: " + prettyBytes(brotliSize.sync(raw)))
+}
+
 if (isPublishing) await prepareForPublishing()
 await clean()
 await baseBuild()
+await baseBuildMin()
 await reactBuild()
 await vueBuild()
 await declarationsBuild()
 await bundleDeclarations()
 await addPackageJSON()
 await addAssets()
+await outputSize()
 isPublishing ? await publish() : success("Build complete")
