@@ -101,6 +101,7 @@ async function addPackageJSON() {
   const packageJSON = JSON.parse(raw)
   delete packageJSON.private
   delete packageJSON.devDependencies
+  delete packageJSON.scripts
   await fs.writeFile(
     resolve(rootDir, "dist/package.json"),
     JSON.stringify(packageJSON, null, 2)
