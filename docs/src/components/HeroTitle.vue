@@ -13,7 +13,7 @@ import introExample from "../examples/intro"
   <section id="hero">
     <div class="intro">
       <h1 class="title">
-        Add <span class="highlight">motion</span> to your apps in a single line
+        Add <span class="highlight">motion</span> to your apps with a single line
         of code.
       </h1>
       <p>
