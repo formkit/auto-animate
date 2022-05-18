@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180.74 45.2">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #4711de;
+      }
+
+      .cls-2 {
+        letter-spacing: -.02em;
+      }
+
+      .cls-3 {
+        letter-spacing: -.03em;
+      }
+
+      .cls-4 {
+        letter-spacing: 0em;
+      }
+
+      .cls-5 {
+        letter-spacing: -.02em;
+      }
+
+      .cls-6 {
+        fill: #fff;
+        font-family: Silka-SemiBold, Silka;
+        font-size: 15px;
+      }
+    </style>
+  </defs>
+  <g id="Layer_2" data-name="Layer 2">
+    <g id="Layer_1-2" data-name="Layer 1-2">
+      <rect class="cls-1" width="180.74" height="45.2" rx="6.53" ry="6.53"/>
+      <text class="cls-6" transform="translate(26.96 27.15)"><tspan x="0" y="0">E</tspan><tspan class="cls-3" x="8.42" y="0">x</tspan><tspan x="16.4" y="0">am</tspan><tspan class="cls-2" x="39.79" y="0">p</tspan><tspan class="cls-5" x="49.39" y="0">l</tspan><tspan class="cls-4" x="53.86" y="0">es &amp; Docs</tspan></text>
+    </g>
+  </g>
+</svg>
