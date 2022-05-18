@@ -17,7 +17,10 @@ const vueDirectiveApp = {
     language: "html",
     example: `<script setup>
 import { ref } from 'vue'
-const items = ref([1, 2, 3])
+const items = ref(["😏","😐","😑","😒","😕", ... ])
+function removeItem(toRemove) {
+  items.value = items.value.filter((item) => item !== toRemove)
+}
 </script>
 
 <template>
@@ -26,13 +29,11 @@ const items = ref([1, 2, 3])
     <li
       v-for="item in items"
       :key="item"
+      @click="removeItem(item)"
     >
       {{ item }}
     </li>
   </ul>
-  <button @click="items.push(items.length)">
-    Add number
-  </button>
 </template>`,
   },
 }
