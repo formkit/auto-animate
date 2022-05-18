@@ -1,7 +1,7 @@
-import useAutoAnimate from '@formkit/auto-animate/react'
+import { useAutoAnimate } from '@formkit/auto-animate/react'
 
 function MyList () {
-  const animationParent = useAutoAnimate()
+  const [animationParent] = useAutoAnimate()
   return (
     <ul ref={animationParent}>
       {/* 🪄 Magic animations for your list */}
