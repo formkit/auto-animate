@@ -3,10 +3,16 @@ import typescript from "@rollup/plugin-typescript"
 const FRAMEWORK = process.env.FRAMEWORK || "index"
 const DECLARATIONS = process.env.DECLARATIONS || false
 
-const external = ["vue", "react", "process", "rollup-plugin-terser"]
+const external = [
+  "vue",
+  "react",
+  "process",
+  "rollup-plugin-terser",
+  "@formkit/auto-animate",
+]
 
 if (FRAMEWORK) {
-  external.push("./index")
+  external.push("../index")
 }
 
 function createOutput() {
@@ -17,14 +23,14 @@ function createOutput() {
     }
   }
   return {
-    file: `./dist/${FRAMEWORK}.mjs`,
+    file: `./dist/${FRAMEWORK !== "index" ? FRAMEWORK + "/" : ""}index.mjs`,
     format: "esm",
   }
 }
 
 export default {
   external,
-  input: `./src/${FRAMEWORK}.ts`,
+  input: `./src/${FRAMEWORK === "index" ? "" : FRAMEWORK + "/"}index.ts`,
   output: createOutput(),
   plugins: [
     typescript({

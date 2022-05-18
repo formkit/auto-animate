@@ -1,5 +1,5 @@
 import type { Plugin } from "vue"
-import { vAutoAnimate } from "./index"
+import { vAutoAnimate } from "../index"
 
 export const autoAnimatePlugin: Plugin = {
   install(app) {

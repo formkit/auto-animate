@@ -564,7 +564,11 @@ export default function autoAnimate(
       Object.assign(el.style, { position: "relative" })
     }
     forEach(el, updatePos, poll, (element) => resize?.observe(element))
-    options.set(el, { duration: 250, easing: "ease-in-out", ...config })
+    if (typeof config === "function") {
+      options.set(el, config)
+    } else {
+      options.set(el, { duration: 250, easing: "ease-in-out", ...config })
+    }
     mutations.observe(el, { childList: true })
     parents.add(el)
   }

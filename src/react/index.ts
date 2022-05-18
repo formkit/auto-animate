@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react"
-import autoAnimate, { AutoAnimateOptions, AutoAnimationPlugin } from "./index"
+import autoAnimate, { AutoAnimateOptions, AutoAnimationPlugin } from "../index"
 
 /**
  * AutoAnimate hook for adding dead-simple transitions and animations to react.

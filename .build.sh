@@ -8,3 +8,4 @@ mv ./dist/src/vue.d.ts ./dist/vue.d.ts
 mv ./dist/src/react.d.ts ./dist/react.d.ts
 rm -rf ./dist/src
 rm ./dist/index.js
+cp package.json ./dist/package.json

@@ -9,9 +9,9 @@
     "react",
     "vue"
   ],
-  "main": "dist/index.mjs",
-  "module": "dist/index.mjs",
-  "types": "dist/index.d.ts",
+  "main": "index.mjs",
+  "module": "index.mjs",
+  "types": "index.d.ts",
   "repository": "https://github.com/formkit/auto-animate.git",
   "author": "Justin Schroeder <justin@formkit.com>",
   "license": "MIT",
@@ -22,15 +22,13 @@
   },
   "exports": {
     "./vue": {
-      "import": "./dist/vue.mjs",
-      "types": "./dist/vue.d.ts"
+      "import": "./vue/index.mjs"
     },
     "./react": {
-      "import": "./dist/react.mjs",
-      "types": "./dist/react.d.ts"
+      "import": "./react/index.mjs"
     },
     ".": {
-      "import": "./dist/index.mjs"
+      "import": "./index.mjs"
     }
   },
   "devDependencies": {
