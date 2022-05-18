@@ -147,6 +147,8 @@ async function prepareForPublishing() {
 }
 
 async function publish() {
+  const raw = await fs.readFile(resolve(rootDir, "package.json"), "utf8")
+  const packageJSON = JSON.parse(raw)
   const response = await prompts([
     {
       type: "confirm",
@@ -157,6 +159,8 @@ async function publish() {
   ])
   if (response.value) {
     execSync("npm publish ./dist")
+    execSync(`git tag ${packageJSON.version}`)
+    execSync(`git push origin --tags`)
   }
 }
 
