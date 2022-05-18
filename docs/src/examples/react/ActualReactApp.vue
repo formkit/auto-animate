@@ -9,7 +9,9 @@ const items = ref([0, 1, 2])
     <ul v-auto-animate>
       <li v-for="item in items" :key="item">{{ item }}</li>
     </ul>
-    <button @click="items.push(items.length)">Add number</button>
+    <button @click="items.push(items.length)" class="button button--alt">
+      Add number
+    </button>
   </div>
 </template>
 
