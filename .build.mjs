@@ -155,7 +155,7 @@ async function publish() {
     },
   ])
   if (response.value) {
-    execSync("cd dist && npm publish --dry-run")
+    execSync("npm publish ./dist --dry-run")
   }
 }
 
