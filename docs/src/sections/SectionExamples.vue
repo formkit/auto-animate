@@ -55,7 +55,7 @@ import IconOutbound from "../components/IconOutbound.vue"
 
     <h3 id="example-accordion">
       <a
-        href="https://github.com/formkit/auto-animate/blob/master/docs/src/examples/accordion/ActualAcordion.vue"
+        href="https://github.com/formkit/auto-animate/blob/master/docs/src/examples/accordion/ActualAccordion.vue"
       >
         FAQ accordion example<IconOutbound
       /></a>
@@ -70,7 +70,7 @@ import IconOutbound from "../components/IconOutbound.vue"
     <ActualAccordion />
     <h3 id="example-validation">
       <a
-        href="https://github.com/formkit/auto-animate/blob/master/docs/src/examples/accordion/ActualAcordion.vue"
+        href="https://github.com/formkit/auto-animate/blob/master/docs/src/examples/formkit/ActualFormKit.vue"
       >
         FormKit validation example<IconOutbound
       /></a>
