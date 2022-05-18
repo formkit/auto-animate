@@ -64,7 +64,7 @@ import IconOutbound from "../components/IconOutbound.vue"
       We’ve all had to create accordions before. Pretty easy on the surface, but
       adding motion to the open/close sequence can be frustrating to say the
       least, and if you hack it together using
-      <code>max-height</code> transitions you are sure to loose your easing. No
+      <code>max-height</code> transitions, you are sure to lose your easing. No
       more!
     </p>
     <ActualAccordion />
@@ -77,9 +77,9 @@ import IconOutbound from "../components/IconOutbound.vue"
     </h3>
     <p>
       You don’t have to use <a href="https://formkit.com">FormKit</a> to use
-      AutoAnimate, but if you are a FormKit user there are some neat things you
+      AutoAnimate, but if you are a FormKit user, there are some neat things you
       can do. For example, you can use AutoAnimate to animate validation
-      messages being added and removed from an input.
+      messages being added and removed from an input:
     </p>
     <ActualFormKit />
   </section>

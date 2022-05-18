@@ -26,8 +26,8 @@ import ActualVueApp from "../examples/vue/ActualVueApp.vue"
     <p>
       Let’s see what this looks like in practice. For now we'll use the
       <code>autoAnimate</code> function directly. React and Vue users — you’ll
-      get some additional syntactic sugar later on — but for now lets learn the
-      fundamentals.
+      get some additional syntactic sugar later on — but for now let's learn the
+      fundamentals:
     </p>
     <CodeExample :examples="dropdown" title="Dropdown" />
     <ActualDropdown />
@@ -42,7 +42,7 @@ import ActualVueApp from "../examples/vue/ActualVueApp.vue"
     <ul>
       <li>
         It’s still ok to use other kinds of transitions. For example, if you are
-        making stylistic changes with just css (such as a hover effect) then use
+        making stylistic changes with just CSS (such as a hover effect), then use
         standard CSS transitions for these kinds of styling tweaks.
       </li>
       <li>
@@ -77,14 +77,14 @@ import ActualVueApp from "../examples/vue/ActualVueApp.vue"
     <CodeExample :examples="config" title="config" />
     <p>
       If your project’s specific requirements make it necessary to dramatically change the default
-      animations then you should <a href="#plugins">check out the plugins documentation</a>.
+      animations, then you should <a href="#plugins">check out the plugins documentation</a>.
     </p>
 
     <h2 id="usage-react">React hook</h2>
     <p>
       React users can use the hook <code>useAutoAnimate</code> by importing it from
       <code>@formkit/auto-animate/react</code>. This hook returns a ref to
-      apply to the parent element.
+      apply to the parent element:
     </p>
     <CodeExample :examples="reactHook" title="App" />
     <ActualReactApp />
@@ -94,13 +94,13 @@ import ActualVueApp from "../examples/vue/ActualVueApp.vue"
       Vue users can globally register the
       <code>v-auto-animate</code> directive. This makes adding
       transitions and animations as easy as applying an attribute.
-      Import the vue plugin from <code>@formkit/auto-animate/vue</code> and
-      register it with your Vue app.
+      Import the Vue plugin from <code>@formkit/auto-animate/vue</code> and
+      register it with your Vue app:
     </p>
     <CodeExample :examples="vueDirectiveMain" title="main" />
     <p>
       Once you’ve registered the plugin, it can be applied anywhere in your
-      application by adding the <code>v-auto-animate</code> directive to the parent element.
+      application by adding the <code>v-auto-animate</code> directive to the parent element:
     </p>
     <CodeExample :examples="vueDirectiveApp" title="App" />
     <ActualVueApp />
