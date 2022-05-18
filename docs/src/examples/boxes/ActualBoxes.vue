@@ -9,7 +9,7 @@ const randomize = () => {
 </script>
 
 <template>
-  <div class="example">
+  <div class="example boxes-example">
     <div class="boxes" v-auto-animate="{ duration: 500 }">
       <div
         class="box"

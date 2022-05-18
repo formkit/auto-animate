@@ -13,8 +13,10 @@
 Cypress.Commands.add("hasAnimations", (count) => {
   cy.document().then((doc) => {
     expect(doc.getAnimations()).to.have.length(count)
-    doc.getAnimations().forEach((animation) => {
-      animation.finish()
+    cy.wait(100).then(() => {
+      doc.getAnimations().forEach((animation) => {
+        animation.finish()
+      })
     })
   })
 })

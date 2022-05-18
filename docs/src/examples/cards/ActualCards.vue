@@ -27,7 +27,7 @@ function createCard(card) {
 </script>
 
 <template>
-  <div class="example" v-auto-animate>
+  <div class="example card-example" v-auto-animate>
     <button
       class="button button--alt"
       v-if="!showForm"

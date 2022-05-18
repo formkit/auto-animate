@@ -33,7 +33,7 @@ function removeItem(toRemove) {
 </script>
 
 <template>
-  <div class="example">
+  <div class="example vue-example">
     <span class="label">Click emojis to remove them.</span>
     <ul v-auto-animate>
       <li v-for="item in items" :key="item" @click="removeItem(item)">

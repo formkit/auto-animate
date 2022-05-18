@@ -32,7 +32,7 @@ const current = ref(faq.value[0].id)
 </script>
 
 <template>
-  <div class="example">
+  <div class="example accordion-example">
     <ul class="accordion">
       <li class="accordion-item" v-for="q in faq" :key="q.id" v-auto-animate>
         <div

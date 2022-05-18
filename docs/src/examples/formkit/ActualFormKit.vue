@@ -14,7 +14,7 @@ const submit = () => {
 </script>
 
 <template>
-  <div class="example" ref="example">
+  <div class="example formkit-example" ref="example">
     <FormKit
       type="form"
       :submit-attrs="{ inputClass: 'button' }"

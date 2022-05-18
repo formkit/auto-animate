@@ -49,7 +49,7 @@ onMounted(() => autoAnimate(list.value))
 </script>
 
 <template>
-  <div class="example">
+  <div class="example list-example">
     <ul ref="list">
       <li v-for="item in items" :key="item">
         <span>{{ item }}</span>
@@ -59,8 +59,8 @@ onMounted(() => autoAnimate(list.value))
       </li>
     </ul>
 
-    <button class="button button--alt" @click="add">+ Add Fruit</button>
-    <button class="button button--alt" @click="randomize">Randomize</button>
+    <button class="button button--add button--alt" @click="add">+ Add Fruit</button>
+    <button class="button button--random button--alt" @click="randomize">Randomize</button>
   </div>
 </template>
 
