@@ -89,7 +89,7 @@ import ActualVueApp from "../examples/vue/ActualVueApp.vue"
     <CodeExample :examples="reactHook" title="App" />
     <ActualReactApp />
 
-    <h2 id="usage-vue">Vue Directive</h2>
+    <h2 id="usage-vue">Vue directive</h2>
     <p>
       Vue users can globally register the
       <code>v-auto-animate</code> directive. This makes adding
