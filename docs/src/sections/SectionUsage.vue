@@ -41,18 +41,18 @@ import ActualVueApp from "../examples/vue/ActualVueApp.vue"
     <h3>Tips for success</h3>
     <ul>
       <li>
-        It’s ok to still use other kinds of transitions. For example, if you are
-        making stylistic changes with just css (like a hover effect) use
+        It’s still ok to use other kinds of transitions. For example, if you are
+        making stylistic changes with just css (such as a hover effect) then use
         standard CSS transitions for these kinds of styling tweaks.
       </li>
       <li>
-        Animations are only triggered when children of the parent element (the
-        one you passed to <code>autoAnimate</code>) are added or removed or
+        Animations are only triggered when immediate children of the parent element (the
+        one you passed to <code>autoAnimate</code>) are added, removed, or
         moved.
       </li>
       <li>
         The parent element will automatically receive
-        <code>position: relative</code> if it is positioned statically. Keep
+        <code>position: relative</code> if it is statically positioned. Keep
         this in mind when writing your styles.
       </li>
       <li>
