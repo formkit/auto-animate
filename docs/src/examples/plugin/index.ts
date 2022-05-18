@@ -1,7 +1,7 @@
 const pluginMain = {
   js: {
-    ext: "ts",
-    language: "typescript",
+    ext: "js",
+    language: "javascript",
     example: `import autoAnimate, { getTransitionSizes } from '@formkit/auto-animate'
 
 autoAnimate(parentElement, (el, action, oldCoords, newCoords) => {
