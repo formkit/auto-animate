@@ -64,8 +64,7 @@ li {
   cursor: pointer;
 }
 li span {
-  margin-left: -0.25em;
-  margin-top: -0.15em;
+  margin-top: -0.1em;
 }
 li:hover {
   background: var(--purple-l);
