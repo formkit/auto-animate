@@ -15,14 +15,14 @@ import GithubButton from "vue-github-button"
     <p>
       AutoAnimate’s goal is to smooth out changes to the DOM that are otherwise
       confusing to end-users. For example, when a user sorts a list with no
-      animations it is difficult to visualize how the items in the list have
+      animations, it is difficult to visualize how the items in the list have
       actually changed — but with AutoAnimate the changes suddenly make
       intuitive sense. AutoAnimate was made to solve this category of problem
       via a drop-in solution with zero-config.
     </p>
   </section>
   <section id="support">
-    <h2>Support Us</h2>
+    <h2>Support us</h2>
     <p>
       Is AutoAnimate saving you time?<br>
       Please consider supporting our open-source efforts with a recurring or one-time donation! 🙏

@@ -20,7 +20,7 @@ const faq = ref([
   {
     id: "who",
     question: "Who made this?",
-    answer: `AutoAnimate is a team effort 💪 most of the code was written by
+    answer: `AutoAnimate is a team effort 💪 . Most of the code was written by
       <a href='https://twitter.com/jpschroeder'>Justin Schroeder</a>,
       <a href='https://twitter.com/0xBOYD'>Andrew Boyd</a> played a key
       role on the docs, and the rest of the <a href='https://formkit.com'>FormKit</a>

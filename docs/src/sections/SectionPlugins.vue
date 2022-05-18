@@ -25,7 +25,7 @@ import ActualPlugin from '../examples/plugin/ActualPlugin.vue'
     <p>
       We can use our newly defined keyframes in any previous example to see the
       effect it has. Here's our previous list example with the "bouncy" keyframes
-      applied to it.
+      applied to it:
     </p>
     <ActualPlugin />
   </section>

@@ -14,8 +14,8 @@ import AsideTip from "../components/AsideTip.vue"
     <CodeExample title="~/my-app" :examples="installation"></CodeExample>
     <p>Aaaaand, you’re done! That was fast. 🐇</p>
     <AsideTip>
-      If you are using React you can use the <code><a href="#usage-react">useAutoAnimate</a></code> hook.
-      If you are using Vue you can use the <code><a href="#usage-vue">v-auto-animate</a></code> directive.
+      If you are using React, you can use the <code><a href="#usage-react">useAutoAnimate</a></code> hook.
+      If you are using Vue, you can use the <code><a href="#usage-vue">v-auto-animate</a></code> directive.
     </AsideTip>
   </section>
 </template>
