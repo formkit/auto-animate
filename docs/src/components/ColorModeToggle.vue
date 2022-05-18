@@ -28,8 +28,8 @@ watch(isDark, setColorAttribute)
 
 <template>
   <span @click="toggleDarkMode">
-    <IconSun v-show="!isDark" />
-    <IconMoon v-show="isDark" />
+    <IconSun v-show="isDark" />
+    <IconMoon v-show="!isDark" />
   </span>
 </template>
 
@@ -39,9 +39,9 @@ span {
 }
 span svg {
   width: 1.5em;
-  height: 1.5em;
+  height: 1.25em;
 }
 [data-dark-mode="true"] span svg {
-  height: 1.25em;
+  height: 1.5em;
 }
 </style>
