@@ -68,7 +68,7 @@ import ActualVueApp from "../examples/vue/ActualVueApp.vue"
       AutoAnimate is intended to be used with <em>zero-configuration</em>. We believe the
       default configuration falls in line with the project’s objective:
       <em class="important"
-        >AutoAnimate’s goal is to substantiality improve an application’s user-experience
+        >AutoAnimate’s goal is to substantially improve an application’s user-experience
         without impacting the developer’s implementation time or performance budget.</em
       >
       That said, some minor configuration options are available. AutoAnimate allows you to pass

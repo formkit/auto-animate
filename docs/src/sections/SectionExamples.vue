@@ -47,7 +47,7 @@ import IconOutbound from "../components/IconOutbound.vue"
     </h3>
     <p>
       An important feature of AutoAnimate is that it operates on both the x and
-      y axis. Items that are moved in the dom from one location to another, or
+      y axis. Items that are moved in the DOM from one location to another, or
       are wrapping at the end of a line will automatically be translated to
       their respective position.
     </p>
