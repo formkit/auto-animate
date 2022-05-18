@@ -10,8 +10,8 @@ import GithubButton from "vue-github-button"
   <header>
     <TheLogo class="logo" />
     <div class="buttons">
-      <a href="https://discord.gg/Vhu97pAC76"><IconDiscord class="icon" /></a>
-      <a href="https://twitter.com/useFormKit"><IconTwitter class="icon" /></a>
+      <a href="https://discord.gg/Vhu97pAC76" aria-label="Discord"><IconDiscord class="icon" /></a>
+      <a href="https://twitter.com/useFormKit" aria-label="Twitter"><IconTwitter class="icon" /></a>
       <GithubButton
         href="https://github.com/formkit/auto-animate"
         data-size="large"

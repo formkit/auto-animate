@@ -34,7 +34,7 @@ function removeItem(toRemove) {
 
 <template>
   <div class="example">
-    <h5>Click emojis to remove them.</h5>
+    <span class="label">Click emojis to remove them.</span>
     <ul v-auto-animate>
       <li v-for="item in items" :key="item" @click="removeItem(item)">
         <span>{{ item }}</span>
@@ -72,5 +72,9 @@ li:hover {
 }
 li::before {
   display: none;
+}
+.label {
+  font-size: 0.83em;
+  font-weight: bold;
 }
 </style>
