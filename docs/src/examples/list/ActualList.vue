@@ -53,7 +53,9 @@ onMounted(() => autoAnimate(list.value))
     <ul ref="list">
       <li v-for="item in items" :key="item">
         <span>{{ item }}</span>
-        <button @click.prevent="remove(item)" aria-label"Remove Fruit"><IconRemove /></button>
+        <button @click.prevent="remove(item)" aria-label="Remove Fruit">
+          <IconRemove />
+        </button>
       </li>
     </ul>
 
