@@ -61,7 +61,7 @@ nav {
   opacity: 0.98;
   float: left;
   width: calc(100% + 2em);
-  margin-left: calc(-100% + 2em);
+  margin-left: calc(-200vw);
   margin-right: -3em;
   z-index: 100;
   user-select: none;
