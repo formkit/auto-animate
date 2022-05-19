@@ -13,7 +13,7 @@ import AsideTip from "../components/AsideTip.vue"
       Here's the same list component with and without AutoAnimate applied to the wrapping element:
     </p>
     <HomepageDemo />
-    <p>That's a fairly notable improvement in UX for next to no additional developer effort! 🎉</p>
+    <p>That's a fairly notable improvement in UX for no additional developer effort! 🎉</p>
   </section>
 
   <section id="installation">

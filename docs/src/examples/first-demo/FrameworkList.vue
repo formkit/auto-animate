@@ -12,7 +12,7 @@ const props = defineProps({
 })
 
 const list = ref()
-const inputValue = ref('')
+const inputValue = ref('AdonisJs')
 const frameworks = ref([
   { id: 0, name: 'Nuxt.js' },
   { id: 1, name: 'Next.js' },
