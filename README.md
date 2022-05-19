@@ -1,5 +1,7 @@
 <img width="300" height="37" alt="AutoAnimate Logo" src="https://cdn.formk.it/web-assets/logo-auto-animate.svg" >
 
+![Latest Build](https://github.com/formkit/auto-animate/actions/workflows/main.yml/badge.svg) ![GitHub Sponsors](https://img.shields.io/github/sponsors/formkit) ![Package Size](https://img.badgesize.io/https:/unpkg.com/@formkit/auto-animate@latest/index.min.js.svg?label=brotli&compression=brotli)
+
 # Add motion to your apps with a single line of code.
 
 AutoAnimate is a zero-config, drop-in animation utility that adds smooth transitions to your web app. You can use it with Vue, React, or any other JavaScript application.

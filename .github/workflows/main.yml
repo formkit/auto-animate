@@ -1,4 +1,4 @@
-name: Cypress Tests
+name: Build
 on: [push, workflow_dispatch]
 jobs:
   cypress-run:
