@@ -560,6 +560,9 @@ export default function autoAnimate(
   config: Partial<AutoAnimateOptions> | AutoAnimationPlugin = {}
 ) {
   if (mutations && resize) {
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)")
+    if (mediaQuery.matches) return
+
     if (getComputedStyle(el).position === "static") {
       Object.assign(el.style, { position: "relative" })
     }
