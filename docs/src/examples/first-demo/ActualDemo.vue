@@ -120,6 +120,7 @@ li:first-child .action-icons button:first-child,
   font-weight: 600;
   padding: 0.5em 1em;
   margin-left: 1em;
+  cursor: pointer;
 }
 
 .comparison-app li form {
