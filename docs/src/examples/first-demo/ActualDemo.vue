@@ -8,10 +8,7 @@ import FrameworkList from "./FrameworkList.vue"
       Native JavaScript
     </FrameworkList>
     <FrameworkList :animated="true">
-      <img
-        src="https://cdn.formk.it/web-assets/logo-auto-animate.svg"
-        width="300"
-      />
+      With AutoAnimate
     </FrameworkList>
   </div>
 </template>
@@ -53,6 +50,10 @@ import FrameworkList from "./FrameworkList.vue"
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+[data-dark-mode="true"] .comparison-app li {
+  background-color: var(--purple-lm);
+  color: #444;
 }
 
 li:first-child .action-icons button:first-child,
