@@ -140,6 +140,7 @@ li:first-child .action-icons button:first-child,
   max-width: 10em;
   max-height: 1.1em;
   margin: 0 auto;
+  text-align: center;
 }
 .comparison-app .logo img {
   display: block;
