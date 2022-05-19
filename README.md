@@ -8,6 +8,12 @@ AutoAnimate is a zero-config, drop-in animation utility that adds smooth transit
 
 <a href="https://auto-animate.formkit.com"><img width="180" height="42" src="https://cdn.formk.it/web-assets/read-docs-auto-animate.svg" alt="Examples & Docs"></a>
 
+With one line of code, you can improve your interfaces, for example:
+
+<a href="https://auto-animate.formkit.com">
+  <img src="https://cdn.formk.it/web-assets/motion.gif" alt="Simple example of AutoAnimation motion">
+</a>
+
 ## Installation
 
 Install using your package manager of choice.
@@ -40,3 +46,7 @@ Boom! Done. That was fast! 🐇
 Is AutoAnimate saving you time?
 
 Please consider [supporting us with a recurring or one-time donation](https://github.com/sponsors/formkit)! 🙏
+
+## Contributing
+
+Thank you for your willingness to contribute to this free and open source project! When contributing, consider first discussing your desired change with the core team via <a href="https://github.com/formkit/auto-animate/issues">GitHub issues</a>, <a href="https://discord.gg/SHYT8pyeNm">Discord</a>, or other method.
