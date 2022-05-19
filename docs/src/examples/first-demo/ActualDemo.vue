@@ -8,7 +8,7 @@ import FrameworkList from "./FrameworkList.vue"
       Native JavaScript
     </FrameworkList>
     <FrameworkList :animated="true">
-      With AutoAnimate
+      AutoAnimate
     </FrameworkList>
   </div>
 </template>
