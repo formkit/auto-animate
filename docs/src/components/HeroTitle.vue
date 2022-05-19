@@ -62,7 +62,6 @@ section {
 .title .highlight {
   font-size: inherit;
   color: var(--primary);
-  padding-right: 0.1em;
   background-image: linear-gradient(-45deg, var(--primary), var(--purple-m));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
