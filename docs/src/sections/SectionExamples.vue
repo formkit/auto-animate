@@ -10,19 +10,6 @@ import IconOutbound from "../components/IconOutbound.vue"
 <template>
   <section id="examples">
     <h2>Examples</h2>
-    <h3 id="example-cards">
-      <a
-        href="https://github.com/formkit/auto-animate/blob/master/docs/src/examples/cards/ActualCards.vue"
-        >Cards example<IconOutbound
-      /></a>
-    </h3>
-    <p>
-      Simulates showing a form to add an event to a list of event cards. Notice
-      that it pushes it to the front of the list and all the cards animate to
-      their destination, and the parent element (invisible) resizes smoothly to
-      accommodate.
-    </p>
-    <ActualCards />
 
     <h3 id="example-list">
       <a
@@ -37,6 +24,20 @@ import IconOutbound from "../components/IconOutbound.vue"
       and unshifting.
     </p>
     <ActualList />
+
+    <h3 id="example-cards">
+      <a
+        href="https://github.com/formkit/auto-animate/blob/master/docs/src/examples/cards/ActualCards.vue"
+        >Cards example<IconOutbound
+      /></a>
+    </h3>
+    <p>
+      Simulates showing a form to add an event to a list of event cards. Notice
+      that it pushes it to the front of the list and all the cards animate to
+      their destination, and the parent element (invisible) resizes smoothly to
+      accommodate.
+    </p>
+    <ActualCards />
 
     <h3 id="example-boxes">
       <a
