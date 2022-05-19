@@ -1,12 +1,23 @@
 <script setup>
+import HomepageDemo from "../examples/first-demo/ActualDemo.vue"
 import installation from "../examples/installation"
 import CodeExample from "../components/CodeExample.vue"
 import AsideTip from "../components/AsideTip.vue"
 </script>
 
 <template>
+  <section id="demo">
+    <h2>A quick demo</h2>
+    <p>
+      AutoAnimate adds automatic animations to your JavaScript applications with a single line of code.
+      Here's the same list component with and without AutoAnimate applied to the wrapping element:
+    </p>
+    <HomepageDemo />
+    <p>That's a fairly notable improvement in UX for next to no additional developer effort! 🎉</p>
+  </section>
+
   <section id="installation">
-    <h2  class="no-margin">Installation</h2>
+    <h2>Installation</h2>
     <p>
       Install using your package manager of choice to add
       <code>@formkit/auto-animate</code> to your project:
@@ -21,8 +32,8 @@ import AsideTip from "../components/AsideTip.vue"
 </template>
 
 <style scoped>
-section {
-  padding-top: 5.5em;
+section:nth-child(2) h2 {
+  padding-top: 4em;
 }
 
 code {
@@ -30,7 +41,7 @@ code {
 }
 
 @media (min-width: 42em) {
-  section {
+  section:nth-child(2) h2 {
     padding-top: 0em;
   }
 }
