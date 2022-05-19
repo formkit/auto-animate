@@ -52,7 +52,12 @@ if (typeof window !== "undefined") {
 <style scoped>
 nav {
   background-color: white;
-  box-shadow: 0 0 1em rgb(0 0 0 / 10%);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.025),
+              0 2px 4px rgba(0,0,0,0.025),
+              0 4px 8px rgba(0,0,0,0.025),
+              0 8px 16px rgba(0,0,0,0.025),
+              0 16px 32px rgba(0,0,0,0.025),
+              0 32px 64px rgba(0,0,0,0.025);
   border-radius: 0 0 0.25em 0.25em;
   padding: 0 2em;
   position: sticky;

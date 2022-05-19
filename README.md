@@ -31,6 +31,10 @@ Boom! Done. That was fast! 🐇
 
 📖 [View the documentation site for examples](https://auto-animate.formkit.com#examples).
 
+## Plugins
+
+📖 [View the documentation site for plugin instructions](https://auto-animate.formkit.com#plugins).
+
 ## Support us
 
 Is AutoAnimate saving you time?
