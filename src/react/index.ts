@@ -13,6 +13,6 @@ export function useAutoAnimate<T extends Element>(
   useEffect(() => {
     if (element.current instanceof HTMLElement)
       autoAnimate(element.current, options)
-  }, [element])
+  }, [])
   return [element]
 }
