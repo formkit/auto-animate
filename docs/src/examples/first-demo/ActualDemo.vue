@@ -37,9 +37,15 @@ import FrameworkList from "./FrameworkList.vue"
   flex-grow: 1;
 }
 
-.comparison-app .stage:not([data-has-animation="true"]) {
+.comparison-app .stage:not([data-has-animation="true"]) ul {
   opacity: 0.85;
-  filter: grayscale();
+  filter: grayscale(0.85)
+}
+.comparison-app .stage:not([data-has-animation="true"]) li:last-child button {
+  opacity: 0.66;
+}
+.comparison-app .stage:not([data-has-animation="true"]) li:last-child button[data-disabled="true"] {
+  opacity: 0.33;
 }
 
 .comparison-app li {
