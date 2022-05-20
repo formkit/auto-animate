@@ -13,7 +13,12 @@ import AsideTip from "../components/AsideTip.vue"
       Here's the same list component with and without AutoAnimate applied to the wrapping element:
     </p>
     <HomepageDemo />
-    <p>That's a fairly notable improvement in UX for no additional developer effort! 🎉</p>
+    <p>That's a notable improvement in UX with no additional developer effort! 🎉</p>
+    <p>
+      Importantly, our list component did not need to be written with AutoAnimate in mind. AutoAnimate
+      can be applied retroactively to any markup in your codebase, including 3rd-party code — just supply
+      the parent DOM node and let AutoAnimate do the rest! 🤯
+    </p>
   </section>
 
   <section id="installation">
