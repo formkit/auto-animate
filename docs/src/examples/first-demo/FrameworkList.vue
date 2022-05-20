@@ -55,7 +55,6 @@ const remove = (item) => {
 
 onMounted(() => {
   if (props.animated) {
-    console.log('adding auto-animate')
     autoAnimate(list.value)
   }
 })
