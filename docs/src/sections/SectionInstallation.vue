@@ -14,11 +14,11 @@ import AsideTip from "../components/AsideTip.vue"
     </p>
     <HomepageDemo />
     <p>That's a notable improvement in UX with no additional developer effort! 🎉</p>
-    <p>
+    <AsideTip>
       Importantly, our list component did not need to be written with AutoAnimate in mind. AutoAnimate
       can be applied retroactively to any markup in your codebase, including 3rd-party code — just supply
       the parent DOM node and let AutoAnimate do the rest! 🤯
-    </p>
+    </AsideTip>
   </section>
 
   <section id="installation">

@@ -16,7 +16,9 @@ import IconLightbulb from "./IconLightbulb.vue"
 }
 .tip svg {
   margin-right: 1em;
-  width: 2em;
-  height: 2em;
+  margin-top: 0.25em;
+  width: 1.5em;
+  height: 1.5em;
+  flex-shrink: 0;
 }
 </style>
