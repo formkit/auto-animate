@@ -123,6 +123,12 @@ li:first-child .action-icons button:first-child,
   cursor: pointer;
 }
 
+.comparison-app li:last-child button[data-disabled="true"] {
+  opacity: 0.33;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
 .comparison-app li form {
   display: flex;
   flex-grow: 1;

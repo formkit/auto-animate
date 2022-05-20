@@ -1,5 +1,5 @@
 <script setup>
-import { ref, defineProps, onMounted } from "vue"
+import { ref, defineProps, onMounted, computed } from "vue"
 import autoAnimate from "../../../../src/index"
 import Arrow from './Arrow.vue'
 import Close from './Close.vue'
@@ -20,6 +20,18 @@ const frameworks = ref([
   { id: 3, name: 'Remix' },
   { id: 4, name: 'Meteor' },
 ])
+
+const disableSort = computed(() => {
+  let isSorted = true
+  let currentValue = frameworks.value[0].name
+  frameworks.value.forEach(framework => {
+    if (currentValue > framework.name) {
+      isSorted = false
+    }
+    currentValue = framework.name
+  })
+  return isSorted
+})
 
 const addItem = (e) => {
   e.preventDefault();
@@ -91,7 +103,12 @@ onMounted(() => {
             v-model="inputValue"
           />
           <button type="submit">Add</button>
-          <button type="button" :onClick="sortList">
+          <button
+            type="button"
+            @click="sortList"
+            :data-disabled="disableSort"
+            :disabled="disableSort"
+          >
             Sort
           </button>
         </form>
