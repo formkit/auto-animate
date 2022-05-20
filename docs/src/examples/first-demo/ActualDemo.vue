@@ -5,10 +5,10 @@ import FrameworkList from "./FrameworkList.vue"
 <template>
   <div class="comparison-app">
     <FrameworkList>
-      Native JavaScript
+      Native&nbsp;JavaScript&nbsp;😐
     </FrameworkList>
     <FrameworkList :animated="true">
-      AutoAnimate
+      AutoAnimate&nbsp;🤩
     </FrameworkList>
   </div>
 </template>
@@ -137,7 +137,6 @@ li:first-child .action-icons button:first-child,
 
 .comparison-app .logo {
   width: calc(100% - 1em);
-  max-width: 10em;
   max-height: 1.1em;
   margin: 0 auto;
   text-align: center;
