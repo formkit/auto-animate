@@ -42,6 +42,7 @@ if (typeof window !== "undefined") {
       <li><a href="#usage">Usage</a></li>
       <li><a href="#usage-react">React hook</a></li>
       <li><a href="#usage-vue">Vue directive</a></li>
+      <li><a href="#usage-svelte">Svelte Action</a></li>
       <li><a href="#examples">Examples</a></li>
       <li><a href="#plugins">Plugins</a></li>
       <li><a href="#why-not">Why not...?</a></li>

@@ -7,6 +7,8 @@ import { vueDirectiveMain, vueDirectiveApp } from "../examples/vue"
 import reactHook from "../examples/react"
 import ActualReactApp from "../examples/react/ActualReactApp.vue"
 import ActualDropdown from "../examples/dropdown/ActualDropdown.vue"
+import svelteAction from "../examples/svelte"
+import ActualSvelteApp from "../examples/svelte/ActualSvelteApp.vue"
 import ActualVueApp from "../examples/vue/ActualVueApp.vue"
 </script>
 <template>
@@ -107,6 +109,18 @@ import ActualVueApp from "../examples/vue/ActualVueApp.vue"
     <AsideTip>
       Vue users can pass options by directly setting the directive’s value
       <code>&lt;ul v-auto-animate="{ duration: 100 }"&gt;</code>
+    </AsideTip>
+
+    <h2 id="usage-svelte">Svelte Action</h2>
+    <p>
+      Since the function signature of <code>autoAnimate</code> is the compatible with Svelte action,
+      Svelte users can use it directly with <code>use:autoAnimate</code> directive.
+    </p>
+    <CodeExample :examples="svelteAction" title="App" />
+    <ActualSvelteApp />
+    <AsideTip>
+      Svelte users can pass options by directly setting the directive’s value
+      <code>&lt;ul use:autoAnimate="{&#123; duration: 1000 &#125;}"&gt;</code>
     </AsideTip>
   </section>
 </template>
