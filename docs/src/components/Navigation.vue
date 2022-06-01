@@ -34,15 +34,12 @@ if (typeof window !== "undefined") {
       <span class="active-title">{{ activeTitle }}</span>
       <IconDown class="down" />
     </div>
-    <ul
-      v-if="show"
-      @click="handleClick"
-    >
+    <ul v-if="show" @click="handleClick">
       <li><a href="#installation">Installation</a></li>
       <li><a href="#usage">Usage</a></li>
       <li><a href="#usage-react">React hook</a></li>
       <li><a href="#usage-vue">Vue directive</a></li>
-      <li><a href="#usage-svelte">Svelte Action</a></li>
+      <li><a href="#usage-svelte">Svelte action</a></li>
       <li><a href="#examples">Examples</a></li>
       <li><a href="#plugins">Plugins</a></li>
       <li><a href="#why-not">Why not...?</a></li>
@@ -53,12 +50,9 @@ if (typeof window !== "undefined") {
 <style scoped>
 nav {
   background-color: white;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.025),
-              0 2px 4px rgba(0,0,0,0.025),
-              0 4px 8px rgba(0,0,0,0.025),
-              0 8px 16px rgba(0,0,0,0.025),
-              0 16px 32px rgba(0,0,0,0.025),
-              0 32px 64px rgba(0,0,0,0.025);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.025), 0 2px 4px rgba(0, 0, 0, 0.025),
+    0 4px 8px rgba(0, 0, 0, 0.025), 0 8px 16px rgba(0, 0, 0, 0.025),
+    0 16px 32px rgba(0, 0, 0, 0.025), 0 32px 64px rgba(0, 0, 0, 0.025);
   border-radius: 0 0 0.25em 0.25em;
   padding: 0 2em;
   position: sticky;
@@ -117,7 +111,7 @@ ul {
   border-top: 1px solid var(--ui-light);
 }
 [data-dark-mode="true"] ul {
-  border-top: none
+  border-top: none;
 }
 
 a,
@@ -127,7 +121,7 @@ a,
   color: var(--primary);
 }
 [data-dark-mode="true"] li a,
-[data-dark-mode="true"] .active-title  {
+[data-dark-mode="true"] .active-title {
   color: var(--text);
 }
 

@@ -91,6 +91,13 @@ const props = defineProps({
           <IconVue />Vue
         </li>
         <li
+          v-if="'svelte' in props.examples"
+          @click="current = 'svelte'"
+          :data-selected="current === 'svelte' || null"
+        >
+          <IconSvelte />Svelte
+        </li>
+        <li
           v-if="'js' in props.examples"
           @click="current = 'js'"
           :data-selected="current === 'js' || null"
@@ -124,13 +131,6 @@ const props = defineProps({
           :data-selected="current === 'pnpm' || null"
         >
           <IconPNPM />pnpm
-        </li>
-        <li
-          v-if="'svelte' in props.examples"
-          @click="current = 'svelte'"
-          :data-selected="current === 'svelte' || null"
-        >
-          <IconSvelte />svelte
         </li>
       </ul>
     </div>
