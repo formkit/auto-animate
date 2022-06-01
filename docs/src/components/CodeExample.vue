@@ -6,6 +6,7 @@ import IconYarn from "./IconYarn.vue"
 import IconNPM from "./IconNPM.vue"
 import IconPNPM from "./IconPNPM.vue"
 import IconJavaScript from "./IconJavaScript.vue"
+import IconSvelte from "./IconSvelte.vue"
 import { computed, PropType, ref } from "vue"
 import { vAutoAnimate } from "../../../src"
 import "../../assets/prism.css"
@@ -88,6 +89,13 @@ const props = defineProps({
           :data-selected="current === 'vue' || null"
         >
           <IconVue />Vue
+        </li>
+        <li
+          v-if="'svelte' in props.examples"
+          @click="current = 'svelte'"
+          :data-selected="current === 'svelte' || null"
+        >
+          <IconSvelte />Svelte
         </li>
         <li
           v-if="'js' in props.examples"
