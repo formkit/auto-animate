@@ -17,25 +17,24 @@ export default {
   }
 </script>
 
-<template>
-  <label for="add-tag-input" class="tag-input">
-    <ul use:autoAnimate> <!-- 👀 thats it folks! -->
-      {#each tags as tag}
-        <li class="tag">
-          <span>{tag}</span>
-          <span on:click={() => remove(tag)}>x</span>
-        </li>
-      {/each}
-      <li>
-        <input
-          id="add-tag-input"
-          type="text"
-          placeholder="Add a tag..."
-          on:keydown={addItem}
-        />
+<label for="add-tag-input" class="tag-input">
+  <ul use:autoAnimate> <!-- 👀 thats it folks! -->
+    {#each tags as tag}
+      <li class="tag">
+        <span>{tag}</span>
+        <span on:click={() => remove(tag)}>x</span>
       </li>
-    </ul>
-  </label>
-</template>`,
+    {/each}
+    <li>
+      <input
+        id="add-tag-input"
+        type="text"
+        placeholder="Add a tag..."
+        on:keydown={addItem}
+      />
+    </li>
+  </ul>
+</label>
+`,
   },
 }
