@@ -1,5 +1,5 @@
 <script>
-  import autoAnimate from "@formkit/vue"
+  import autoAnimate from '@formkit/auto-animate';
 </script>
 
 <ul use:autoAnimate>
