@@ -9,7 +9,7 @@
       <div class="your-logo-here">
         Your logo here!<br>
         <small>
-          Support our open-source efforts while promoting your product to a JavaScript audience.<br>
+          Support FormKit’s open-source efforts while promoting your product to a JavaScript audience.<br>
           Only one AutoAnimate Platinum Sponsor spot exists. Over 30,000 unique visitors and 3k GitHub stars in the first 30 days.<br>
           Click through for more details.
         </small>
