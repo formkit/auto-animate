@@ -101,6 +101,7 @@ input {
   background-color: transparent;
   display: block;
   padding: 0.25em 0;
+  color: var(--text);
   /* margin: 0.75em 0; */
 }
 
