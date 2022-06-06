@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue"
 import IconDown from "./IconDown.vue"
+import PlatinumSponsor from './PlatinumSponsor.vue'
 import { vAutoAnimate } from "../../../src/index"
 
 const show = ref(false)
@@ -29,6 +30,8 @@ if (typeof window !== "undefined") {
 </script>
 
 <template>
+  <PlatinumSponsor />
+
   <nav v-auto-animate>
     <div class="active" @click="show = !show">
       <span class="active-title">{{ activeTitle }}</span>

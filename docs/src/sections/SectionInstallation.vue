@@ -37,8 +37,8 @@ import AsideTip from "../components/AsideTip.vue"
 </template>
 
 <style scoped>
-section:nth-child(2) h2 {
-  padding-top: 4em;
+section:nth-child(3) h2 {
+  padding-top: 3em;
 }
 
 code {
