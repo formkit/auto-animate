@@ -46,7 +46,7 @@ code {
 }
 
 @media (min-width: 42em) {
-  section:nth-child(2) h2 {
+  section:nth-child(3) h2 {
     padding-top: 0em;
   }
 }

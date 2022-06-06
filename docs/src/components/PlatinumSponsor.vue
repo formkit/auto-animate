@@ -7,7 +7,7 @@
     <h5>Platinum Sponsor 👑</h5>
     <a href="https://github.com/sponsors/formkit">
       <div class="your-logo-here">
-        Your banner here!<br>
+        Your logo here!<br>
         <small>
           Support our open-source efforts while promoting your product to a JavaScript audience.<br>
           Only one AutoAnimate Platinum Sponsor spot exists. Over 30,000 unique visitors and 3k GitHub stars in the first 30 days.<br>
@@ -39,12 +39,17 @@ small {
   opacity: 0.66;
 }
 
+[data-dark-mode="true"] .your-logo-here {
+  border-color: var(--gray-m);
+}
+
 @media (min-width: 42em) {
   .platinum-sponsor {
     margin-left: -12em;
   }
   .your-logo-here {
-    aspect-ratio: 10/1;
+    aspect-ratio: 12/1;
+    margin-bottom: 6em;
   }
 }
 @media (min-width: 50em) {
