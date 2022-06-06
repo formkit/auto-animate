@@ -65,6 +65,7 @@ ul {
   border-radius: 1em;
   margin: 0.25em 0.75em 0.25em 0;
   user-select: none;
+  color: var(--text-d);
 }
 
 .tag svg {
