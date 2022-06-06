@@ -6,7 +6,7 @@
 
 AutoAnimate is a zero-config, drop-in animation utility that adds smooth transitions to your web app. You can use it with Vue, React, or any other JavaScript application.
 
-<a href="https://auto-animate.formkit.com"><img width="180" height="42" src="https://cdn.formk.it/web-assets/read-docs-auto-animate.svg" alt="Examples & Docs"></a>
+<a href="https://auto-animate.formkit.com"><img width="180" height="42" src="https://cdn.formk.it/web-assets/read-docs-auto-animate-v2.svg" alt="Examples & Docs"></a>
 
 With one line of code, you can improve your interfaces, for example:
 
