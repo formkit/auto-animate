@@ -5,7 +5,7 @@
 <template>
   <div class="platinum-sponsor">
     <h5>Current bid: $3/day</h5>
-    <a href="mailto:admin@formkit.com">
+    <a href="mailto:ads@formkit.com">
       <div class="your-logo-here">
         Your image here!<br>
         <small>
