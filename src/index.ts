@@ -288,9 +288,14 @@ function raw(str: string): number {
  */
 function getCoords(el: Element): Coordinates {
   const rect = el.getBoundingClientRect()
+  const optionsOrPlugin = getOptions(el)
+  const offsetY = typeof optionsOrPlugin !== "function" && optionsOrPlugin.scrollContainer ?
+    optionsOrPlugin.scrollContainer.scrollTop : window.scrollY
+  const offsetX = typeof optionsOrPlugin !== "function" && optionsOrPlugin.scrollContainer ?
+    optionsOrPlugin.scrollContainer.scrollLeft : window.scrollX
   return {
-    top: rect.top + window.scrollY,
-    left: rect.left + window.scrollX,
+    top: rect.top + offsetY,
+    left: rect.left + offsetX,
     width: rect.width,
     height: rect.height,
   }
@@ -532,6 +537,11 @@ export interface AutoAnimateOptions {
    * Default: ease-in-out
    */
   easing: "linear" | "ease-in" | "ease-out" | "ease-in-out" | string
+  /**
+   * Should be provided when animated elements are wrapped with a custom scroll container.
+   * Elements coordinates will be based on this container scroll offsets.
+   */
+  scrollContainer?: Element
 }
 
 /**
