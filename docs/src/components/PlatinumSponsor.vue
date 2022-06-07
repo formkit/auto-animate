@@ -4,14 +4,14 @@
 
 <template>
   <div class="platinum-sponsor">
-    <h5>Platinum Sponsor 👑</h5>
-    <a href="https://github.com/sponsors/formkit">
+    <h5>Current bid: $3/day</h5>
+    <a href="mailto:admin@formkit.com">
       <div class="your-logo-here">
-        Your logo here!<br>
+        Your image here!<br>
         <small>
-          Support FormKit’s open-source efforts while promoting your product to a JavaScript audience.<br>
-          Only one AutoAnimate Platinum Sponsor spot exists. Over 30,000 unique visitors and 3k GitHub stars in the first 30 days.<br>
-          Click through for more details.
+          Promote your product to a JavaScript audience — over 30,000 visitors in the last 30 days.<br>
+          Click through to contact for details.<br>
+          Current bid: $3/day
         </small>
       </div>
     </a>
