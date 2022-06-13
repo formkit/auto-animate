@@ -80,6 +80,27 @@ async function vueBuild() {
   await fs.writeFile(resolve(rootDir, "dist/vue/index.mjs"), raw)
 }
 
+async function angularBuild() {
+  info("Rolling up Angular package")
+  await execa("npx", [
+    "rollup",
+    "-c",
+    "rollup.config.js",
+    "--environment",
+    "FRAMEWORK:angular",
+  ])
+  /**
+   * This is a super hack — for some reason these imports need to be explicitly
+   * to .mjs files so...we make it so.
+   */
+  let raw = await fs.readFile(resolve(rootDir, "dist/angular/index.mjs"), "utf8")
+  raw = raw.replace(
+    "import autoAnimate from '../index';",
+    "import autoAnimate from '../index.mjs';"
+  )
+  await fs.writeFile(resolve(rootDir, "dist/angular/index.mjs"), raw)
+}
+
 async function declarationsBuild() {
   info("Outputting declarations")
   await execa("npx", [
@@ -189,6 +210,7 @@ await baseBuild()
 await baseBuildMin()
 await reactBuild()
 await vueBuild()
+await angularBuild()
 await declarationsBuild()
 await bundleDeclarations()
 await addPackageJSON()

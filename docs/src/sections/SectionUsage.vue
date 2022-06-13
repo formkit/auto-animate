@@ -4,12 +4,14 @@ import AsideTip from "../components/AsideTip.vue"
 import dropdown from "../examples/dropdown"
 import config from "../examples/config"
 import { vueDirectiveMain, vueDirectiveApp } from "../examples/vue"
+import { angularDirectiveMain, angularDirectiveApp } from "../examples/angular"
 import reactHook from "../examples/react"
 import ActualReactApp from "../examples/react/ActualReactApp.vue"
 import ActualDropdown from "../examples/dropdown/ActualDropdown.vue"
 import svelteAction from "../examples/svelte"
 import ActualSvelteApp from "../examples/svelte/ActualSvelteApp.vue"
 import ActualVueApp from "../examples/vue/ActualVueApp.vue"
+import ActualAngularApp from "../examples/angular/ActualAngularApp.vue"
 </script>
 <template>
   <section id="usage">
@@ -131,5 +133,26 @@ import ActualVueApp from "../examples/vue/ActualVueApp.vue"
         &#125;&#125;&gt;</code
       >
     </AsideTip>
+
+    <h2 id="usage-angular">Angular directive</h2>
+    <p>
+      Angular users can globally register the
+      <code>auto-animate</code> directive. This makes adding transitions and
+      animations as easy as applying an attribute. Import the AutoAnimateModule from
+      <code>@formkit/auto-animate/angular</code> and register it with your Angular app:
+    </p>
+    <CodeExample :examples="angularDirectiveMain" title="App" />
+    <p>
+      Once you’ve registered the plugin, it can be applied anywhere in your
+      application by adding the <code>auto-animate</code> directive to the
+      parent element:
+    </p>
+    <CodeExample :examples="angularDirectiveApp" title="App" />
+    <ActualAngularApp />
+    <AsideTip>
+      Angular users can pass options by directly setting the options input
+      <code>&lt;ul auto-animate [options]="{ duration: 100 }"&gt;</code>
+    </AsideTip>
+
   </section>
 </template>
