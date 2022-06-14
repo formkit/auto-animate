@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue"
 import IconDown from "./IconDown.vue"
-import PlatinumSponsor from './PlatinumSponsor.vue'
+import PoliteAd from './PoliteAd.vue'
 import { vAutoAnimate } from "../../../src/index"
 
 const show = ref(false)
@@ -30,7 +30,7 @@ if (typeof window !== "undefined") {
 </script>
 
 <template>
-  <PlatinumSponsor />
+  <PoliteAd />
 
   <nav v-auto-animate>
     <div class="active" @click="show = !show">
