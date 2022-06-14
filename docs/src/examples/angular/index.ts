@@ -1,6 +1,6 @@
 const angularDirectiveMain = {
-  js: {
-    ext: "ts",
+  angular: {
+    ext: "angular",
     language: "typescript",
     example: `import { NgModule } from '@angular/core';
 import { AutoAnimateModule } from '@formkit/auto-animate/angular'
