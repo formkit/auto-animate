@@ -19,7 +19,7 @@ const rootDir = resolve(__dirname)
 const isPublishing = process.argv[2] === "--publish"
 
 async function clean() {
-  await execa("rm", ["-rf", `${rootDir}/dist`])
+  await execa("npx shx rm", ["-rf", `${rootDir}/dist`])
 }
 
 async function baseBuild() {
@@ -114,20 +114,24 @@ async function declarationsBuild() {
 
 async function bundleDeclarations() {
   info("Bundling declarations")
-  await execa("mv", [
+  await execa("npx shx mv", [
     `${rootDir}/dist/src/index.d.ts`,
     `${rootDir}/dist/index.d.ts`,
   ])
-  await execa("mv", [
+  await execa("npx shx mv", [
     `${rootDir}/dist/src/react/index.d.ts`,
     `${rootDir}/dist/react/index.d.ts`,
   ])
-  await execa("mv", [
+  await execa("npx shx mv", [
     `${rootDir}/dist/src/vue/index.d.ts`,
     `${rootDir}/dist/vue/index.d.ts`,
   ])
-  await execa("rm", ["-rf", `${rootDir}/dist/src`])
-  await execa("rm", [`${rootDir}/dist/index.js`])
+  await execa("npx shx mv", [
+    `${rootDir}/dist/src/angular/index.d.ts`,
+    `${rootDir}/dist/angular/index.d.ts`,
+  ])
+  await execa("npx shx rm", ["-rf", `${rootDir}/dist/src`])
+  await execa("npx shx rm", [`${rootDir}/dist/index.js`])
 }
 
 async function addPackageJSON() {
@@ -145,8 +149,8 @@ async function addPackageJSON() {
 
 async function addAssets() {
   info("Writing readme and license.")
-  await execa("cp", [`${rootDir}/README.md`, `${rootDir}/dist/README.md`])
-  await execa("cp", [`${rootDir}/LICENSE`, `${rootDir}/dist/LICENSE`])
+  await execa("npx shx cp", [`${rootDir}/README.md`, `${rootDir}/dist/README.md`])
+  await execa("npx shx cp", [`${rootDir}/LICENSE`, `${rootDir}/dist/LICENSE`])
 }
 
 async function prepareForPublishing() {
