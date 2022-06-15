@@ -224,12 +224,21 @@ const props = defineProps({
 }
 
 .frameworks {
+  -webkit-overflow-scrolling: touch;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
   display: flex;
   align-items: center;
   list-style-type: none;
   padding: 0;
   margin: 0;
+  overflow: auto;
 }
+
+.frameworks::-webkit-scrollbar {
+  display: none;
+}
+
 .frameworks li {
   display: flex;
   align-items: center;
@@ -237,6 +246,7 @@ const props = defineProps({
   padding: 0.75em 1em;
   cursor: pointer;
   margin-bottom: 0;
+  white-space: nowrap;
 }
 .frameworks li:hover {
   background-color: var(--gray-m);
