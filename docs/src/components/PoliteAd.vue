@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <section class="polite-ad-area">
+  <section class="polite-area">
     <div class="polite-header">
       <h5>Sponsored Ad</h5>
       <a class="polite-sponsored" href="https://formkit.com/ads">Want this Spot? Current bid: $4/day →</a>
@@ -11,14 +11,14 @@
     <a href="https://formvalidation.io/">
       <picture>
         <source
-          srcset="https://cdn.formk.it/web-assets/ads/FormValidation-Banner-1500x250.png"
+          srcset="https://cdn.formk.it/polite/FormValidation-1500x250.png"
           media="(min-width: 750px)"
         >
         <source
-          srcset="https://cdn.formk.it/web-assets/ads/FormValidation-Banner-750x250.png"
+          srcset="https://cdn.formk.it/polite/FormValidation-750x250.png"
           media="(max-width: 749px)"
         >
-        <img class="ad-spot" src="https://cdn.formk.it/web-assets/ads/FormValidation-Banner-1500x250.png" alt="FormValidation.io advertisement" />
+        <img class="polite-spot" src="https://cdn.formk.it/polite/FormValidation-1500x250.png" alt="FormValidation.io poster" />
       </picture>
     </a>
     <a v-if="false" href="mailto:ads@formkit.com">
@@ -40,7 +40,7 @@ h5 {
   margin-top: 0;
 }
 
-.polite-ad-area {
+.polite-area {
   margin-bottom: 2em;
 }
 
@@ -63,7 +63,7 @@ h5 {
   color: var(--primary);
   filter: grayscale(0);
 }
-.ad-spot {
+.polite-spot {
   max-width: 100%;
   border-radius: 1em;
 }
@@ -89,7 +89,7 @@ small {
 }
 
 @media (min-width: 42em) {
-  .polite-ad-area {
+  .polite-area {
     margin-left: -12em;
     margin-bottom: 6em;
   }
@@ -99,7 +99,7 @@ small {
   }
 }
 @media (min-width: 50em) {
-  .polite-ad-area {
+  .polite-area {
     margin-left: -18em;
   }
 }
