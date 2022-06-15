@@ -7,7 +7,8 @@
     "animation",
     "transition",
     "react",
-    "vue"
+    "vue",
+    "angular"
   ],
   "type": "module",
   "main": "index.mjs",
@@ -21,6 +22,7 @@
     "build": "node ./.build.mjs",
     "build-docs": "cd docs && vite-ssg build --config=./docs/vite.config.ts",
     "publish": "node ./.build.mjs --publish",
+    "cypress:open": "cypress open",
     "cypress:server": "cd docs && npx vite --config=./vite.config.ts --port=5555"
   },
   "exports": {
@@ -32,11 +34,16 @@
       "import": "./react/index.mjs",
       "types": "./react/index.d.ts"
     },
+    "./angular": {
+      "import": "./angular/index.mjs",
+      "types": "./angular/index.d.ts"
+    },
     ".": {
       "import": "./index.mjs"
     }
   },
   "devDependencies": {
+    "@angular/core": "^13.3.11",
     "@formkit/vue": "^1.0.0-beta.8",
     "@rollup/plugin-typescript": "^8.3.2",
     "@types/node": "^17.0.33",
@@ -63,10 +70,14 @@
   },
   "dependencies": {},
   "peerDependencies": {
+    "@angular/core": "^11.0.0",
     "react": "^16.8.0",
     "vue": "^3.0.0"
   },
   "peerDependenciesMeta": {
+    "@angular/core": {
+      "optional": true
+    },
     "vue": {
       "optional": true
     },

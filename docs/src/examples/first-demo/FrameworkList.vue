@@ -23,13 +23,15 @@ const frameworks = ref([
 
 const disableSort = computed(() => {
   let isSorted = true
-  let currentValue = frameworks.value[0].name
-  frameworks.value.forEach(framework => {
-    if (currentValue > framework.name) {
-      isSorted = false
-    }
-    currentValue = framework.name
-  })
+  if (frameworks.value[0]) {
+    let currentValue = frameworks.value[0].name
+    frameworks.value.forEach(framework => {
+      if (currentValue > framework.name) {
+        isSorted = false
+      }
+      currentValue = framework.name
+    })
+  }
   return isSorted
 })
 

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ref, onMounted } from 'vue'
 import TheHeader from "../components/TheHeader.vue"
 import TheFooter from "../components/TheFooter.vue"
 import HeroTitle from "../components/HeroTitle.vue"
@@ -8,6 +9,12 @@ import SectionWhy from "../sections/SectionWhy.vue"
 import SectionUsage from "../sections/SectionUsage.vue"
 import SectionExamples from "../sections/SectionExamples.vue"
 import SectionPlugins from "../sections/SectionPlugins.vue"
+import ReducedMotionWarning from '../components/ReducedMotionWarning.vue'
+
+const prefersReducedMotion = ref(false)
+onMounted(() => {
+  prefersReducedMotion.value = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+})
 </script>
 
 <template>
@@ -15,6 +22,7 @@ import SectionPlugins from "../sections/SectionPlugins.vue"
   <HeroTitle />
   <div class="documentation">
     <Navigation />
+    <ReducedMotionWarning v-if="prefersReducedMotion" />
     <SectionInstallation />
     <SectionUsage />
     <SectionExamples />

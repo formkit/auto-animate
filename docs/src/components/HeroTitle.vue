@@ -13,13 +13,13 @@ import introExample from "../examples/intro"
   <section id="hero">
     <div class="intro">
       <h1 class="title">
-        Add <span class="highlight">motion</span> to your apps with a single line
-        of code.
+        Add <span class="highlight">motion</span> to your apps with a single
+        line of code.
       </h1>
       <p>
         AutoAnimate is a zero-config, drop-in animation utility that adds smooth
-        transitions to your web app. You can use it with React, Vue, or any
-        other JavaScript application.
+        transitions to your web app. You can use it with React, Vue, Svelte, or
+        any other JavaScript application.
       </p>
       <div>
         <a class="button" href="#installation">Get started<IconArrow /></a>
@@ -30,8 +30,8 @@ import introExample from "../examples/intro"
         /></a>
       </div>
       <a class="byline" href="https://www.formkit.com">
-        <FormKitLogo class="formkit" width="16" height="16" /> made with
-        ♥ by the FormKit team.
+        <FormKitLogo class="formkit" width="16" height="16" /> made with ♥ by
+        the FormKit team.
       </a>
     </div>
     <CodeExample title="App" :examples="introExample" class="example" />
@@ -153,7 +153,7 @@ section {
 }
 
 .byline svg {
-  top: .15em;
+  top: 0.15em;
 }
 
 .byline:hover {

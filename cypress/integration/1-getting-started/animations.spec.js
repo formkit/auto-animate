@@ -50,6 +50,11 @@ describe("the documentation site", () => {
     cy.hasAnimations(22)
   })
 
+  it("animates the angular example", () => {
+    cy.get(".angular-example button:first").click()
+    cy.hasAnimations(4)
+  })
+
   it("animates the card example", () => {
     cy.get(".card-example button:first-child").click()
     cy.hasAnimations(3)
@@ -85,7 +90,7 @@ describe("the documentation site", () => {
   it("animates the FormKit example", () => {
     cy.get(".formkit-example button[type='submit']").click()
     cy.hasAnimations(13)
-    cy.get(".formkit-example input[name='text_2']").type('FormKit1')
+    cy.get(".formkit-example input[name='text_2']").type("FormKit1")
     cy.hasAnimations(4)
   })
 })
