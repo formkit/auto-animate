@@ -51,8 +51,8 @@ describe("the documentation site", () => {
   })
 
   it("animates the angular example", () => {
-    cy.get(".angular-example button").click()
-    cy.hasAnimations(5)
+    cy.get(".angular-example button:first").click()
+    cy.hasAnimations(4)
   })
 
   it("animates the card example", () => {

@@ -24,14 +24,21 @@ const angularDirectiveApp = {
 @Component({
   selector: 'app-root',
   template: \`
-    <ul auto-animate>
-      <li *ngFor="let item of items">{{item}}</li>
-    </ul>
-    <button (click)="this.items.push('🍒 Cherry')">Add Cherry</button>
+
+    <div *ngFor="let story of stories; index as i">
+      <div class="story-card" auto-animate>
+        <h2>{{ story.title }}</h2>
+        <div *ngIf="story.showStory">{{ story.story }}</div>
+        <button (click)="story.showStory = !story.showStory">Toggle story</button>
+      </div>
+    </div>
   \`
 })
 export class AppComponent {
-  items: string[] = ['🍎 Apple', '🍌 Banana', '🍓 Strawberry'];
+  stories = [
+    {title: 'The Ant and The Grasshopper', showStory: false, story: "The ant and the grasshopper were good friends..."},
+    {title: 'The Boy Who Cried Wolf', showStory: false, story: "There was once a shepherd boy who liked to play tricks..."},
+  ];
 }`,
   },
 }
