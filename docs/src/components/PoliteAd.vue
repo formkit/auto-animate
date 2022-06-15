@@ -6,7 +6,7 @@
   <section class="polite-ad-area">
     <div class="polite-header">
       <h5>Sponsored Ad</h5>
-      <a class="polite-sponsored" href="https://formkit.com/ads">Want this spot? Beat the current bid →</a>
+      <a class="polite-sponsored" href="https://formkit.com/ads">Want this Spot? Current bid: $4/day →</a>
     </div>
     <a href="https://formvalidation.io/">
       <picture>
