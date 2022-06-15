@@ -24,7 +24,6 @@ const angularDirectiveApp = {
 @Component({
   selector: 'app-root',
   template: \`
-
     <div *ngFor="let story of stories">
       <div class="story-card" auto-animate>
         <h2>{{ story.title }}</h2>
