@@ -1,7 +1,7 @@
 const angularDirectiveMain = {
   angular: {
     ext: "angular",
-    language: "typescript",
+    language: "jsx",
     example: `import { NgModule } from '@angular/core';
 import { AutoAnimateModule } from '@formkit/auto-animate/angular'
 
@@ -18,7 +18,7 @@ export class AppModule {}
 const angularDirectiveApp = {
   angular: {
     ext: "angular",
-    language: "html",
+    language: "jsx",
     example: `import { Component } from '@angular/core';
 
 @Component({

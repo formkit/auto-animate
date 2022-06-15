@@ -68,21 +68,5 @@
     "vue-github-button": "^3.0.3",
     "vue-router": "4"
   },
-  "dependencies": {},
-  "peerDependencies": {
-    "@angular/core": "^11.0.0",
-    "react": "^16.8.0",
-    "vue": "^3.0.0"
-  },
-  "peerDependenciesMeta": {
-    "@angular/core": {
-      "optional": true
-    },
-    "vue": {
-      "optional": true
-    },
-    "react": {
-      "optional": true
-    }
-  }
+  "dependencies": {}
 }
