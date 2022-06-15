@@ -25,7 +25,7 @@ const angularDirectiveApp = {
   selector: 'app-root',
   template: \`
 
-    <div *ngFor="let story of stories; index as i">
+    <div *ngFor="let story of stories">
       <div class="story-card" auto-animate>
         <h2>{{ story.title }}</h2>
         <div *ngIf="story.showStory">{{ story.story }}</div>
