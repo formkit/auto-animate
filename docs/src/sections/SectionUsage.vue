@@ -3,7 +3,7 @@ import CodeExample from "../components/CodeExample.vue"
 import AsideTip from "../components/AsideTip.vue"
 import dropdown from "../examples/dropdown"
 import config from "../examples/config"
-import { vueDirectiveMain, vueDirectiveApp } from "../examples/vue"
+import { vueDirectiveMain, vueDirectiveApp, vueComposable } from "../examples/vue"
 import { angularDirectiveMain, angularDirectiveApp } from "../examples/angular"
 import reactHook from "../examples/react"
 import ActualReactApp from "../examples/react/ActualReactApp.vue"
@@ -11,6 +11,7 @@ import ActualDropdown from "../examples/dropdown/ActualDropdown.vue"
 import svelteAction from "../examples/svelte"
 import ActualSvelteApp from "../examples/svelte/ActualSvelteApp.vue"
 import ActualVueApp from "../examples/vue/ActualVueApp.vue"
+import AnotherActualVueApp from "../examples/vue/AnotherActualVueApp.vue"
 import ActualAngularApp from "../examples/angular/ActualAngularApp.vue"
 </script>
 <template>
@@ -98,7 +99,7 @@ import ActualAngularApp from "../examples/angular/ActualAngularApp.vue"
     <CodeExample :examples="reactHook" title="App" />
     <ActualReactApp />
 
-    <h2 id="usage-vue">Vue directive</h2>
+    <h2 id="usage-vue-directive">Vue directive</h2>
     <p>
       Vue users can globally register the
       <code>v-auto-animate</code> directive. This makes adding transitions and
@@ -118,6 +119,26 @@ import ActualAngularApp from "../examples/angular/ActualAngularApp.vue"
       <code>&lt;ul v-auto-animate="{ duration: 100 }"&gt;</code>
     </AsideTip>
 
+    <h2 id="usage-vue-composable">Vue composable</h2>
+    <p>
+      As an alternative to the <code>v-auto-animate</code> directive, Vue devs
+      can use the <code>useAutoAnimate</code> composable. This composable
+      supports all the same great features, but also enhances the TypeScript experience
+      by type-checking and autocompleting any custom options you might pass.
+    </p>
+    <p>
+      Import the composable from <code>@formkit/auto-animate/vue</code>, and call it in
+      <code>script setup</code> to create a 
+      <a href="https://vuejs.org/guide/essentials/template-refs.html#template-refs" target="_blank" rel="noopener noreferrer">template ref</a>.
+      Use the <code>ref</code> attribute on your parent element to store it in the template ref:
+    </p>
+    <CodeExample :examples="vueComposable" title="App" />
+    <AnotherActualVueApp />
+    <AsideTip>
+      Vue users can pass options directly to the composable: <br />
+      <code>useAutoAnimate({ duration: 100 })</code>
+    </AsideTip>
+
     <h2 id="usage-svelte">Svelte action</h2>
     <p>
       The root <code>autoAnimate</code> function can be directly used as a
@@ -127,7 +148,7 @@ import ActualAngularApp from "../examples/angular/ActualAngularApp.vue"
     <CodeExample :examples="svelteAction" title="App" />
     <ActualSvelteApp />
     <AsideTip>
-      Svelte users can pass options by directly setting the directive’s value
+      Svelte users can pass options by directly setting the action’s value
       <code
         >&lt;ul use:autoAnimate=&#123;&#123; duration: 1000
         &#125;&#125;&gt;</code
