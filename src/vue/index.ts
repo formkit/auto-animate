@@ -1,4 +1,4 @@
-import { ref, onMounted, Plugin, Ref } from "vue"
+import { ref, onMounted, watchEffect, Plugin, Ref } from "vue"
 import autoAnimate, { vAutoAnimate, AutoAnimateOptions, AutoAnimationPlugin } from "../index"
 
 export const autoAnimatePlugin: Plugin = {
@@ -10,21 +10,20 @@ export const autoAnimatePlugin: Plugin = {
 /**
  * AutoAnimate hook for adding dead-simple transitions and animations to Vue.
  * @param options - Auto animate options or a plugin
- * @returns A function ref, which you should bind to the `ref` attribute
- * of your target element so `autoAnimate` can access it.
+ * @returns A template ref. Use the `ref` attribute of your parent element
+ * to store the element in this template ref.
  */
  export function useAutoAnimate<T extends Element>(
   options: Partial<AutoAnimateOptions> | AutoAnimationPlugin = {}
-) {
+): Ref<T> {
   const element = ref<T>()
-  const functionRef: (el: T) => void = el => {
-    if (el) element.value = el
-  }
 
   onMounted(() => {
-    if (element.value instanceof HTMLElement)
-      autoAnimate(element.value, options)
+    watchEffect(() => {
+      if (element.value instanceof HTMLElement)
+        autoAnimate(element.value, options)
+    })
   })
 
-  return functionRef
+  return element as Ref<T>
 }
