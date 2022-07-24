@@ -52,6 +52,15 @@ const props = defineProps({
     required: false,
   },
 })
+
+var copyStatus = ref(false)
+function copyCode(value) {
+  window.navigator.clipboard.writeText(value)
+  copyStatus.value = true
+  setTimeout(() => {
+    copyStatus.value = false
+  }, 2000)
+}
 </script>
 
 <template>
@@ -71,9 +80,14 @@ const props = defineProps({
           class="code-example"
           :key="key"
           v-html="currentExample.highlighted"
+          @click="copyCode(currentExample.example)"
         ></code>
       </template>
+      <template v-if="copyStatus">
+        <span class="copy-status">Copied!</span>
+      </template>
     </div>
+
     <div class="window-footer">
       <ul class="frameworks">
         <li
@@ -186,6 +200,12 @@ const props = defineProps({
 
 .code-example::-webkit-scrollbar {
   display: none;
+}
+
+.copy-status {
+  padding-left: 1em;
+  color: var(--gray-l);
+  font-family: var(--system-stack);
 }
 
 .control {
