@@ -41,7 +41,8 @@ if (typeof window !== "undefined") {
       <li><a href="#installation">Installation</a></li>
       <li><a href="#usage">Usage</a></li>
       <li><a href="#usage-react">React hook</a></li>
-      <li><a href="#usage-vue">Vue directive</a></li>
+      <li><a href="#usage-vue-directive">Vue directive</a></li>
+      <li><a href="#usage-vue-composable">Vue composable</a></li>
       <li><a href="#usage-svelte">Svelte action</a></li>
       <li><a href="#usage-angular">Angular directive</a></li>
       <li><a href="#examples">Examples</a></li>
