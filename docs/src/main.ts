@@ -9,6 +9,10 @@ import "../assets/main.css"
 const routes: RouteRecordRaw[] = [
   { path: "/", component: PageHome },
   { path: "/lists", component: PageList },
+  {
+    path: "/:catchAll(.*)",
+    redirect: "/",
+  },
 ]
 
 export const createApp = ViteSSG(App, { routes }, ({ app }) => {
