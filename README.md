@@ -19,11 +19,11 @@ With one line of code, you can improve your interfaces, for example:
 Install using your package manager of choice.
 
 ```bash
-#yarn
+# yarn
 yarn add @formkit/auto-animate
-#npm
+# npm
 npm install @formkit/auto-animate
-#pnpm
+# pnpm
 pnpm add @formkit/auto-animate
 ```
 

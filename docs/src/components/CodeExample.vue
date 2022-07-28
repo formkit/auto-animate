@@ -7,6 +7,7 @@ import IconNPM from "./IconNPM.vue"
 import IconPNPM from "./IconPNPM.vue"
 import IconJavaScript from "./IconJavaScript.vue"
 import IconSvelte from "./IconSvelte.vue"
+import IconAngular from "./IconAngular.vue"
 import { computed, PropType, ref } from "vue"
 import { vAutoAnimate } from "../../../src"
 import "../../assets/prism.css"
@@ -52,6 +53,15 @@ const props = defineProps({
     required: false,
   },
 })
+
+var copyStatus = ref(false)
+function copyCode(value) {
+  window.navigator.clipboard.writeText(value)
+  copyStatus.value = true
+  setTimeout(() => {
+    copyStatus.value = false
+  }, 2000)
+}
 </script>
 
 <template>
@@ -71,9 +81,14 @@ const props = defineProps({
           class="code-example"
           :key="key"
           v-html="currentExample.highlighted"
+          @click="copyCode(currentExample.example)"
         ></code>
       </template>
+      <template v-if="copyStatus">
+        <span class="copy-status">Copied!</span>
+      </template>
     </div>
+
     <div class="window-footer">
       <ul class="frameworks">
         <li
@@ -96,6 +111,13 @@ const props = defineProps({
           :data-selected="current === 'svelte' || null"
         >
           <IconSvelte />Svelte
+        </li>
+        <li
+          v-if="'angular' in props.examples"
+          @click="current = 'angular'"
+          :data-selected="current === 'angular' || null"
+        >
+          <IconAngular />Angular
         </li>
         <li
           v-if="'js' in props.examples"
@@ -188,6 +210,12 @@ const props = defineProps({
   display: none;
 }
 
+.copy-status {
+  padding-left: 1em;
+  color: var(--gray-l);
+  font-family: var(--system-stack);
+}
+
 .control {
   width: 0.8em;
   height: 0.8em;
@@ -216,12 +244,21 @@ const props = defineProps({
 }
 
 .frameworks {
+  -webkit-overflow-scrolling: touch;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
   display: flex;
   align-items: center;
   list-style-type: none;
   padding: 0;
   margin: 0;
+  overflow: auto;
 }
+
+.frameworks::-webkit-scrollbar {
+  display: none;
+}
+
 .frameworks li {
   display: flex;
   align-items: center;
@@ -229,6 +266,7 @@ const props = defineProps({
   padding: 0.75em 1em;
   cursor: pointer;
   margin-bottom: 0;
+  white-space: nowrap;
 }
 .frameworks li:hover {
   background-color: var(--gray-m);

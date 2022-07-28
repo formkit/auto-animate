@@ -125,9 +125,9 @@ function updatePos(el: Element) {
     typeof optionsOrPlugin === "function" ? 500 : optionsOrPlugin.duration
   debounces.set(
     el,
-    setTimeout(() => {
+    setTimeout(async() => {
       const currentAnimation = animations.get(el)
-      if (!currentAnimation || currentAnimation.finished) {
+      if (!currentAnimation || await currentAnimation.finished) {
         coords.set(el, getCoords(el))
         observePosition(el)
       }
