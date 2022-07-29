@@ -125,9 +125,9 @@ function updatePos(el: Element) {
     typeof optionsOrPlugin === "function" ? 500 : optionsOrPlugin.duration
   debounces.set(
     el,
-    setTimeout(async() => {
+    setTimeout(async () => {
       const currentAnimation = animations.get(el)
-      if (!currentAnimation || await currentAnimation.finished) {
+      if (!currentAnimation || (await currentAnimation.finished)) {
         coords.set(el, getCoords(el))
         observePosition(el)
       }
@@ -373,6 +373,9 @@ function forEach(
 function remain(el: Element) {
   const oldCoords = coords.get(el)
   const newCoords = getCoords(el)
+  if (el.tagName === "TR") {
+    console.log(oldCoords, newCoords)
+  }
   let animation: Animation
   if (!oldCoords) return
   const pluginOrOptions = getOptions(el)

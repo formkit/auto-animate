@@ -8,7 +8,8 @@
     "transition",
     "react",
     "vue",
-    "angular"
+    "angular",
+    "svelte"
   ],
   "type": "module",
   "main": "index.mjs",
