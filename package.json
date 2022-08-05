@@ -63,7 +63,7 @@
   },
   "dependencies": {},
   "peerDependencies": {
-    "react": "^16.8.0",
+    "react": "^16.8.0 || ^17.0.2 || ^18.2.0 ",
     "vue": "^3.0.0"
   },
   "peerDependenciesMeta": {
