@@ -411,7 +411,10 @@ function remain(el: Element) {
       start.height = `${heightFrom}px`
       end.height = `${heightTo}px`
     }
-    animation = el.animate([start, end], pluginOrOptions)
+    animation = el.animate([start, end], {
+      duration: pluginOrOptions.duration,
+      easing: pluginOrOptions.easing,
+    })
   } else {
     animation = new Animation(
       pluginOrOptions(el, "remain", oldCoords, newCoords)
@@ -547,6 +550,11 @@ export interface AutoAnimateOptions {
    * Default: ease-in-out
    */
   easing: "linear" | "ease-in" | "ease-out" | "ease-in-out" | string
+  /**
+   * Ignore a user’s "reduce motion" setting and enable animations. It is not
+   * recommended to use this.
+   */
+  disrespectUserMotionPreference?: boolean
 }
 
 /**
@@ -576,7 +584,12 @@ export default function autoAnimate(
 ) {
   if (mutations && resize) {
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)")
-    if (mediaQuery.matches) return
+    if (
+      mediaQuery.matches &&
+      typeof config !== "function" &&
+      !config.disrespectUserMotionPreference
+    )
+      return
 
     if (getComputedStyle(el).position === "static") {
       Object.assign(el.style, { position: "relative" })
