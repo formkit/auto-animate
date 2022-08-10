@@ -241,7 +241,7 @@ function getElements(mutations: MutationRecord[]): Set<Element> | false {
 }
 
 /**
- *
+ * Assign the target to an element.
  * @param el - The root element
  * @param child
  */
@@ -345,6 +345,16 @@ function getOptions(el: Element): AutoAnimateOptions | AutoAnimationPlugin {
   return TGT in el && options.has((el as Element & { __aa_tgt: Element })[TGT])
     ? options.get((el as Element & { __aa_tgt: Element })[TGT])!
     : { duration: 250, easing: "ease-in-out" }
+}
+
+/**
+ * Returns the target of a given animation (generally the parent).
+ * @param el - An element to check for a target
+ * @returns
+ */
+function getTarget(el: Element): Element | undefined {
+  if (TGT in el) return (el as Element & { __aa_tgt: Element })[TGT]
+  return undefined
 }
 
 /**
@@ -455,6 +465,8 @@ function remove(el: Element) {
     next.parentNode.insertBefore(el, next)
   } else if (prev && prev.parentNode) {
     prev.parentNode.appendChild(el)
+  } else {
+    getTarget(el)?.appendChild(el)
   }
   const [top, left, width, height] = deletePosition(el)
   const optionsOrPlugin = getOptions(el)
