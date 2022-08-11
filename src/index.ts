@@ -611,7 +611,9 @@ export default function autoAnimate(
 export const vAutoAnimate = {
   mounted: (
     el: HTMLElement,
-    binding: { value: Partial<AutoAnimateOptions> | AutoAnimationPlugin }
+    binding: {
+      value: Partial<AutoAnimateOptions> | AutoAnimationPlugin | undefined
+    }
   ) => {
     autoAnimate(el, binding.value || {})
   },
