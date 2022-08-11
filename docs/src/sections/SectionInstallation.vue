@@ -31,7 +31,7 @@ import AsideTip from "../components/AsideTip.vue"
     <p>Aaaaand, you’re done! That was fast. 🐇</p>
     <AsideTip>
       If you are using React, you can use the <code><a href="#usage-react">useAutoAnimate</a></code> hook.
-      If you are using Vue, you can use the <code><a href="#usage-vue">v-auto-animate</a></code> directive.
+      If you are using Vue, you can use the <code><a href="#usage-vue-directive">v-auto-animate</a></code> directive or the <code><a href="#usage-vue-composable">useAutoAnimate</a></code> composable.
     </AsideTip>
   </section>
 </template>
