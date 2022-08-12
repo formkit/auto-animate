@@ -9,15 +9,19 @@ import AsideTip from "../components/AsideTip.vue"
   <section id="demo">
     <h2>A quick demo</h2>
     <p>
-      AutoAnimate adds automatic animations to your JavaScript applications with a single line of code.
-      Here's the same list component with and without AutoAnimate applied to the wrapping element:
+      AutoAnimate adds automatic animations to your JavaScript applications with
+      a single line of code. Here's the same list component with and without
+      AutoAnimate applied to the wrapping element:
     </p>
     <HomepageDemo />
-    <p>That's a notable improvement in UX with no additional developer effort! 🎉</p>
+    <p>
+      That's a notable improvement in UX with no additional developer effort! 🎉
+    </p>
     <AsideTip>
-      Importantly, our list component did not need to be written with AutoAnimate in mind. AutoAnimate
-      can be applied retroactively to any markup in your codebase, including 3rd-party code — just supply
-      the parent DOM node and let AutoAnimate do the rest! 🤯
+      Importantly, our list component did not need to be written with
+      AutoAnimate in mind. AutoAnimate can be applied retroactively to any
+      markup in your codebase, including 3rd-party code — just supply the parent
+      DOM node and let AutoAnimate do the rest! 🤯
     </AsideTip>
   </section>
 
@@ -29,10 +33,6 @@ import AsideTip from "../components/AsideTip.vue"
     </p>
     <CodeExample title="~/my-app" :examples="installation"></CodeExample>
     <p>Aaaaand, you’re done! That was fast. 🐇</p>
-    <AsideTip>
-      If you are using React, you can use the <code><a href="#usage-react">useAutoAnimate</a></code> hook.
-      If you are using Vue, you can use the <code><a href="#usage-vue-directive">v-auto-animate</a></code> directive or the <code><a href="#usage-vue-composable">useAutoAnimate</a></code> composable.
-    </AsideTip>
   </section>
 </template>
 

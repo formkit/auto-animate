@@ -3,7 +3,11 @@ import CodeExample from "../components/CodeExample.vue"
 import AsideTip from "../components/AsideTip.vue"
 import dropdown from "../examples/dropdown"
 import config from "../examples/config"
-import { vueDirectiveMain, vueDirectiveApp, vueComposable } from "../examples/vue"
+import {
+  vueDirectiveMain,
+  vueDirectiveApp,
+  vueComposable,
+} from "../examples/vue"
 import { angularDirectiveMain, angularDirectiveApp } from "../examples/angular"
 import reactHook from "../examples/react"
 import ActualReactApp from "../examples/react/ActualReactApp.vue"
@@ -13,6 +17,10 @@ import ActualSvelteApp from "../examples/svelte/ActualSvelteApp.vue"
 import ActualVueApp from "../examples/vue/ActualVueApp.vue"
 import AnotherActualVueApp from "../examples/vue/AnotherActualVueApp.vue"
 import ActualAngularApp from "../examples/angular/ActualAngularApp.vue"
+import IconReact from "../components/IconReact.vue"
+import IconVue from "../components/IconVue.vue"
+import IconAngular from "../components/IconAngular.vue"
+import IconSvelte from "../components/IconSvelte.vue"
 </script>
 <template>
   <section id="usage">
@@ -69,6 +77,13 @@ import ActualAngularApp from "../examples/angular/ActualAngularApp.vue"
         explicit width it should work like a charm.
       </li>
     </ul>
+    <AsideTip
+      >AutoAnimate respects a user’s <code>prefers-reduced-motion</code> setting
+      and will automatic disable if the user has indicated they want reduced
+      motion. Checkout the [MDN docs for more
+      information](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion)
+      on this media feature.
+    </AsideTip>
     <h3>Configuration</h3>
     <p>
       AutoAnimate is intended to be used with <em>zero-configuration</em>. We
@@ -87,9 +102,23 @@ import ActualAngularApp from "../examples/angular/ActualAngularApp.vue"
     <p>
       If your project’s specific requirements make it necessary to dramatically
       change the default animations, then you should
-      <a href="#plugins">check out the plugins documentation</a>.
+      <a href="#plugins">check out the plugins documentation</a>. Next, checkout
+      the usage documentation for your framework.
     </p>
-
+    <ul class="framework-jumplinks">
+      <li>
+        <a href="#usage-react"><span>React</span><IconReact /></a>
+      </li>
+      <li>
+        <a href="#usage-vue"><span>Vue</span><IconVue /></a>
+      </li>
+      <li>
+        <a href="#usage-svelte"><span>Svelte</span><IconSvelte /></a>
+      </li>
+      <li>
+        <a href="#usage-angular"><span>Angular</span><IconAngular /></a>
+      </li>
+    </ul>
     <h2 id="usage-react">React hook</h2>
     <p>
       React users can use the hook <code>useAutoAnimate</code> by importing it
@@ -99,7 +128,7 @@ import ActualAngularApp from "../examples/angular/ActualAngularApp.vue"
     <CodeExample :examples="reactHook" title="App" />
     <ActualReactApp />
 
-    <h2 id="usage-vue-directive">Vue directive</h2>
+    <h2 id="usage-vue">Vue directive</h2>
     <p>
       Vue users can globally register the
       <code>v-auto-animate</code> directive. This makes adding transitions and
@@ -119,18 +148,24 @@ import ActualAngularApp from "../examples/angular/ActualAngularApp.vue"
       <code>&lt;ul v-auto-animate="{ duration: 100 }"&gt;</code>
     </AsideTip>
 
-    <h2 id="usage-vue-composable">Vue composable</h2>
+    <h3 id="usage-vue-composable">Vue composable</h3>
     <p>
       As an alternative to the <code>v-auto-animate</code> directive, Vue devs
       can use the <code>useAutoAnimate</code> composable. This composable
-      supports all the same great features, but also enhances the TypeScript experience
-      by type-checking and autocompleting any custom options you might pass.
+      supports all the same great features, but also enhances the TypeScript
+      experience by type-checking and autocompleting any custom options you
+      might pass.
     </p>
     <p>
-      Import the composable from <code>@formkit/auto-animate/vue</code>, and call it in
-      <code>script setup</code> to create a 
-      <a href="https://vuejs.org/guide/essentials/template-refs.html#template-refs" target="_blank" rel="noopener noreferrer">template ref</a>.
-      Use the <code>ref</code> attribute on your parent element to store it in the template ref:
+      Import the composable from <code>@formkit/auto-animate/vue</code>, and
+      call it in <code>script setup</code> to create a
+      <a
+        href="https://vuejs.org/guide/essentials/template-refs.html#template-refs"
+        target="_blank"
+        rel="noopener noreferrer"
+        >template ref</a
+      >. Use the <code>ref</code> attribute on your parent element to store it
+      in the template ref:
     </p>
     <CodeExample :examples="vueComposable" title="App" />
     <AnotherActualVueApp />
@@ -159,8 +194,9 @@ import ActualAngularApp from "../examples/angular/ActualAngularApp.vue"
     <p>
       Angular users can globally register the
       <code>auto-animate</code> directive. This makes adding transitions and
-      animations as easy as applying an attribute. Import the AutoAnimateModule from
-      <code>@formkit/auto-animate/angular</code> and register it with your Angular app:
+      animations as easy as applying an attribute. Import the AutoAnimateModule
+      from <code>@formkit/auto-animate/angular</code> and register it with your
+      Angular app:
     </p>
     <CodeExample :examples="angularDirectiveMain" title="App" />
     <p>
@@ -174,6 +210,5 @@ import ActualAngularApp from "../examples/angular/ActualAngularApp.vue"
       Angular users can pass options by directly setting the options input
       <code>&lt;ul auto-animate [options]="{ duration: 100 }"&gt;</code>
     </AsideTip>
-
   </section>
 </template>

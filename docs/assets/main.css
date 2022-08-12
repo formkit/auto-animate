@@ -323,3 +323,49 @@ li.formkit-message {
   margin-top: 0;
   transition: margin-top .25s;
 }
+
+.framework-jumplinks {
+  padding: 0;
+  margin: 2em 0;
+  list-style-type: none;
+  display: flex;
+}
+.framework-jumplinks li::before {
+  display: none;
+}
+.framework-jumplinks a {
+  width: 1.5em;
+  height: 1.5em;
+  padding: 1em;
+  display: flex;
+  border: 1px solid var(--purple-l);
+  border-radius: .5em;
+  margin-right: 1em;
+  align-items: center;
+  overflow: hidden;
+  justify-content: center;
+}
+@media (min-width: 42em) {
+  .framework-jumplinks a {
+    width: 2em;
+    height: 2em;
+    padding: 1.25em;
+    margin-right: 1.5em;
+  }
+}
+
+.framework-jumplinks a:hover {
+  background-color: var(--purple-ll);
+}
+.framework-jumplinks li:last-child a {
+  margin-right: 0;
+}
+.framework-jumplinks a svg {
+  width: 2.25em;
+  aspect-ratio: 1;
+  height: auto;
+}
+.framework-jumplinks a span {
+  position: absolute;
+  left: -999px;
+}

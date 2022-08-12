@@ -19,7 +19,7 @@ const rootDir = resolve(__dirname)
 const isPublishing = process.argv[2] === "--publish"
 
 async function clean() {
-  await execa("npx shx rm", ["-rf", `${rootDir}/dist`])
+  await execa("shx", ["rm", "-rf", `${rootDir}/dist`])
 }
 
 async function baseBuild() {
@@ -93,7 +93,10 @@ async function angularBuild() {
    * This is a super hack — for some reason these imports need to be explicitly
    * to .mjs files so...we make it so.
    */
-  let raw = await fs.readFile(resolve(rootDir, "dist/angular/index.mjs"), "utf8")
+  let raw = await fs.readFile(
+    resolve(rootDir, "dist/angular/index.mjs"),
+    "utf8"
+  )
   raw = raw.replace(
     "import autoAnimate from '../index';",
     "import autoAnimate from '../index.mjs';"
@@ -114,24 +117,28 @@ async function declarationsBuild() {
 
 async function bundleDeclarations() {
   info("Bundling declarations")
-  await execa("npx shx mv", [
+  await execa("shx", [
+    "mv",
     `${rootDir}/dist/src/index.d.ts`,
     `${rootDir}/dist/index.d.ts`,
   ])
-  await execa("npx shx mv", [
+  await execa("shx", [
+    "mv",
     `${rootDir}/dist/src/react/index.d.ts`,
     `${rootDir}/dist/react/index.d.ts`,
   ])
-  await execa("npx shx mv", [
+  await execa("shx", [
+    "mv",
     `${rootDir}/dist/src/vue/index.d.ts`,
     `${rootDir}/dist/vue/index.d.ts`,
   ])
-  await execa("npx shx mv", [
+  await execa("shx", [
+    "mv",
     `${rootDir}/dist/src/angular/index.d.ts`,
     `${rootDir}/dist/angular/index.d.ts`,
   ])
-  await execa("npx shx rm", ["-rf", `${rootDir}/dist/src`])
-  await execa("npx shx rm", [`${rootDir}/dist/index.js`])
+  await execa("shx", ["rm", "-rf", `${rootDir}/dist/src`])
+  await execa("shx", ["rm", `${rootDir}/dist/index.js`])
 }
 
 async function addPackageJSON() {
@@ -149,8 +156,12 @@ async function addPackageJSON() {
 
 async function addAssets() {
   info("Writing readme and license.")
-  await execa("npx shx cp", [`${rootDir}/README.md`, `${rootDir}/dist/README.md`])
-  await execa("npx shx cp", [`${rootDir}/LICENSE`, `${rootDir}/dist/LICENSE`])
+  await execa("shx", [
+    "cp",
+    `${rootDir}/README.md`,
+    `${rootDir}/dist/README.md`,
+  ])
+  await execa("shx", ["cp", `${rootDir}/LICENSE`, `${rootDir}/dist/LICENSE`])
 }
 
 async function prepareForPublishing() {
