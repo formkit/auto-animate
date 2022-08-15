@@ -30,8 +30,6 @@ if (typeof window !== "undefined") {
 </script>
 
 <template>
-  <PoliteAd />
-
   <nav v-auto-animate>
     <div class="active" @click="show = !show">
       <span class="active-title">{{ activeTitle }}</span>
