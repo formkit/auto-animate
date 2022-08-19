@@ -7,6 +7,29 @@ interface Coordinates {
   width: number
   height: number
 }
+
+/**
+ * Allows start/stop control of the animation
+ */
+export interface AnimationController {
+  /**
+   * The original animation parent.
+   */
+  readonly parent: Element
+  /**
+   * A function that enables future animations.
+   */
+  enable: () => void
+  /**
+   * A function that disables future animations.
+   */
+  disable: () => void
+  /**
+   * A function that returns true if the animations are currently enabled.
+   */
+  isEnabled: () => boolean
+}
+
 /**
  * A set of all the parents currently being observe. This is the only non weak
  * registry.
@@ -40,6 +63,10 @@ const options = new WeakMap<Element, AutoAnimateOptions | AutoAnimationPlugin>()
  * Debounce counters by id, used to debounce calls to update positions.
  */
 const debounces = new WeakMap<Element, NodeJS.Timeout>()
+/**
+ * All parents that are currently enabled are tracked here.
+ */
+const enabled = new WeakSet<Element>()
 /**
  * The document used to calculate transitions.
  */
@@ -358,6 +385,16 @@ function getTarget(el: Element): Element | undefined {
 }
 
 /**
+ * Checks if animations are enabled or disabled for a given element.
+ * @param el - Any element
+ * @returns
+ */
+function isEnabled(el: Element): boolean {
+  const target = getTarget(el)
+  return target ? enabled.has(target) : false
+}
+
+/**
  * Iterate over the children of a given parent.
  * @param parent - A parent element
  * @param callback - A callback
@@ -383,9 +420,7 @@ function forEach(
 function remain(el: Element) {
   const oldCoords = coords.get(el)
   const newCoords = getCoords(el)
-  if (el.tagName === "TR") {
-    console.log(oldCoords, newCoords)
-  }
+  if (!isEnabled(el)) return
   let animation: Animation
   if (!oldCoords) return
   const pluginOrOptions = getOptions(el)
@@ -434,6 +469,7 @@ function add(el: Element) {
   const newCoords = getCoords(el)
   coords.set(el, newCoords)
   const pluginOrOptions = getOptions(el)
+  if (!isEnabled(el)) return
   let animation: Animation
   if (typeof pluginOrOptions !== "function") {
     animation = el.animate(
@@ -471,6 +507,14 @@ function remove(el: Element) {
   } else {
     getTarget(el)?.appendChild(el)
   }
+  function cleanUp() {
+    el.remove()
+    coords.delete(el)
+    siblings.delete(el)
+    animations.delete(el)
+    intersections.get(el)?.disconnect()
+  }
+  if (!isEnabled(el)) return cleanUp()
   const [top, left, width, height] = deletePosition(el)
   const optionsOrPlugin = getOptions(el)
   const oldCoords = coords.get(el)!
@@ -505,13 +549,7 @@ function remove(el: Element) {
     animation.play()
   }
   animations.set(el, animation)
-  animation.addEventListener("finish", () => {
-    el.remove()
-    coords.delete(el)
-    siblings.delete(el)
-    animations.delete(el)
-    intersections.get(el)?.disconnect()
-  })
+  animation.addEventListener("finish", cleanUp)
 }
 
 function deletePosition(
@@ -581,28 +619,37 @@ export interface AutoAnimationPlugin {
 export default function autoAnimate(
   el: HTMLElement,
   config: Partial<AutoAnimateOptions> | AutoAnimationPlugin = {}
-) {
+): AnimationController {
   if (mutations && resize) {
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)")
-    if (
+    const isDisabledDueToReduceMotion =
       mediaQuery.matches &&
       typeof config !== "function" &&
       !config.disrespectUserMotionPreference
-    )
-      return
-
-    if (getComputedStyle(el).position === "static") {
-      Object.assign(el.style, { position: "relative" })
+    if (!isDisabledDueToReduceMotion) {
+      if (getComputedStyle(el).position === "static") {
+        Object.assign(el.style, { position: "relative" })
+      }
+      forEach(el, updatePos, poll, (element) => resize?.observe(element))
+      if (typeof config === "function") {
+        options.set(el, config)
+      } else {
+        options.set(el, { duration: 250, easing: "ease-in-out", ...config })
+      }
+      mutations.observe(el, { childList: true })
+      parents.add(el)
     }
-    forEach(el, updatePos, poll, (element) => resize?.observe(element))
-    if (typeof config === "function") {
-      options.set(el, config)
-    } else {
-      options.set(el, { duration: 250, easing: "ease-in-out", ...config })
-    }
-    mutations.observe(el, { childList: true })
-    parents.add(el)
   }
+  return Object.freeze({
+    parent: el,
+    enable: () => {
+      enabled.add(el)
+    },
+    disable: () => {
+      enabled.delete(el)
+    },
+    isEnabled: () => enabled.has(el),
+  })
 }
 
 /**

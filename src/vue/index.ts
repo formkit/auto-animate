@@ -1,5 +1,10 @@
 import { ref, onMounted, watchEffect, Plugin, Ref } from "vue"
-import autoAnimate, { vAutoAnimate, AutoAnimateOptions, AutoAnimationPlugin } from "../index"
+import autoAnimate, {
+  vAutoAnimate,
+  AutoAnimateOptions,
+  AutoAnimationPlugin,
+  AnimationController,
+} from "../index"
 
 export const autoAnimatePlugin: Plugin = {
   install(app) {
@@ -13,17 +18,22 @@ export const autoAnimatePlugin: Plugin = {
  * @returns A template ref. Use the `ref` attribute of your parent element
  * to store the element in this template ref.
  */
- export function useAutoAnimate<T extends Element>(
+export function useAutoAnimate<T extends Element>(
   options: Partial<AutoAnimateOptions> | AutoAnimationPlugin = {}
-): Ref<T> {
+): [Ref<T>, (enabled: boolean) => void] {
   const element = ref<T>()
-
+  let controller: AnimationController | undefined
+  function setEnabled(enabled: boolean) {
+    if (controller) {
+      enabled ? controller.enable() : controller.disable()
+    }
+  }
   onMounted(() => {
     watchEffect(() => {
       if (element.value instanceof HTMLElement)
-        autoAnimate(element.value, options)
+        controller = autoAnimate(element.value, options)
     })
   })
 
-  return element as Ref<T>
+  return [element as Ref<T>, setEnabled]
 }

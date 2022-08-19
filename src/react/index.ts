@@ -1,5 +1,9 @@
 import { useEffect, useRef, RefObject } from "react"
-import autoAnimate, { AutoAnimateOptions, AutoAnimationPlugin } from "../index"
+import autoAnimate, {
+  AutoAnimateOptions,
+  AutoAnimationPlugin,
+  AnimationController,
+} from "../index"
 
 /**
  * AutoAnimate hook for adding dead-simple transitions and animations to react.
@@ -8,11 +12,17 @@ import autoAnimate, { AutoAnimateOptions, AutoAnimationPlugin } from "../index"
  */
 export function useAutoAnimate<T extends Element>(
   options: Partial<AutoAnimateOptions> | AutoAnimationPlugin = {}
-): [RefObject<T>] {
+): [RefObject<T>, (enabled: boolean) => void] {
   const element = useRef<T>(null)
+  let controller: AnimationController | undefined
+  const setEnabled = (enabled: boolean) => {
+    if (controller) {
+      enabled ? controller.enable() : controller.disable()
+    }
+  }
   useEffect(() => {
     if (element.current instanceof HTMLElement)
-      autoAnimate(element.current, options)
+      controller = autoAnimate(element.current, options)
   }, [])
-  return [element]
+  return [element, setEnabled]
 }
