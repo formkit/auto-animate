@@ -627,6 +627,7 @@ export default function autoAnimate(
       typeof config !== "function" &&
       !config.disrespectUserMotionPreference
     if (!isDisabledDueToReduceMotion) {
+      enabled.add(el)
       if (getComputedStyle(el).position === "static") {
         Object.assign(el.style, { position: "relative" })
       }
