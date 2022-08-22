@@ -1,6 +1,6 @@
 import vueExample from "./disable.vue?raw"
 import reactExample from "./disable.jsx?raw"
-import htmlExample from "./disable.html?raw"
+// import htmlExample from "./disable.html?raw"
 
 export default {
   react: {
@@ -13,9 +13,9 @@ export default {
     language: "html",
     example: vueExample,
   },
-  js: {
-    example: htmlExample,
-    ext: "html",
-    language: "html",
-  },
+  // js: {
+  //   example: htmlExample,
+  //   ext: "html",
+  //   language: "html",
+  // },
 }
