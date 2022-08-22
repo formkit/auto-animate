@@ -34,7 +34,6 @@ setInterval(() => {
   max-width: 15em;
   position: relative;
   padding: 0;
-  background: url(../../assets/img/triangle.svg);
   background-size: contain;
   background-repeat: none;
 }

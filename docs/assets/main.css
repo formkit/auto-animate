@@ -374,3 +374,6 @@ li.formkit-message {
   position: absolute;
   left: -999px;
 }
+.balls {
+  background: url('./img/triangle.svg');
+}
