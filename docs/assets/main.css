@@ -59,9 +59,14 @@ h1, h2, h3, h4{
 h2 {
   padding-top: 1em;
 }
+
+#demo > h2:first-child {
+  padding-top: 2.5em;
+}
+
 @media (min-width: 42em) {
-  h2 {
-    padding-top: 1.5em;
+  #demo > h2:first-child {
+    padding-top: 0;
   }
 }
 
