@@ -19,7 +19,7 @@ const rootDir = resolve(__dirname)
 const isPublishing = process.argv[2] === "--publish"
 
 async function clean() {
-  await execa("rm", ["-rf", `${rootDir}/dist`])
+  await execa("shx", ["rm", "-rf", `${rootDir}/dist`])
 }
 
 async function baseBuild() {
@@ -80,6 +80,30 @@ async function vueBuild() {
   await fs.writeFile(resolve(rootDir, "dist/vue/index.mjs"), raw)
 }
 
+async function angularBuild() {
+  info("Rolling up Angular package")
+  await execa("npx", [
+    "rollup",
+    "-c",
+    "rollup.config.js",
+    "--environment",
+    "FRAMEWORK:angular",
+  ])
+  /**
+   * This is a super hack — for some reason these imports need to be explicitly
+   * to .mjs files so...we make it so.
+   */
+  let raw = await fs.readFile(
+    resolve(rootDir, "dist/angular/index.mjs"),
+    "utf8"
+  )
+  raw = raw.replace(
+    "import autoAnimate from '../index';",
+    "import autoAnimate from '../index.mjs';"
+  )
+  await fs.writeFile(resolve(rootDir, "dist/angular/index.mjs"), raw)
+}
+
 async function declarationsBuild() {
   info("Outputting declarations")
   await execa("npx", [
@@ -93,20 +117,28 @@ async function declarationsBuild() {
 
 async function bundleDeclarations() {
   info("Bundling declarations")
-  await execa("mv", [
+  await execa("shx", [
+    "mv",
     `${rootDir}/dist/src/index.d.ts`,
     `${rootDir}/dist/index.d.ts`,
   ])
-  await execa("mv", [
+  await execa("shx", [
+    "mv",
     `${rootDir}/dist/src/react/index.d.ts`,
     `${rootDir}/dist/react/index.d.ts`,
   ])
-  await execa("mv", [
+  await execa("shx", [
+    "mv",
     `${rootDir}/dist/src/vue/index.d.ts`,
     `${rootDir}/dist/vue/index.d.ts`,
   ])
-  await execa("rm", ["-rf", `${rootDir}/dist/src`])
-  await execa("rm", [`${rootDir}/dist/index.js`])
+  await execa("shx", [
+    "mv",
+    `${rootDir}/dist/src/angular/index.d.ts`,
+    `${rootDir}/dist/angular/index.d.ts`,
+  ])
+  await execa("shx", ["rm", "-rf", `${rootDir}/dist/src`])
+  await execa("shx", ["rm", `${rootDir}/dist/index.js`])
 }
 
 async function addPackageJSON() {
@@ -124,8 +156,12 @@ async function addPackageJSON() {
 
 async function addAssets() {
   info("Writing readme and license.")
-  await execa("cp", [`${rootDir}/README.md`, `${rootDir}/dist/README.md`])
-  await execa("cp", [`${rootDir}/LICENSE`, `${rootDir}/dist/LICENSE`])
+  await execa("shx", [
+    "cp",
+    `${rootDir}/README.md`,
+    `${rootDir}/dist/README.md`,
+  ])
+  await execa("shx", ["cp", `${rootDir}/LICENSE`, `${rootDir}/dist/LICENSE`])
 }
 
 async function prepareForPublishing() {
@@ -189,6 +225,7 @@ await baseBuild()
 await baseBuildMin()
 await reactBuild()
 await vueBuild()
+await angularBuild()
 await declarationsBuild()
 await bundleDeclarations()
 await addPackageJSON()

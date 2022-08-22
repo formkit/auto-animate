@@ -1,31 +1,31 @@
 <script setup>
-import { ref, defineProps, onMounted, computed } from "vue"
+import { ref, onMounted, computed } from "vue"
 import autoAnimate from "../../../../src/index"
-import Arrow from './Arrow.vue'
-import Close from './Close.vue'
+import Arrow from "./Arrow.vue"
+import Close from "./Close.vue"
 
 const props = defineProps({
   animated: {
     type: Boolean,
-    default: false
-  }
+    default: false,
+  },
 })
 
 const list = ref()
-const inputValue = ref('AdonisJs')
+const inputValue = ref("AdonisJs")
 const frameworks = ref([
-  { id: 0, name: 'Nuxt.js' },
-  { id: 1, name: 'Next.js' },
-  { id: 2, name: 'SvelteKit' },
-  { id: 3, name: 'Remix' },
-  { id: 4, name: 'Meteor' },
+  { id: 0, name: "Nuxt.js" },
+  { id: 1, name: "Next.js" },
+  { id: 2, name: "SvelteKit" },
+  { id: 3, name: "Remix" },
+  { id: 4, name: "Meteor" },
 ])
 
 const disableSort = computed(() => {
   let isSorted = true
   if (frameworks.value[0]) {
     let currentValue = frameworks.value[0].name
-    frameworks.value.forEach(framework => {
+    frameworks.value.forEach((framework) => {
       if (currentValue > framework.name) {
         isSorted = false
       }
@@ -36,36 +36,36 @@ const disableSort = computed(() => {
 })
 
 const addItem = (e) => {
-  e.preventDefault();
-  frameworks.value.push({ id: Math.random(), name: inputValue.value });
-  inputValue.value = '';
-};
+  e.preventDefault()
+  frameworks.value.push({ id: Math.random(), name: inputValue.value })
+  inputValue.value = ""
+}
 
 const sortUp = (item) => {
-  const index = frameworks.value.findIndex((i) => item.id === i.id);
+  const index = frameworks.value.findIndex((i) => item.id === i.id)
   if (index) {
-    frameworks.value.splice(index - 1, 0, ...frameworks.value.splice(index, 1));
+    frameworks.value.splice(index - 1, 0, ...frameworks.value.splice(index, 1))
   }
-};
+}
 
 const sortDown = (item) => {
-  const index = frameworks.value.findIndex((i) => item.id === i.id);
+  const index = frameworks.value.findIndex((i) => item.id === i.id)
   if (index < frameworks.value.length - 1) {
-    frameworks.value.splice(index + 1, 0, ...frameworks.value.splice(index, 1));
+    frameworks.value.splice(index + 1, 0, ...frameworks.value.splice(index, 1))
   }
-};
+}
 
 const sortList = () => {
   frameworks.value = [...frameworks.value].sort((a, b) => {
-    const nameA = a.name.toLowerCase().trim();
-    const nameB = b.name.toLowerCase().trim();
-    return nameA < nameB ? -1 : nameA > nameB ? 1 : 0;
-  });
-};
+    const nameA = a.name.toLowerCase().trim()
+    const nameB = b.name.toLowerCase().trim()
+    return nameA < nameB ? -1 : nameA > nameB ? 1 : 0
+  })
+}
 
 const remove = (item) => {
-  frameworks.value = frameworks.value.filter((i) => i.id !== item.id);
-};
+  frameworks.value = frameworks.value.filter((i) => i.id !== item.id)
+}
 
 onMounted(() => {
   if (props.animated) {
@@ -80,10 +80,7 @@ onMounted(() => {
       <slot />
     </div>
     <ul ref="list">
-      <li
-        v-for="item in frameworks"
-        :key="item.id"
-      >
+      <li v-for="item in frameworks" :key="item.id">
         <span>{{ item.name }}</span>
         <div className="action-icons">
           <button @click="sortUp(item)">

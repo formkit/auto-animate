@@ -3,13 +3,26 @@ import CodeExample from "../components/CodeExample.vue"
 import AsideTip from "../components/AsideTip.vue"
 import dropdown from "../examples/dropdown"
 import config from "../examples/config"
-import { vueDirectiveMain, vueDirectiveApp } from "../examples/vue"
+import {
+  vueDirectiveMain,
+  vueDirectiveApp,
+  vueComposable,
+} from "../examples/vue"
+import { angularDirectiveMain, angularDirectiveApp } from "../examples/angular"
 import reactHook from "../examples/react"
+import disabledExamples from "../examples/disable"
 import ActualReactApp from "../examples/react/ActualReactApp.vue"
 import ActualDropdown from "../examples/dropdown/ActualDropdown.vue"
 import svelteAction from "../examples/svelte"
 import ActualSvelteApp from "../examples/svelte/ActualSvelteApp.vue"
 import ActualVueApp from "../examples/vue/ActualVueApp.vue"
+import ActualVueAppHook from "../examples/vue/ActualVueAppHook.vue"
+import ActualAngularApp from "../examples/angular/ActualAngularApp.vue"
+import ActualDisable from "../examples/disable/ActualDisable.vue"
+import IconReact from "../components/IconReact.vue"
+import IconVue from "../components/IconVue.vue"
+import IconAngular from "../components/IconAngular.vue"
+import IconSvelte from "../components/IconSvelte.vue"
 </script>
 <template>
   <section id="usage">
@@ -66,6 +79,13 @@ import ActualVueApp from "../examples/vue/ActualVueApp.vue"
         explicit width it should work like a charm.
       </li>
     </ul>
+    <AsideTip
+      >AutoAnimate respects a user’s <code>prefers-reduced-motion</code> setting
+      and will automatic disable if the user has indicated they want reduced
+      motion. Checkout the [MDN docs for more
+      information](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion)
+      on this media feature.
+    </AsideTip>
     <h3>Configuration</h3>
     <p>
       AutoAnimate is intended to be used with <em>zero-configuration</em>. We
@@ -84,18 +104,32 @@ import ActualVueApp from "../examples/vue/ActualVueApp.vue"
     <p>
       If your project’s specific requirements make it necessary to dramatically
       change the default animations, then you should
-      <a href="#plugins">check out the plugins documentation</a>.
+      <a href="#plugins">check out the plugins documentation</a>. Next, checkout
+      the usage documentation for your framework.
     </p>
-
+    <ul class="framework-jumplinks">
+      <li>
+        <a href="#usage-react"><span>React</span><IconReact /></a>
+      </li>
+      <li>
+        <a href="#usage-vue"><span>Vue</span><IconVue /></a>
+      </li>
+      <li>
+        <a href="#usage-svelte"><span>Svelte</span><IconSvelte /></a>
+      </li>
+      <li>
+        <a href="#usage-angular"><span>Angular</span><IconAngular /></a>
+      </li>
+    </ul>
     <h2 id="usage-react">React hook</h2>
     <p>
       React users can use the hook <code>useAutoAnimate</code> by importing it
       from <code>@formkit/auto-animate/react</code>. This hook returns a ref to
-      apply to the parent element:
+      apply to the parent element, as well as a function to
+      <a href="#usage-disable">enable or disable</a> animations.
     </p>
     <CodeExample :examples="reactHook" title="App" />
     <ActualReactApp />
-
     <h2 id="usage-vue">Vue directive</h2>
     <p>
       Vue users can globally register the
@@ -116,6 +150,31 @@ import ActualVueApp from "../examples/vue/ActualVueApp.vue"
       <code>&lt;ul v-auto-animate="{ duration: 100 }"&gt;</code>
     </AsideTip>
 
+    <h3 id="usage-vue-composable">Vue composable</h3>
+    <p>
+      As an alternative to the <code>v-auto-animate</code> directive, Vue devs
+      can use the <code>useAutoAnimate</code> composable. This composable
+      supports all the same great features, but also provides a mechanism to
+      <a href="usage-disable">enable and disable</a> animations.
+    </p>
+    <p>
+      Import the composable from <code>@formkit/auto-animate/vue</code>, and
+      call it in <code>script setup</code> to create a
+      <a
+        href="https://vuejs.org/guide/essentials/template-refs.html#template-refs"
+        target="_blank"
+        rel="noopener noreferrer"
+        >template ref</a
+      >. Use the <code>ref</code> attribute on your parent element to store it
+      in the template ref:
+    </p>
+    <CodeExample :examples="vueComposable" title="App" />
+    <ActualVueAppHook />
+    <AsideTip>
+      Vue users can pass options directly to the composable: <br />
+      <code>useAutoAnimate({ duration: 100 })</code>
+    </AsideTip>
+
     <h2 id="usage-svelte">Svelte action</h2>
     <p>
       The root <code>autoAnimate</code> function can be directly used as a
@@ -125,11 +184,44 @@ import ActualVueApp from "../examples/vue/ActualVueApp.vue"
     <CodeExample :examples="svelteAction" title="App" />
     <ActualSvelteApp />
     <AsideTip>
-      Svelte users can pass options by directly setting the directive’s value
+      Svelte users can pass options by directly setting the action’s value
       <code
         >&lt;ul use:autoAnimate=&#123;&#123; duration: 1000
         &#125;&#125;&gt;</code
       >
     </AsideTip>
+
+    <h2 id="usage-angular">Angular directive</h2>
+    <p>
+      Angular users can globally register the
+      <code>auto-animate</code> directive. This makes adding transitions and
+      animations as easy as applying an attribute. Import the AutoAnimateModule
+      from <code>@formkit/auto-animate/angular</code> and register it with your
+      Angular app:
+    </p>
+    <CodeExample :examples="angularDirectiveMain" title="App" />
+    <p>
+      Once you’ve registered the plugin, it can be applied anywhere in your
+      application by adding the <code>auto-animate</code> directive to the
+      parent element:
+    </p>
+    <CodeExample :examples="angularDirectiveApp" title="App" />
+    <ActualAngularApp />
+    <AsideTip>
+      Angular users can pass options by directly setting the options input
+      <code>&lt;ul auto-animate [options]="{ duration: 100 }"&gt;</code>
+    </AsideTip>
+    <h2 id="usage-disable">Disable animations</h2>
+    <p>
+      Occasionally it may be necessary to temporarily disable animations and
+      then re-enable them later on. The <code>autoAnimate</code> function
+      returns an animation controller with <code>enable()</code> and
+      <code>disable()</code> methods for this purpose, and the Vue and React
+      hooks (<code>useAutoAnimate</code>) return a tuple with the second value
+      being an enable/disable function that accepts a boolean to enable or
+      disable animations.
+    </p>
+    <CodeExample :examples="disabledExamples" title="Juggle" />
+    <ActualDisable />
   </section>
 </template>

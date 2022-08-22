@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue"
 import IconDown from "./IconDown.vue"
-import PoliteAd from './PoliteAd.vue'
+import PoliteAd from "./PoliteAd.vue"
 import { vAutoAnimate } from "../../../src/index"
 
 const show = ref(false)
@@ -38,9 +38,11 @@ if (typeof window !== "undefined") {
     <ul v-if="show" @click="handleClick">
       <li><a href="#installation">Installation</a></li>
       <li><a href="#usage">Usage</a></li>
-      <li><a href="#usage-react">React hook</a></li>
-      <li><a href="#usage-vue">Vue directive</a></li>
-      <li><a href="#usage-svelte">Svelte action</a></li>
+      <li><a href="#usage-react">React</a></li>
+      <li><a href="#usage-vue">Vue</a></li>
+      <li><a href="#usage-svelte">Svelte</a></li>
+      <li><a href="#usage-angular">Angular</a></li>
+      <li><a href="#usage-disable">Disable</a></li>
       <li><a href="#examples">Examples</a></li>
       <li><a href="#plugins">Plugins</a></li>
       <li><a href="#why-not">Why not...?</a></li>

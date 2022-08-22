@@ -1,0 +1,23 @@
+<ul class="balls" id="juggle">
+  <li class="red">Red</li>
+  <li class="green">Green</li>
+  <li class="blue">Blue</li>
+</ul>
+<button id="toggle">🚫 Disable animations</button>
+
+<script type="module">
+  import autoAnimate from "./js/autoAnimate.js";
+  const parent = document.getElementById("juggle");
+  const toggleEl = document.getElementById("toggle");
+  const controller = autoAnimate(juggle, { duration: 500 });
+  setInterval(() => {
+    parent.appendChild(parent.children[0]);
+  }, 600);
+
+  toggleEl.addEventListener("click", () => {
+    controller.isEnabled() ? controller.disable() : controller.enable();
+    toggleEl.innerHTML = controller.isEnabled()
+      ? "🚫 Disable animations"
+      : "✅ Enable animations";
+  });
+</script>
