@@ -1,4 +1,4 @@
-import { useEffect, useRef, RefObject } from "react"
+import { useEffect, useState, useRef, RefObject } from "react"
 import autoAnimate, {
   AutoAnimateOptions,
   AutoAnimationPlugin,
@@ -14,7 +14,9 @@ export function useAutoAnimate<T extends Element>(
   options: Partial<AutoAnimateOptions> | AutoAnimationPlugin = {}
 ): [RefObject<T>, (enabled: boolean) => void] {
   const element = useRef<T>(null)
-  let controller: AnimationController | undefined
+  const [controller, setController] = useState<
+    AnimationController | undefined
+  >()
   const setEnabled = (enabled: boolean) => {
     if (controller) {
       enabled ? controller.enable() : controller.disable()
@@ -22,7 +24,7 @@ export function useAutoAnimate<T extends Element>(
   }
   useEffect(() => {
     if (element.current instanceof HTMLElement)
-      controller = autoAnimate(element.current, options)
+      setController(autoAnimate(element.current, options))
   }, [])
   return [element, setEnabled]
 }

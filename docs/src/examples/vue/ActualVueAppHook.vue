@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref } from "vue"
 import { useAutoAnimate } from "../../../../src/vue"
 
 const items = ref(["React", "Vue", "Svelte", "Angular"])
@@ -11,7 +11,7 @@ function sortDesc() {
   items.value.sort().reverse()
 }
 
-const parent = useAutoAnimate()
+const [parent] = useAutoAnimate()
 </script>
 
 <template>
@@ -20,10 +20,7 @@ const parent = useAutoAnimate()
     <button class="button" @click="sortDesc">Sort Z-A ↓</button>
   </div>
   <ul ref="parent">
-    <li
-      v-for="item in items"
-      :key="item"
-    >
+    <li v-for="item in items" :key="item">
       {{ item }}
     </li>
   </ul>

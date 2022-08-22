@@ -16,6 +16,7 @@ const App = function () {
     )}
   </ul>
   <button onClick={add}>Add number</button>
+  <button onClick="{() => enableAnimations(false)}">Disable</button>
 </>
 }
 

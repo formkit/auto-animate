@@ -55,7 +55,7 @@ function sortDesc() {
   items.value.sort().reverse()
 }
 
-const parent = useAutoAnimate()
+const [parent] = useAutoAnimate()
 </script>
 
 <template>
@@ -72,7 +72,7 @@ const parent = useAutoAnimate()
     </li>
   </ul>
 </template>`,
-  }
+  },
 }
 
 export { vueDirectiveMain, vueDirectiveApp, vueComposable }

@@ -10,13 +10,15 @@ import {
 } from "../examples/vue"
 import { angularDirectiveMain, angularDirectiveApp } from "../examples/angular"
 import reactHook from "../examples/react"
+import disabledExamples from "../examples/disable"
 import ActualReactApp from "../examples/react/ActualReactApp.vue"
 import ActualDropdown from "../examples/dropdown/ActualDropdown.vue"
 import svelteAction from "../examples/svelte"
 import ActualSvelteApp from "../examples/svelte/ActualSvelteApp.vue"
 import ActualVueApp from "../examples/vue/ActualVueApp.vue"
-import AnotherActualVueApp from "../examples/vue/AnotherActualVueApp.vue"
+import ActualVueAppHook from "../examples/vue/ActualVueAppHook.vue"
 import ActualAngularApp from "../examples/angular/ActualAngularApp.vue"
+import ActualDisable from "../examples/disable/ActualDisable.vue"
 import IconReact from "../components/IconReact.vue"
 import IconVue from "../components/IconVue.vue"
 import IconAngular from "../components/IconAngular.vue"
@@ -123,11 +125,11 @@ import IconSvelte from "../components/IconSvelte.vue"
     <p>
       React users can use the hook <code>useAutoAnimate</code> by importing it
       from <code>@formkit/auto-animate/react</code>. This hook returns a ref to
-      apply to the parent element:
+      apply to the parent element, as well as a function to
+      <a href="#usage-disable">enable or disable</a> animations.
     </p>
     <CodeExample :examples="reactHook" title="App" />
     <ActualReactApp />
-
     <h2 id="usage-vue">Vue directive</h2>
     <p>
       Vue users can globally register the
@@ -152,9 +154,8 @@ import IconSvelte from "../components/IconSvelte.vue"
     <p>
       As an alternative to the <code>v-auto-animate</code> directive, Vue devs
       can use the <code>useAutoAnimate</code> composable. This composable
-      supports all the same great features, but also enhances the TypeScript
-      experience by type-checking and autocompleting any custom options you
-      might pass.
+      supports all the same great features, but also provides a mechanism to
+      <a href="usage-disable">enable and disable</a> animations.
     </p>
     <p>
       Import the composable from <code>@formkit/auto-animate/vue</code>, and
@@ -168,7 +169,7 @@ import IconSvelte from "../components/IconSvelte.vue"
       in the template ref:
     </p>
     <CodeExample :examples="vueComposable" title="App" />
-    <AnotherActualVueApp />
+    <ActualVueAppHook />
     <AsideTip>
       Vue users can pass options directly to the composable: <br />
       <code>useAutoAnimate({ duration: 100 })</code>
@@ -210,5 +211,17 @@ import IconSvelte from "../components/IconSvelte.vue"
       Angular users can pass options by directly setting the options input
       <code>&lt;ul auto-animate [options]="{ duration: 100 }"&gt;</code>
     </AsideTip>
+    <h2 id="usage-disable">Disable animations</h2>
+    <p>
+      Occasionally it may be necessary to temporarily disable animations and
+      then re-enable them later on. The <code>autoAnimate</code> function
+      returns an animation controller with <code>enable()</code> and
+      <code>disable()</code> methods for this purpose, and the Vue and React
+      hooks (<code>useAutoAnimate</code>) return a tuple with the second value
+      being an enable/disable function that accepts a boolean to enable or
+      disable animations.
+    </p>
+    <CodeExample :examples="disabledExamples" title="Juggle" />
+    <ActualDisable />
   </section>
 </template>

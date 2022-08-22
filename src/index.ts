@@ -420,7 +420,7 @@ function forEach(
 function remain(el: Element) {
   const oldCoords = coords.get(el)
   const newCoords = getCoords(el)
-  if (!isEnabled(el)) return
+  if (!isEnabled(el)) return coords.set(el, newCoords)
   let animation: Animation
   if (!oldCoords) return
   const pluginOrOptions = getOptions(el)
