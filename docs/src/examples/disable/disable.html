@@ -6,7 +6,7 @@
 <button id="toggle">🚫 Disable animations</button>
 
 <script type="module">
-  import autoAnimate from "@formkit/auto-animate";
+  import autoAnimate from "./js/autoAnimate.js";
   const parent = document.getElementById("juggle");
   const toggleEl = document.getElementById("toggle");
   const controller = autoAnimate(juggle, { duration: 500 });
