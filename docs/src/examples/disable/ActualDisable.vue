@@ -21,7 +21,7 @@ setInterval(() => {
       {{ color }}
     </li>
   </ul>
-  <button @click="toggle" class="button button--alt">
+  <button @click="toggle" class="button button--alt" id="disable">
     {{ isEnabled ? "🚫 Disable" : "✅ Enable" }} animations
   </button>
 </template>

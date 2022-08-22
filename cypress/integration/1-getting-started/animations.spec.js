@@ -14,6 +14,8 @@
 describe("the documentation site", () => {
   beforeEach(() => {
     cy.visit("http://127.0.0.1:5555")
+    cy.get("#disable").click()
+    cy.wait(500)
   })
 
   it("displays the tagline", () => {
@@ -23,8 +25,8 @@ describe("the documentation site", () => {
   it("takes some time to transition code editor", () => {
     cy.get("#hero .frameworks > li:nth-child(2)").click()
     cy.wait(50)
-    cy.hasAnimations(2)
-    cy.wait(250 * 1.5)
+    cy.hasAnimations(3)
+    cy.wait(250)
     cy.hasAnimations(0)
   })
 
@@ -41,7 +43,7 @@ describe("the documentation site", () => {
 
   it("animates the vue example", () => {
     cy.get(".vue-example li:first-child").click()
-    cy.hasAnimations(23)
+    cy.hasAnimations(24)
     cy.wait(250)
     cy.get(".vue-example li:last-child").click()
     cy.hasAnimations(23)
@@ -57,7 +59,7 @@ describe("the documentation site", () => {
 
   it("animates the card example", () => {
     cy.get(".card-example button:first-child").click()
-    cy.hasAnimations(3)
+    cy.hasAnimations(4)
     cy.wait(250)
     cy.get(".card-example .formkit-input.button").click()
     cy.get(".card-example .card:first-child()").isEntering()
@@ -66,9 +68,9 @@ describe("the documentation site", () => {
 
   it("animates the list example", () => {
     cy.get(".list-example li:first-child button").click()
-    cy.hasAnimations(3)
-    cy.get(".list-example .button--add").click()
     cy.hasAnimations(4)
+    cy.get(".list-example .button--add").click()
+    cy.hasAnimations(0)
     cy.get(".list-example li:last-child button").click()
     cy.hasAnimations(4)
   })
@@ -80,11 +82,12 @@ describe("the documentation site", () => {
 
   it("animates the accordion example", () => {
     cy.get(".accordion-example .accordion-item:nth-child(2) .question").click()
-    cy.hasAnimations(5)
+    cy.hasAnimations(6)
     cy.get(".accordion-example .accordion-item:nth-child(1) .question").click()
-    cy.hasAnimations(6)
+    cy.hasAnimations(0)
     cy.get(".accordion-example .accordion-item:nth-child(3) .question").click()
-    cy.hasAnimations(6)
+    cy.wait(100)
+    cy.hasAnimations(5)
   })
 
   it("animates the FormKit example", () => {
