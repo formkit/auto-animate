@@ -52,10 +52,7 @@ async function reactBuild() {
    * to .mjs files so...we make it so.
    */
   let raw = await fs.readFile(resolve(rootDir, "dist/react/index.mjs"), "utf8")
-  raw = raw.replace(
-    "import autoAnimate from '../index';",
-    "import autoAnimate from '../index.mjs';"
-  )
+  raw = raw.replace("from '../index'", "from '../index.mjs'")
   await fs.writeFile(resolve(rootDir, "dist/react/index.mjs"), raw)
 }
 
@@ -73,10 +70,7 @@ async function vueBuild() {
    * to .mjs files so...we make it so.
    */
   let raw = await fs.readFile(resolve(rootDir, "dist/vue/index.mjs"), "utf8")
-  raw = raw.replace(
-    "import autoAnimate, { vAutoAnimate } from '../index'",
-    "import autoAnimate, { vAutoAnimate } from '../index.mjs'"
-  )
+  raw = raw.replace("from '../index'", "from '../index.mjs'")
   await fs.writeFile(resolve(rootDir, "dist/vue/index.mjs"), raw)
 }
 
