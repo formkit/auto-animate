@@ -27,21 +27,33 @@
     "cypress:server": "cd docs && npx vite --config=./vite.config.ts --port=5555"
   },
   "exports": {
-    "./vue": {
-      "import": "./vue/index.mjs",
-      "types": "./vue/index.d.ts"
-    },
-    "./react": {
-      "import": "./react/index.mjs",
-      "types": "./react/index.d.ts"
-    },
-    "./angular": {
-      "import": "./angular/index.mjs",
-      "types": "./angular/index.d.ts"
-    },
-    ".": {
-      "import": "./index.mjs"
-    }
+    "./vue": [
+      {
+        "import": "./vue/index.mjs",
+        "types": "./vue/index.d.ts"
+      },
+      "./vue/index.mjs"
+    ],
+    "./react": [
+      {
+        "import": "./react/index.mjs",
+        "types": "./react/index.d.ts"
+      },
+      "./react/index.mjs"
+    ],
+    "./angular": [
+      {
+        "import": "./angular/index.mjs",
+        "types": "./angular/index.d.ts"
+      },
+      "./angular/index.mjs"
+    ],
+    ".": [
+      {
+        "import": "./index.mjs"
+      },
+      "./index.mjs"
+    ]
   },
   "devDependencies": {
     "@angular/core": "^13.3.11",
