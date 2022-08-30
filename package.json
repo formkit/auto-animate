@@ -39,6 +39,10 @@
       "import": "./angular/index.mjs",
       "types": "./angular/index.d.ts"
     },
+    "./solid": {
+      "import": "./solid/index.mjs",
+      "types": "./solid/index.d.ts"
+    },
     ".": {
       "import": "./index.mjs"
     }
@@ -62,6 +66,7 @@
     "rollup": "^2.72.1",
     "rollup-plugin-terser": "^7.0.2",
     "shx": "^0.3.4",
+    "solid-js": "^1.5.1",
     "tslib": "^2.4.0",
     "typescript": "^4.6.4",
     "vite": "^2.9.9",

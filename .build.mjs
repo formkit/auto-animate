@@ -98,6 +98,24 @@ async function angularBuild() {
   await fs.writeFile(resolve(rootDir, "dist/angular/index.mjs"), raw)
 }
 
+async function solidBuild() {
+  info("Rolling up Solid package")
+  await execa("npx", [
+    "rollup",
+    "-c",
+    "rollup.config.js",
+    "--environment",
+    "FRAMEWORK:solid",
+  ])
+  /**
+   * This is a super hack — for some reason these imports need to be explicitly
+   * to .mjs files so...we make it so.
+   */
+  let raw = await fs.readFile(resolve(rootDir, "dist/solid/index.mjs"), "utf8")
+  raw = raw.replace("from '../index'", "from '../index.mjs'")
+  await fs.writeFile(resolve(rootDir, "dist/solid/index.mjs"), raw)
+}
+
 async function declarationsBuild() {
   info("Outputting declarations")
   await execa("npx", [
@@ -130,6 +148,11 @@ async function bundleDeclarations() {
     "mv",
     `${rootDir}/dist/src/angular/index.d.ts`,
     `${rootDir}/dist/angular/index.d.ts`,
+  ])
+  await execa("shx", [
+    "mv",
+    `${rootDir}/dist/src/solid/index.d.ts`,
+    `${rootDir}/dist/solid/index.d.ts`,
   ])
   await execa("shx", ["rm", "-rf", `${rootDir}/dist/src`])
   await execa("shx", ["rm", `${rootDir}/dist/index.js`])
@@ -220,6 +243,7 @@ await baseBuildMin()
 await reactBuild()
 await vueBuild()
 await angularBuild()
+await solidBuild()
 await declarationsBuild()
 await bundleDeclarations()
 await addPackageJSON()
