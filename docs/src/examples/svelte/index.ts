@@ -19,7 +19,7 @@ export default {
 
 <label for="add-tag-input" class="tag-input">
   <ul use:autoAnimate> <!-- 👀 thats it folks! -->
-    {#each tags as tag}
+    {#each tags as tag (tag)}
       <li class="tag">
         <span>{tag}</span>
         <span on:click={() => remove(tag)}>x</span>
