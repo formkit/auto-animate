@@ -19,7 +19,7 @@ export const autoAnimatePlugin: Plugin = {
  * to store the element in this template ref.
  */
 export function useAutoAnimate<T extends Element>(
-  options: Partial<AutoAnimateOptions> | AutoAnimationPlugin = {}
+  options?: Partial<AutoAnimateOptions> | AutoAnimationPlugin
 ): [Ref<T>, (enabled: boolean) => void] {
   const element = ref<T>()
   let controller: AnimationController | undefined
@@ -31,7 +31,7 @@ export function useAutoAnimate<T extends Element>(
   onMounted(() => {
     watchEffect(() => {
       if (element.value instanceof HTMLElement)
-        controller = autoAnimate(element.value, options)
+        controller = autoAnimate(element.value, options || {})
     })
   })
 
