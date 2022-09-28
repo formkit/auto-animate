@@ -12,9 +12,9 @@ onMounted(() => {
 
 <template>
   <div ref="dropdown" class="dropdown">
-    <strong class="dropdown-label" @click="show = !show"
-      >Click me to open!</strong
-    >
+    <strong class="dropdown-label" @click="show = !show">
+      Click me to open!
+    </strong>
     <p class="dropdown-content" v-if="show">Lorum ipsum...</p>
   </div>
 </template>
