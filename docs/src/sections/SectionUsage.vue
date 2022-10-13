@@ -149,6 +149,10 @@ import IconSvelte from "../components/IconSvelte.vue"
       Vue users can pass options by directly setting the directive’s value
       <code>&lt;ul v-auto-animate="{ duration: 100 }"&gt;</code>
     </AsideTip>
+    
+    <AsideTip>
+      Please bare in mind that value passed to <code>:key</code> should be an unique value, otherwise animation might not work as expected.
+    </AsideTip>
 
     <h3 id="usage-vue-composable">Vue composable</h3>
     <p>
