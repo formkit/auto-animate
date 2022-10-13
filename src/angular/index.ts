@@ -11,12 +11,12 @@ import autoAnimate, { AutoAnimateOptions } from "../index"
   selector: "[auto-animate]",
 })
 export class AutoAnimateDirective implements AfterViewInit {
-  @Input() options: Partial<AutoAnimateOptions> = {}
+  @Input() options?: Partial<AutoAnimateOptions>
 
   constructor(private el: ElementRef) {}
 
   ngAfterViewInit(): void {
-    autoAnimate(this.el.nativeElement, this.options)
+    autoAnimate(this.el.nativeElement, this.options || {})
   }
 }
 
