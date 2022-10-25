@@ -7,7 +7,7 @@ import { useAutoAnimate } from '@formkit/auto-animate/react'
 
 const App = function () {
   const [items, setItems] = useState([0, 1, 2])
-  const [parent] = useAutoAnimate(/* optional config */)
+  const [parent, enableAnimations] = useAutoAnimate(/* optional config */)
   const add = () => setItems([...items, items.length])
   return <>
   <ul ref={parent}>
@@ -16,7 +16,7 @@ const App = function () {
     )}
   </ul>
   <button onClick={add}>Add number</button>
-  <button onClick="{() => enableAnimations(false)}">Disable</button>
+  <button onClick={() => enableAnimations(false)}>Disable</button>
 </>
 }
 
