@@ -11,7 +11,7 @@ import autoAnimate, {
  * @returns
  */
 export function useAutoAnimate<T extends Element>(
-  options: Partial<AutoAnimateOptions> | AutoAnimationPlugin = {}
+  options?: Partial<AutoAnimateOptions> | AutoAnimationPlugin
 ): [RefObject<T>, (enabled: boolean) => void] {
   const element = useRef<T>(null)
   const [controller, setController] = useState<
@@ -24,7 +24,7 @@ export function useAutoAnimate<T extends Element>(
   }
   useEffect(() => {
     if (element.current instanceof HTMLElement)
-      setController(autoAnimate(element.current, options))
+      setController(autoAnimate(element.current, options || {}))
   }, [])
   return [element, setEnabled]
 }

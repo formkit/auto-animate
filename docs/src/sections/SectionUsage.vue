@@ -146,6 +146,9 @@ import IconSvelte from "../components/IconSvelte.vue"
     <CodeExample :examples="vueDirectiveApp" title="App" />
     <ActualVueApp />
     <AsideTip>
+      Please bare in mind that value passed to <code>:key</code> should be a unique value, otherwise animation might not work as expected.
+    </AsideTip>
+    <AsideTip>
       Vue users can pass options by directly setting the directive’s value
       <code>&lt;ul v-auto-animate="{ duration: 100 }"&gt;</code>
     </AsideTip>
