@@ -28,19 +28,23 @@
   },
   "exports": {
     "./vue": {
+      "default": "./vue/index.mjs",
       "import": "./vue/index.mjs",
       "types": "./vue/index.d.ts"
     },
     "./react": {
+      "default": "./react/index.mjs",
       "import": "./react/index.mjs",
       "types": "./react/index.d.ts"
     },
     "./angular": {
+      "default": "./angular/index.mjs",
       "import": "./angular/index.mjs",
       "types": "./angular/index.d.ts"
     },
     ".": {
-      "import": "./index.mjs"
+      "import": "./index.mjs",
+      "default": "./index.mjs"
     }
   },
   "devDependencies": {
