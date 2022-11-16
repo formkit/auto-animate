@@ -28,19 +28,19 @@
   },
   "exports": {
     "./vue": {
-      "default": "./vue/index.mjs",
       "import": "./vue/index.mjs",
-      "types": "./vue/index.d.ts"
+      "types": "./vue/index.d.ts",
+      "default": "./vue/index.mjs"
     },
     "./react": {
-      "default": "./react/index.mjs",
       "import": "./react/index.mjs",
-      "types": "./react/index.d.ts"
+      "types": "./react/index.d.ts",
+      "default": "./react/index.mjs"
     },
     "./angular": {
-      "default": "./angular/index.mjs",
       "import": "./angular/index.mjs",
-      "types": "./angular/index.d.ts"
+      "types": "./angular/index.d.ts",
+      "default": "./angular/index.mjs"
     },
     ".": {
       "import": "./index.mjs",
