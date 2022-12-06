@@ -7,6 +7,7 @@ const MIN = process.env.MIN || false
 
 const external = [
   "vue",
+  "preact",
   "react",
   "angular",
   "process",

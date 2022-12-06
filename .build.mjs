@@ -56,6 +56,24 @@ async function reactBuild() {
   await fs.writeFile(resolve(rootDir, "dist/react/index.mjs"), raw)
 }
 
+async function preactBuild() {
+  info("Rolling up Preact package")
+  await execa("npx", [
+    "rollup",
+    "-c",
+    "rollup.config.js",
+    "--environment",
+    "FRAMEWORK:preact",
+  ])
+  /**
+   * This is a super hack — for some reason these imports need to be explicitly
+   * to .mjs files so...we make it so.
+   */
+  let raw = await fs.readFile(resolve(rootDir, "dist/preact/index.mjs"), "utf8")
+  raw = raw.replace("from '../index'", "from '../index.mjs'")
+  await fs.writeFile(resolve(rootDir, "dist/preact/index.mjs"), raw)
+}
+
 async function vueBuild() {
   info("Rolling up Vue package")
   await execa("npx", [
@@ -120,6 +138,11 @@ async function bundleDeclarations() {
     "mv",
     `${rootDir}/dist/src/react/index.d.ts`,
     `${rootDir}/dist/react/index.d.ts`,
+  ])
+  await execa("shx", [
+    "mv",
+    `${rootDir}/dist/src/preact/index.d.ts`,
+    `${rootDir}/dist/preact/index.d.ts`,
   ])
   await execa("shx", [
     "mv",
@@ -218,6 +241,7 @@ await clean()
 await baseBuild()
 await baseBuildMin()
 await reactBuild()
+await preactBuild()
 await vueBuild()
 await angularBuild()
 await declarationsBuild()

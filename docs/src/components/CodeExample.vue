@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import IconVue from "./IconVue.vue"
 import IconReact from "./IconReact.vue"
+import IconPreact from "./IconPreact.vue"
 import IconHTML from "./IconHTML.vue"
 import IconYarn from "./IconYarn.vue"
 import IconNPM from "./IconNPM.vue"
@@ -12,7 +13,7 @@ import { computed, PropType, ref } from "vue"
 import { vAutoAnimate } from "../../../src"
 import "../../assets/prism.css"
 
-type LanguageOption = "react" | "vue" | "html"
+type LanguageOption = "react" | "preact" | "vue" | "html"
 
 type Language = {
   ext: "jsx" | "vue" | "html"
@@ -97,6 +98,13 @@ function copyCode(value) {
           :data-selected="current === 'react' || null"
         >
           <IconReact />React
+        </li>
+        <li
+          v-if="'preact' in props.examples"
+          @click="current = 'preact'"
+          :data-selected="current === 'preact' || null"
+        >
+          <IconPreact />Preact
         </li>
         <li
           v-if="'vue' in props.examples"
