@@ -8,10 +8,6 @@ export default {
     ext: "jsx",
     language: "jsx",
   },
-  solid: {
-    ext: "jsx",
-    language: "jsx",
-  },
   vue: {
     ext: "vue",
     language: "html",
