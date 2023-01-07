@@ -299,7 +299,7 @@ function target(el: Element, child?: Element) {
  * @param el - The specific element to animate.
  */
 function animate(el: Element) {
-  const isMounted = root.contains(el)
+  const isMounted = el.isConnected
   const preExisting = coords.has(el)
   if (isMounted && siblings.has(el)) siblings.delete(el)
   if (animations.has(el)) {
