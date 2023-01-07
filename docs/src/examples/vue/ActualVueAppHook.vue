@@ -2,7 +2,7 @@
 import { ref } from "vue"
 import { useAutoAnimate } from "../../../../src/vue"
 
-const items = ref(["React", "Vue", "Svelte", "Angular"])
+const items = ref(["React", "Solid", "Vue", "Svelte", "Angular"])
 
 function sortAsc() {
   items.value.sort()

@@ -10,8 +10,10 @@ import {
 } from "../examples/vue"
 import { angularDirectiveMain, angularDirectiveApp } from "../examples/angular"
 import reactHook from "../examples/react"
+import solidFunction from "../examples/solid"
 import disabledExamples from "../examples/disable"
 import ActualReactApp from "../examples/react/ActualReactApp.vue"
+import ActualSolidApp from "../examples/solid/ActualSolidApp.vue"
 import ActualDropdown from "../examples/dropdown/ActualDropdown.vue"
 import svelteAction from "../examples/svelte"
 import ActualSvelteApp from "../examples/svelte/ActualSvelteApp.vue"
@@ -23,6 +25,7 @@ import IconReact from "../components/IconReact.vue"
 import IconVue from "../components/IconVue.vue"
 import IconAngular from "../components/IconAngular.vue"
 import IconSvelte from "../components/IconSvelte.vue"
+import IconSolid from "../components/IconSolid.vue"
 </script>
 <template>
   <section id="usage">
@@ -112,6 +115,9 @@ import IconSvelte from "../components/IconSvelte.vue"
         <a href="#usage-react"><span>React</span><IconReact /></a>
       </li>
       <li>
+        <a href="#usage-solid"><span>Solid</span><IconSolid /></a>
+      </li>
+      <li>
         <a href="#usage-vue"><span>Vue</span><IconVue /></a>
       </li>
       <li>
@@ -152,6 +158,16 @@ import IconSvelte from "../components/IconSvelte.vue"
       Vue users can pass options by directly setting the directive’s value
       <code>&lt;ul v-auto-animate="{ duration: 100 }"&gt;</code>
     </AsideTip>
+
+    <h2 id="usage-solid">Solid function</h2>
+    <p>
+      Solid users can use the function <code>createAutoAnimate</code> by importing it
+      from <code>@formkit/auto-animate/solid</code>. This function returns a ref setter to
+      apply to the parent element, as well as a function to
+      <a href="#usage-disable">enable or disable</a> animations.
+    </p>
+    <CodeExample :examples="solidFunction" title="App" />
+    <ActualSolidApp />
 
     <h3 id="usage-vue-composable">Vue composable</h3>
     <p>
