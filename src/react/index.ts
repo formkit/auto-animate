@@ -19,6 +19,8 @@ export function useAutoAnimate<T extends Element>(
   const element = useCallback((node: T) => {
     if (node instanceof HTMLElement) {
       setController(autoAnimate(node, options))
+    } else {
+      setController(undefined);
     }
   }, [])
   const setEnabled = (enabled: boolean) => {
