@@ -118,12 +118,6 @@ import IconSolid from "../components/IconSolid.vue"
         </a>
       </li>
       <li>
-        <a href="#usage-solid"
-          ><span>Solid Primitive</span>
-          <IconSolid />
-        </a>
-      </li>
-      <li>
         <a href="#usage-solid"><span>Solid</span><IconSolid /></a>
       </li>
       <li>
@@ -154,7 +148,7 @@ import IconSolid from "../components/IconSolid.vue"
     <CodeExample :examples="solidPrimitive" title="App" />
     <ActualSolidApp />
 
-    <h2 id="usage-solid-directive"></h2>
+    <h3 id="usage-solid-directive">Solid Directive</h3>
     <p>
       Solid users can also use the directive <code>autoAnimate</code> by
       importing it from <code>@formkit/auto-animate/solid</code>.
