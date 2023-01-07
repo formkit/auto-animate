@@ -146,7 +146,8 @@ import IconSolid from "../components/IconSolid.vue"
       importing it from <code>@formkit/auto-animate/solid</code>.
     </p>
     <CodeExample :examples="solidPrimitive" title="App" />
-    <ActualSolidApp />
+<!--    TODO: publish a version and uncomment it -->
+<!--    <ActualSolidApp />-->
 
     <h3 id="usage-solid-directive">Solid Directive</h3>
     <p>
