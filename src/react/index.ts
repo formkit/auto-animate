@@ -11,7 +11,7 @@ import autoAnimate, {
  * @returns
  */
 export function useAutoAnimate<T extends Element>(
-  options: Partial<AutoAnimateOptions> | AutoAnimationPlugin = {}
+  options?: Partial<AutoAnimateOptions> | AutoAnimationPlugin
 ): [RefCallback<T>, (enabled: boolean) => void] {
   const [controller, setController] = useState<
     AnimationController | undefined
@@ -28,5 +28,6 @@ export function useAutoAnimate<T extends Element>(
       enabled ? controller.enable() : controller.disable()
     }
   }
+
   return [element, setEnabled]
 }

@@ -232,6 +232,21 @@ if (typeof window !== "undefined") {
  * @returns
  */
 function getElements(mutations: MutationRecord[]): Set<Element> | false {
+  const observedNodes = mutations.reduce((nodes: Node[], mutation) => {
+    return [
+      ...nodes,
+      ...Array.from(mutation.addedNodes),
+      ...Array.from(mutation.removedNodes),
+    ]
+  }, [])
+
+  // Short circuit if _only_ comment nodes are observed
+  const onlyCommentNodesObserved = observedNodes.every(
+    (node) => node.nodeName === "#comment"
+  )
+
+  if (onlyCommentNodesObserved) return false
+
   return mutations.reduce((elements: Set<Element> | false, mutation) => {
     // Short circuit if we find a purposefully deleted node.
     if (elements === false) return false
