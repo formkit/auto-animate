@@ -1,35 +1,37 @@
-import { createSignal, onMount, Setter } from "solid-js"
-import autoAnimate, {
+import { createEffect } from "solid-js"
+import autoAnimateBase, {
   AutoAnimateOptions,
   AutoAnimationPlugin,
-  AnimationController,
 } from "../index"
 
 /**
- * AutoAnimate function for adding dead-simple transitions and animations to solid.js.
- * @param options - Auto animate options or a plugin
- * @returns
+ * This code is taken from https://github.com/lxsmnsyc/solid-auto-animate/blob/main/packages/solid-auto-animate/src/index.ts
  */
-export function createAutoAnimate<T extends Element>(
-  options?: Partial<AutoAnimateOptions> | AutoAnimationPlugin
-): [Setter<T | null>, (enabled: boolean) => void] {
-  const [element, setElement] = createSignal<T | null>(null)
-  const [controller, setController] = createSignal<
-    AnimationController | undefined
-  >()
-  const setEnabled = (enabled: boolean) => {
-    const currentController = controller()
-    if (currentController) {
-      enabled ? currentController.enable() : currentController.disable()
+
+declare module "solid-js" {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
+  namespace JSX {
+    interface Directives {
+      autoAnimate: Partial<AutoAnimateOptions> | AutoAnimationPlugin | true
     }
   }
-
-  onMount(() => {
-    const currentElement = element()
-    if (currentElement instanceof HTMLElement)
-      setController(autoAnimate(currentElement, options || {}))
-  }, )
-
-  return [setElement, setEnabled]
 }
 
+export function autoAnimate<T extends HTMLElement>(
+  element: T,
+  options: () => Partial<AutoAnimateOptions> | AutoAnimationPlugin | true
+): void {
+  createEffect(() => {
+    const currentOptions = options()
+    autoAnimateBase(element, currentOptions === true ? {} : currentOptions)
+  })
+}
+
+export function createAutoAnimate<T extends HTMLElement>(
+  element: () => T,
+  options: Partial<AutoAnimateOptions> | AutoAnimationPlugin
+) {
+  createEffect(() => {
+    autoAnimateBase(element(), options)
+  })
+}

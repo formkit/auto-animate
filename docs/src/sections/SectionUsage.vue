@@ -9,8 +9,8 @@ import {
   vueComposable,
 } from "../examples/vue"
 import { angularDirectiveMain, angularDirectiveApp } from "../examples/angular"
+import { solidPrimitive, solidDirective } from "../examples/solid"
 import reactHook from "../examples/react"
-import solidFunction from "../examples/solid"
 import disabledExamples from "../examples/disable"
 import ActualReactApp from "../examples/react/ActualReactApp.vue"
 import ActualSolidApp from "../examples/solid/ActualSolidApp.vue"
@@ -112,7 +112,16 @@ import IconSolid from "../components/IconSolid.vue"
     </p>
     <ul class="framework-jumplinks">
       <li>
-        <a href="#usage-react"><span>React</span><IconReact /></a>
+        <a href="#usage-react"
+          ><span>React</span>
+          <IconReact />
+        </a>
+      </li>
+      <li>
+        <a href="#usage-solid"
+          ><span>Solid Primitive</span>
+          <IconSolid />
+        </a>
       </li>
       <li>
         <a href="#usage-solid"><span>Solid</span><IconSolid /></a>
@@ -136,6 +145,22 @@ import IconSolid from "../components/IconSolid.vue"
     </p>
     <CodeExample :examples="reactHook" title="App" />
     <ActualReactApp />
+
+    <h2 id="usage-solid">Solid Primitive</h2>
+    <p>
+      Solid users can use the function <code>createAutoAnimate</code> by
+      importing it from <code>@formkit/auto-animate/solid</code>.
+    </p>
+    <CodeExample :examples="solidPrimitive" title="App" />
+    <ActualSolidApp />
+
+    <h2 id="usage-solid-directive"></h2>
+    <p>
+      Solid users can also use the directive <code>autoAnimate</code> by
+      importing it from <code>@formkit/auto-animate/solid</code>.
+    </p>
+    <CodeExample :examples="solidDirective" title="App" />
+
     <h2 id="usage-vue">Vue directive</h2>
     <p>
       Vue users can globally register the
@@ -152,22 +177,13 @@ import IconSolid from "../components/IconSolid.vue"
     <CodeExample :examples="vueDirectiveApp" title="App" />
     <ActualVueApp />
     <AsideTip>
-      Please bare in mind that value passed to <code>:key</code> should be a unique value, otherwise animation might not work as expected.
+      Please bare in mind that value passed to <code>:key</code> should be a
+      unique value, otherwise animation might not work as expected.
     </AsideTip>
     <AsideTip>
       Vue users can pass options by directly setting the directive’s value
       <code>&lt;ul v-auto-animate="{ duration: 100 }"&gt;</code>
     </AsideTip>
-
-    <h2 id="usage-solid">Solid function</h2>
-    <p>
-      Solid users can use the function <code>createAutoAnimate</code> by importing it
-      from <code>@formkit/auto-animate/solid</code>. This function returns a ref setter to
-      apply to the parent element, as well as a function to
-      <a href="#usage-disable">enable or disable</a> animations.
-    </p>
-    <CodeExample :examples="solidFunction" title="App" />
-    <ActualSolidApp />
 
     <h3 id="usage-vue-composable">Vue composable</h3>
     <p>

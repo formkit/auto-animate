@@ -1,6 +1,5 @@
 import vueExample from "./disable.vue?raw"
 import reactExample from "./disable.jsx?raw"
-import solidExample from "./solid-disable.jsx?raw"
 // import htmlExample from "./disable.html?raw"
 
 export default {
@@ -10,7 +9,6 @@ export default {
     language: "jsx",
   },
   solid: {
-    example: solidExample,
     ext: "jsx",
     language: "jsx",
   },
