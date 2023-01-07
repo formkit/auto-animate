@@ -1,5 +1,5 @@
 const solidPrimitive = {
-  react: {
+  solid: {
     language: "jsx",
     ext: "jsx",
     example: `import { createSignal } from 'solid-js'
@@ -28,7 +28,7 @@ export default App`,
 }
 
 const solidDirective = {
-  react: {
+  solid: {
     language: "jsx",
     ext: "jsx",
     example: `import { createSignal } from 'solid-js'
