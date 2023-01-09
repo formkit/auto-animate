@@ -3,13 +3,13 @@ const solidPrimitive = {
     language: "jsx",
     ext: "jsx",
     example: `import { createSignal } from 'solid-js'
-import { createAutoAnimate } from '@formkit/auto-animate/solid'
+import { useAutoAnimate } from '@formkit/auto-animate/solid'
 
 const App = function () {
   const [items, setItems] = createSignal([0, 1, 2])
 
   let parent;
-  createAutoAnimate(() => parent, /* optional config */)
+  useAutoAnimate(() => parent, /* optional config */)
 
   const add = () => setItems([...items(), items().length])
 
