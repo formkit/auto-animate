@@ -9,8 +9,8 @@ export default {
     example: reactExample,
   },
   solid: {
-    language: "jsx",
-    ext: "jsx",
+    language: "tsx",
+    ext: "tsx",
     example: solidExample,
   },
   vue: {
