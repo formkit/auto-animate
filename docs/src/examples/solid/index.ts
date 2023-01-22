@@ -13,7 +13,7 @@ const App = function () {
   const [isExpanded, setIsExpanded] = createSignal(true)
 
   return <div class="parent" ref={parent}>
-    <Show keyed when={isExpanded()}>
+    <Show when={isExpanded()} keyed>
       <ul class="drawer">
         <For each={menuItems}>
           {item => <li class="item">{item}</li>}
@@ -52,7 +52,7 @@ const App = function () {
   const [isExpanded, setIsExpanded] = createSignal(true)
 
   return <div use:autoAnimate={/* optional config */} class="parent">
-    <Show keyed when={isExpanded()}>
+    <Show when={isExpanded()} keyed>
       <ul class="drawer">
         <For each={menuItems}>
           {item => <li class="item">{item}</li>}

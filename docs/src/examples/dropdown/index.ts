@@ -1,6 +1,6 @@
 import vueExample from "./dropdown.vue?raw"
 import reactExample from "./dropdown.jsx?raw"
-import solidExample from "./dropdown-solid.jsx?raw"
+import solidExample from "./dropdown-solid.tsx?raw"
 import nativeExample from "./dropdown.html?raw"
 export default {
   react: {
