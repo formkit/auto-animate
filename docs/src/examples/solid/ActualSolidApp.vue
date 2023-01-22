@@ -1,27 +1,56 @@
 <script setup>
-import { createAutoAnimate } from "../../../../src/solid/index.ts"
+import { useAutoAnimate } from "../../../../src/vue/index.ts"
 import { ref } from "vue"
-let parent;
-createAutoAnimate(() => parent, /* optional config */)
-const items = ref([0, 1, 2])
+const [parent] = useAutoAnimate()
+const menuItems = ["Home", "Settings", "Logout"]
+const isExpanded = ref(true)
 </script>
 
 <template>
   <div class="example react-example">
-    <ul ref="parent">
-      <li v-for="item in items" :key="item">{{ item }}</li>
-    </ul>
-    <button @click="items.push(items.length)" class="button button--alt">
-      Add number
-    </button>
+    <div class="parent" ref="parent">
+      <ul v-if="isExpanded" class="drawer">
+        <li v-for="item of menuItems" key="item" class="item">{{ item }}</li>
+      </ul>
+      <div class="content">
+        <button
+          class="button button--alt"
+          type="button"
+          @click="isExpanded = !isExpanded"
+        >
+          Toggle Drawer
+        </button>
+      </div>
+    </div>
   </div>
 </template>
 
 <style scoped>
-ul {
-  list-style-type: disc;
+.content {
+  padding: 2rem;
 }
-li::before {
-  display: none;
+
+.drawer {
+  padding-right: 1rem;
+  border-right: 1px solid currentColor;
+}
+
+.parent {
+  height: 180px;
+  display: flex;
+  position: relative;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 2rem;
+  border-radius: 1rem;
+  transition: background-color 0.2s;
+}
+
+.item:hover {
+  background-color: #efefef;
 }
 </style>

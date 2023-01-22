@@ -1,36 +1,46 @@
 const solidPrimitive = {
   solid: {
-    language: "jsx",
-    ext: "jsx",
-    example: `import { createSignal } from 'solid-js'
-import { createAutoAnimate } from '@formkit/auto-animate/solid'
+    language: "tsx",
+    ext: "tsx",
+    example: `import { createSignal, For, Show } from "solid-js"
+import { createAutoAnimate } from "@formkit/auto-animate/solid"
 
 const App = function () {
-  const [items, setItems] = createSignal([0, 1, 2])
-
-  let parent;
+  let parent: HTMLDivElement
   createAutoAnimate(() => parent, /* optional config */)
 
-  const add = () => setItems([...items(), items().length])
+  const menuItems = ["Home", "Settings", "Logout"]
+  const [isExpanded, setIsExpanded] = createSignal(true)
 
-  return <>
-  <ul ref={parent}>
-    <For each={items()}>
-      {(item) => <li>{item}</li>}
-    </For>
-  </ul>
-  <button onClick={add}>Add number</button>
-</>
+  return <div class="parent" ref={parent}>
+    <Show keyed when={isExpanded()}>
+      <ul class="drawer">
+        <For each={menuItems}>
+          {item => <li class="item">{item}</li>}
+        </For>
+      </ul>
+    </Show>
+    <div class="content">
+      <button
+        class="button button--alt"
+        type="button"
+        onClick={() => setIsExpanded(isExpanded => !isExpanded)}
+      >
+        Toggle Drawer
+      </button>
+    </div>
+  </div>
 }
 
-export default App`,
+export default App
+`,
   },
 }
 
 const solidDirective = {
   solid: {
-    language: "jsx",
-    ext: "jsx",
+    language: "tsx",
+    ext: "tsx",
     example: `import { createSignal } from 'solid-js'
 import { autoAnimate } from '@formkit/auto-animate/solid'
 
@@ -38,17 +48,27 @@ const App = function () {
   // Required to prevent TS from removing the directive
   autoAnimate;
 
-  const [items, setItems] = createSignal([0, 1, 2])
+  const menuItems = ["Home", "Settings", "Logout"]
+  const [isExpanded, setIsExpanded] = createSignal(true)
 
-  const add = () => setItems([...items(), items().length])
-
-  return <>
-    <ul use:autoAnimate={/* optional config */}>
-     <For each={items()}>
-      {(item) => <li>{item}</li>}
-    </For>
-  </ul>
-  <button onClick={add}>Add number</button>
+  return <div use:autoAnimate={/* optional config */} class="parent">
+    <Show keyed when={isExpanded()}>
+      <ul class="drawer">
+        <For each={menuItems}>
+          {item => <li class="item">{item}</li>}
+        </For>
+      </ul>
+    </Show>
+    <div class="content">
+      <button
+        class="button button--alt"
+        type="button"
+        onClick={() => setIsExpanded(isExpanded => !isExpanded)}
+      >
+        Toggle Drawer
+      </button>
+    </div>
+  </div>
 </>
 }
 

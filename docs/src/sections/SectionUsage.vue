@@ -143,11 +143,12 @@ import IconSolid from "../components/IconSolid.vue"
     <h2 id="usage-solid">Solid Primitive</h2>
     <p>
       Solid users can use the function <code>createAutoAnimate</code> by
-      importing it from <code>@formkit/auto-animate/solid</code>.
+      importing it from <code>@formkit/auto-animate/solid</code>. This hook
+      returns a ref to apply to the parent element, as well as a function to
+      <a href="#usage-disable">enable or disable</a> animations.
     </p>
     <CodeExample :examples="solidPrimitive" title="App" />
-<!--    TODO: publish a version and uncomment it -->
-<!--    <ActualSolidApp />-->
+    <ActualSolidApp />
 
     <h3 id="usage-solid-directive">Solid Directive</h3>
     <p>
