@@ -1,4 +1,4 @@
-import { useAutoAnimate } from "@formkit/auto-animate/solid"
+import { createAutoAnimate } from "@formkit/auto-animate/solid"
 import { createSignal, Show } from "solid-js"
 
 const Dropdown = () => {
@@ -8,7 +8,7 @@ const Dropdown = () => {
 
   let parent
 
-  useAutoAnimate(() => parent /* optional config */)
+  createAutoAnimate(() => parent /* optional config */)
 
   return <div ref={parent}>
     <strong className="dropdown-label" onClick={reveal}>Click me to open!</strong>

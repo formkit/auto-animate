@@ -142,7 +142,7 @@ import IconSolid from "../components/IconSolid.vue"
 
     <h2 id="usage-solid">Solid Primitive</h2>
     <p>
-      Solid users can use the function <code>useAutoAnimate</code> by
+      Solid users can use the function <code>createAutoAnimate</code> by
       importing it from <code>@formkit/auto-animate/solid</code>.
     </p>
     <CodeExample :examples="solidPrimitive" title="App" />

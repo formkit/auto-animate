@@ -1,9 +1,9 @@
-import { useAutoAnimate } from '@formkit/auto-animate/solid'
+import { createAutoAnimate } from '@formkit/auto-animate/solid'
 
 function MyList () {
   let animationParent;
 
-  useAutoAnimate(() => animationParent, /* optional config */)
+  createAutoAnimate(() => animationParent, /* optional config */)
 
   return (
     <ul ref={animationParent}>

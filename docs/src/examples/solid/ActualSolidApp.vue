@@ -1,8 +1,8 @@
 <script setup>
-import { useAutoAnimate } from "../../../../src/solid/index.ts"
+import { createAutoAnimate } from "../../../../src/solid/index.ts"
 import { ref } from "vue"
 let parent;
-useAutoAnimate(() => parent, /* optional config */)
+createAutoAnimate(() => parent, /* optional config */)
 const items = ref([0, 1, 2])
 </script>
 

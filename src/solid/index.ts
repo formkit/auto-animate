@@ -27,7 +27,7 @@ export function autoAnimate<T extends HTMLElement>(
   })
 }
 
-export function useAutoAnimate<T extends HTMLElement>(
+export function createAutoAnimate<T extends HTMLElement>(
   element: () => T,
   options: Partial<AutoAnimateOptions> | AutoAnimationPlugin
 ) {
