@@ -11,23 +11,31 @@ interface Coordinates {
 /**
  * Allows start/stop control of the animation
  */
-export interface AnimationController {
+ export interface AnimationController<P> {
   /**
    * The original animation parent.
    */
-  readonly parent: Element
+  readonly parent: Element;
   /**
    * A function that enables future animations.
    */
-  enable: () => void
+  enable: () => void;
   /**
    * A function that disables future animations.
    */
-  disable: () => void
+  disable: () => void;
   /**
    * A function that returns true if the animations are currently enabled.
    */
-  isEnabled: () => boolean
+  isEnabled: () => boolean;
+  /**
+   * (Svelte Specific) A function that runs if the parameters are changed.
+   */
+  update?: (newParams: P) => void;
+ /**
+  * (Svelte Specific) A function that runs when the componnet is removed from the DOM.
+  */
+  destroy?: () => void;
 }
 
 /**
