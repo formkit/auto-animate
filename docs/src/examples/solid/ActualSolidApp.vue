@@ -7,7 +7,7 @@ const isExpanded = ref(true)
 </script>
 
 <template>
-  <div class="example react-example">
+  <div class="example solid-example">
     <div class="parent" ref="parent">
       <ul v-if="isExpanded" class="drawer">
         <li v-for="item of menuItems" key="item" class="item">{{ item }}</li>
