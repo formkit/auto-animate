@@ -18,7 +18,7 @@ import introExample from "../examples/intro"
       </h1>
       <p>
         AutoAnimate is a zero-config, drop-in animation utility that adds smooth
-        transitions to your web app. You can use it with React, Vue, Svelte, or
+        transitions to your web app. You can use it with React, Solid, Vue, Svelte, or
         any other JavaScript application.
       </p>
       <div>

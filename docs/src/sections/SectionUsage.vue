@@ -9,9 +9,11 @@ import {
   vueComposable,
 } from "../examples/vue"
 import { angularDirectiveMain, angularDirectiveApp } from "../examples/angular"
+import { solidPrimitive, solidDirective } from "../examples/solid"
 import reactHook from "../examples/react"
 import disabledExamples from "../examples/disable"
 import ActualReactApp from "../examples/react/ActualReactApp.vue"
+import ActualSolidApp from "../examples/solid/ActualSolidApp.vue"
 import ActualDropdown from "../examples/dropdown/ActualDropdown.vue"
 import svelteAction from "../examples/svelte"
 import ActualSvelteApp from "../examples/svelte/ActualSvelteApp.vue"
@@ -23,6 +25,7 @@ import IconReact from "../components/IconReact.vue"
 import IconVue from "../components/IconVue.vue"
 import IconAngular from "../components/IconAngular.vue"
 import IconSvelte from "../components/IconSvelte.vue"
+import IconSolid from "../components/IconSolid.vue"
 </script>
 <template>
   <section id="usage">
@@ -109,7 +112,13 @@ import IconSvelte from "../components/IconSvelte.vue"
     </p>
     <ul class="framework-jumplinks">
       <li>
-        <a href="#usage-react"><span>React</span><IconReact /></a>
+        <a href="#usage-react"
+          ><span>React</span>
+          <IconReact />
+        </a>
+      </li>
+      <li>
+        <a href="#usage-solid"><span>Solid</span><IconSolid /></a>
       </li>
       <li>
         <a href="#usage-vue"><span>Vue</span><IconVue /></a>
@@ -130,6 +139,24 @@ import IconSvelte from "../components/IconSvelte.vue"
     </p>
     <CodeExample :examples="reactHook" title="App" />
     <ActualReactApp />
+
+    <h2 id="usage-solid">Solid Primitive</h2>
+    <p>
+      Solid users can use the function <code>createAutoAnimate</code> by
+      importing it from <code>@formkit/auto-animate/solid</code>. This hook
+      returns a ref to apply to the parent element, as well as a function to
+      <a href="#usage-disable">enable or disable</a> animations.
+    </p>
+    <CodeExample :examples="solidPrimitive" title="App" />
+    <ActualSolidApp />
+
+    <h3 id="usage-solid-directive">Solid Directive</h3>
+    <p>
+      Solid users can also use the directive <code>autoAnimate</code> by
+      importing it from <code>@formkit/auto-animate/solid</code>.
+    </p>
+    <CodeExample :examples="solidDirective" title="App" />
+
     <h2 id="usage-vue">Vue directive</h2>
     <p>
       Vue users can globally register the
@@ -146,7 +173,8 @@ import IconSvelte from "../components/IconSvelte.vue"
     <CodeExample :examples="vueDirectiveApp" title="App" />
     <ActualVueApp />
     <AsideTip>
-      Please bare in mind that value passed to <code>:key</code> should be a unique value, otherwise animation might not work as expected.
+      Please bare in mind that value passed to <code>:key</code> should be a
+      unique value, otherwise animation might not work as expected.
     </AsideTip>
     <AsideTip>
       Vue users can pass options by directly setting the directive’s value
