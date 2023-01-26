@@ -1,6 +1,6 @@
 {
   "name": "@formkit/auto-animate",
-  "version": "1.0.0-beta.5",
+  "version": "1.0.0-beta.6",
   "description": "Add motion to your apps with a single line of code.",
   "private": true,
   "keywords": [
@@ -9,7 +9,8 @@
     "react",
     "vue",
     "angular",
-    "svelte"
+    "svelte",
+    "solid"
   ],
   "type": "module",
   "main": "index.mjs",
