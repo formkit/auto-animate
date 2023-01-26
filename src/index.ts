@@ -154,9 +154,14 @@ function updatePos(el: Element) {
     el,
     setTimeout(async () => {
       const currentAnimation = animations.get(el)
-      if (!currentAnimation || (await currentAnimation.finished)) {
+
+      try {
+        await currentAnimation?.finished
+
         coords.set(el, getCoords(el))
         observePosition(el)
+      } catch {
+        // ignore errors as the `.finished` promise is rejected when animations were cancelled
       }
     }, delay)
   )
