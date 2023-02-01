@@ -50,6 +50,7 @@
     },
     ".": {
       "import": "./index.mjs",
+      "types": "./index.d.ts",
       "default": "./index.mjs"
     }
   },
