@@ -52,5 +52,6 @@ const isExpanded = ref(true)
 
 .item:hover {
   background-color: #efefef;
+  color: purple;
 }
 </style>
