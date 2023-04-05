@@ -85,8 +85,11 @@ import IconSolid from "../components/IconSolid.vue"
     <AsideTip
       >AutoAnimate respects a user’s <code>prefers-reduced-motion</code> setting
       and will automatic disable if the user has indicated they want reduced
-      motion. Checkout the [MDN docs for more
-      information](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion)
+      motion. Checkout the
+      <a
+        href="https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion"
+        >MDN docs for more information</a
+      >
       on this media feature.
     </AsideTip>
     <h3>Configuration</h3>
