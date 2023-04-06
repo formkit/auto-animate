@@ -1,6 +1,7 @@
 <script setup>
 import HomepageDemo from "../examples/first-demo/ActualDemo.vue"
-import jest from "../examples/jest"
+import jestReact from "../examples/jest-react"
+import jestReactHook from "../examples/jest-react-hook"
 import CodeExample from "../components/CodeExample.vue"
 import AsideTip from "../components/AsideTip.vue"
 </script>
@@ -18,7 +19,10 @@ import AsideTip from "../components/AsideTip.vue"
       To do that with Jest, you just need to create a folder that replicates
       the module's folder structure and mock the react file:
     </p>
-    <CodeExample title="react.js" :examples="jest"></CodeExample>
+    <h3>Normal approach:</h3>
+    <CodeExample title="react.js" :examples="jestReact"></CodeExample>
+    <h3>Using React Hook:</h3>
+    <CodeExample title="react.js" :examples="jestReactHook"></CodeExample>
     <AsideTip>
       Your Jest config should includes the path of your mock: <br />
       <code>modulePaths: ["&ltrootDir>/jest"]</code>
