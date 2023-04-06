@@ -8,6 +8,7 @@ import SectionInstallation from "../sections/SectionInstallation.vue"
 import SectionWhy from "../sections/SectionWhy.vue"
 import SectionUsage from "../sections/SectionUsage.vue"
 import SectionExamples from "../sections/SectionExamples.vue"
+import SectionJest from "../sections/SectionJest.vue"
 import SectionPlugins from "../sections/SectionPlugins.vue"
 import ReducedMotionWarning from '../components/ReducedMotionWarning.vue'
 
@@ -25,6 +26,7 @@ onMounted(() => {
     <ReducedMotionWarning v-if="prefersReducedMotion" />
     <SectionInstallation />
     <SectionUsage />
+    <SectionJest />
     <SectionExamples />
     <SectionPlugins />
     <SectionWhy />
