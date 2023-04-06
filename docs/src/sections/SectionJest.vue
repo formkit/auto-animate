@@ -24,7 +24,8 @@ import AsideTip from "../components/AsideTip.vue"
     <h3>Using React Hook:</h3>
     <CodeExample title="react.js" :examples="jestReactHook"></CodeExample>
     <AsideTip>
-      Your Jest config should includes the path of your mock: <br />
+      Your Jest config should includes the path of your mock, on this example
+      it looks like this: <br />
       <code>modulePaths: ["&ltrootDir>/jest"]</code>
     </AsideTip>
   </section>
