@@ -1,6 +1,6 @@
 <script setup>
 import HomepageDemo from "../examples/first-demo/ActualDemo.vue"
-import jestReact from "../examples/jest-react"
+// import jestReact from "../examples/jest-react"
 import jestReactHook from "../examples/jest-react-hook"
 import CodeExample from "../components/CodeExample.vue"
 import AsideTip from "../components/AsideTip.vue"
@@ -20,7 +20,7 @@ import AsideTip from "../components/AsideTip.vue"
       the module's folder structure and mock functions:
     </p>
     <h3>If you are using the normal approach:</h3>
-    <CodeExample title="react.js" :examples="jestReact"></CodeExample>
+    <!-- <CodeExample title="react.js" :examples="jestReact"></CodeExample> -->
     <h3>Using React Hook:</h3>
     <CodeExample title="react.js" :examples="jestReactHook"></CodeExample>
     <AsideTip>

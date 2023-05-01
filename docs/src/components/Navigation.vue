@@ -44,7 +44,6 @@ if (typeof window !== "undefined") {
       <li><a href="#usage-svelte">Svelte</a></li>
       <li><a href="#usage-angular">Angular</a></li>
       <li><a href="#usage-disable">Disable</a></li>
-      <li><a href="#jest">Jest</a></li>
       <li><a href="#examples">Examples</a></li>
       <li><a href="#plugins">Plugins</a></li>
       <li><a href="#why-not">Why not...?</a></li>

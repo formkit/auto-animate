@@ -21,6 +21,8 @@ import ActualVueApp from "../examples/vue/ActualVueApp.vue"
 import ActualVueAppHook from "../examples/vue/ActualVueAppHook.vue"
 import ActualAngularApp from "../examples/angular/ActualAngularApp.vue"
 import ActualDisable from "../examples/disable/ActualDisable.vue"
+import Vitest from '../examples/vitest/index.ts'
+import jestReactHook from "../examples/jest-react-hook"
 import IconReact from "../components/IconReact.vue"
 import IconVue from "../components/IconVue.vue"
 import IconAngular from "../components/IconAngular.vue"
@@ -142,6 +144,34 @@ import IconSolid from "../components/IconSolid.vue"
     </p>
     <CodeExample :examples="reactHook" title="App" />
     <ActualReactApp />
+
+    <h3>Testing</h3>
+    <p>
+      For now, if you're trying to use auto-animate with tests, you might face
+      some difficulties along the way due to two main problems. One is because
+      tools like Vitest and Jest use JSDom to emulates the browser, and some DOM
+      features that auto-animate uses don't yet exist in the JSDom package.
+      For these cases, we can mock the respective resources in our test setup,
+      like this example using Vitest, but you can do the same with any test framework.
+    </p>
+    <h4>Setup with Vitest:</h4>
+    <CodeExample :examples="Vitest" title="Vitest" />
+    <p>
+      The second issue is with some other testing tools that cannot handle ES Modules, such as Jest.
+      In that case we can try to configure your project to handle ESM, and then
+      you won't face these problems.
+    </p>
+    <p>
+      But if you have some problems with this setup, because Jest's own support
+      for ESM is an experimental feature, you can mock the entirely auto-animate hook:
+    </p>
+    <h4>Mocking the auto-animate Hook on Jest</h4>
+    <CodeExample :examples="jestReactHook" title="Jest" />
+    <AsideTip>
+      Your Jest config should includes the path of your mock, on this example
+      it looks like this: <br />
+      <code>modulePaths: ["&ltrootDir>/jest"]</code>
+    </AsideTip>
 
     <h2 id="usage-solid">Solid Primitive</h2>
     <p>
