@@ -337,15 +337,32 @@ function raw(str: string): number {
 }
 
 /**
+ * Get the scroll offset of elements
+ * @param el - Element
+ * @returns
+ */
+function getScrollOffset(el: Element) {
+  let p = el.parentElement
+  while (p) {
+    if (p.scrollLeft || p.scrollTop) {
+      return { x: p.scrollLeft, y: p.scrollTop }
+    }
+    p = p.parentElement
+  }
+  return { x: 0, y: 0 }
+}
+
+/**
  * Get the coordinates of elements adjusted for scroll position.
  * @param el - Element
  * @returns
  */
 function getCoords(el: Element): Coordinates {
   const rect = el.getBoundingClientRect()
+  const { x, y } = getScrollOffset(el)
   return {
-    top: rect.top + window.scrollY,
-    left: rect.left + window.scrollX,
+    top: rect.top + y,
+    left: rect.left + x,
     width: rect.width,
     height: rect.height,
   }
