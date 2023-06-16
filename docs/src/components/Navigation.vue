@@ -39,10 +39,12 @@ if (typeof window !== "undefined") {
       <li><a href="#installation">Installation</a></li>
       <li><a href="#usage">Usage</a></li>
       <li><a href="#usage-react">React</a></li>
-      <li><a href="#usage-solid">Solid</a></li>
       <li><a href="#usage-vue">Vue</a></li>
+      <li><a href="#usage-preact">Preact</a></li>
+      <li><a href="#usage-solid">Solid</a></li>
       <li><a href="#usage-svelte">Svelte</a></li>
       <li><a href="#usage-angular">Angular</a></li>
+      <!-- <li><a href="#usage-qwik">Qwik</a></li> -->
       <li><a href="#usage-disable">Disable</a></li>
       <li><a href="#examples">Examples</a></li>
       <li><a href="#plugins">Plugins</a></li>

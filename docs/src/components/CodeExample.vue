@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import IconVue from "./IconVue.vue"
 import IconReact from "./IconReact.vue"
+import IconPreact from "./IconPreact.vue"
 import IconSolid from "./IconSolid.vue"
+import IconQwik from "./IconQwik.vue"
 import IconHTML from "./IconHTML.vue"
 import IconYarn from "./IconYarn.vue"
 import IconNPM from "./IconNPM.vue"
@@ -13,7 +15,7 @@ import { computed, PropType, ref } from "vue"
 import { vAutoAnimate } from "../../../src"
 import "../../assets/prism.css"
 
-type LanguageOption = "react" | "vue" | "html"
+type LanguageOption = "react" | "preact" | "vue" | "html"
 
 type Language = {
   ext: "jsx" | "vue" | "html"
@@ -100,18 +102,25 @@ function copyCode(value) {
           <IconReact />React
         </li>
         <li
-          v-if="'solid' in props.examples"
-          @click="current = 'solid'"
-          :data-selected="current === 'solid' || null"
-        >
-          <IconSolid />Solid
-        </li>
-        <li
           v-if="'vue' in props.examples"
           @click="current = 'vue'"
           :data-selected="current === 'vue' || null"
         >
           <IconVue />Vue
+        </li>
+        <li
+          v-if="'preact' in props.examples"
+          @click="current = 'preact'"
+          :data-selected="current === 'preact' || null"
+        >
+          <IconPreact />Preact
+        </li>
+        <li
+          v-if="'solid' in props.examples"
+          @click="current = 'solid'"
+          :data-selected="current === 'solid' || null"
+        >
+          <IconSolid />Solid
         </li>
         <li
           v-if="'svelte' in props.examples"
@@ -126,6 +135,13 @@ function copyCode(value) {
           :data-selected="current === 'angular' || null"
         >
           <IconAngular />Angular
+        </li>
+        <li
+          v-if="'qwik' in props.examples"
+          @click="current = 'qwik'"
+          :data-selected="current === 'qwik' || null"
+        >
+          <IconQwik />Qwik
         </li>
         <li
           v-if="'js' in props.examples"

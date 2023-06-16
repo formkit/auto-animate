@@ -35,6 +35,11 @@
   resolved "https://registry.yarnpkg.com/@babel/parser/-/parser-7.17.10.tgz#873b16db82a8909e0fbd7f115772f4b739f6ce78"
   integrity sha512-n2Q6i+fnJqzOaq2VkdXxy2TCPCWQZHiCo0XqmrCvDWcZQKRyZzYi4Z0yxlBuN0w+r2ZHmre+Q087DSrw3pbJDQ==
 
+"@builder.io/qwik@^1.1.5":
+  version "1.1.5"
+  resolved "https://registry.npmmirror.com/@builder.io/qwik/-/qwik-1.1.5.tgz#70dbe9e1e4644b745354096a27b1f976edffce0b"
+  integrity sha512-/CZzZaUPctUBHNjchJRXV+JC28HZtv4JteCKnpqjp8YcvzHNuB3A0FpIGEzEWD/F/pg+4YunvxrBSb9ZdPJROw==
+
 "@colors/colors@1.5.0":
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/@colors/colors/-/colors-1.5.0.tgz#bb504579c1cae923e6576a4f5da43d25f97bdbd9"
