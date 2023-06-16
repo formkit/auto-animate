@@ -135,20 +135,23 @@ async function angularBuild() {
 
 async function qwikBuild() {
   info("Rolling up Qwik package")
-  await execa("npx", [
-    "rollup",
-    "-c",
-    "rollup.config.js",
-    "--environment",
-    "FRAMEWORK:qwik",
+  await execa("yarn", [
+    "workspace",
+    "auto-animate-qwik",
+    "build.lib",
+  ])
+  await execa("yarn", [
+    "workspace",
+    "auto-animate-qwik",
+    "build.types"
   ])
   /**
    * This is a super hack — for some reason these imports need to be explicitly
    * to .mjs files so...we make it so.
    */
-  let raw = await fs.readFile(resolve(rootDir, "dist/qwik/index.mjs"), "utf8")
-  raw = raw.replace("from '../index'", "from '../index.mjs'")
-  await fs.writeFile(resolve(rootDir, "dist/qwik/index.mjs"), raw)
+  let raw = await fs.readFile(resolve(rootDir, "dist/qwik/index.qwik.mjs"), "utf8")
+  raw = raw.replace(`from "@formkit/auto-animate"`, `from "../index.mjs"`)
+  await fs.writeFile(resolve(rootDir, "dist/qwik/index.qwik.mjs"), raw)
 }
 
 async function declarationsBuild() {
@@ -196,7 +199,7 @@ async function bundleDeclarations() {
   ])
   await execa("shx", [
     "mv",
-    `${rootDir}/dist/src/qwik/index.d.ts`,
+    `${rootDir}/packages/qwik/lib-types/index.d.ts`,
     `${rootDir}/dist/qwik/index.d.ts`,
   ])
   await execa("shx", ["rm", "-rf", `${rootDir}/dist/src`])

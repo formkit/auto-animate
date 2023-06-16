@@ -13,7 +13,7 @@ import autoAnimate, {
   AnimationController,
   AutoAnimateOptions,
   AutoAnimationPlugin,
-} from "../index"
+} from "@formkit/auto-animate"
 
 /**
  * AutoAnimate hook for adding dead-simple transitions and animations to qwik.
