@@ -10,7 +10,7 @@ const items = ref([0, 1, 2])
     <ul ref="parent">
       <li v-for="item in items" :key="item">{{ item }}</li>
     </ul>
-    <button @click="items.push(items.length)" class="button button--alt">
+    <button @click="items.push(items.length)" class="button button--alt add">
       Add number
     </button>
     <button @click="setEnabled(false)" class="button button--alt">

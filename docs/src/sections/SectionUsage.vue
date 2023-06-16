@@ -31,7 +31,6 @@ import IconAngular from "../components/IconAngular.vue"
 import IconSvelte from "../components/IconSvelte.vue"
 import IconSolid from "../components/IconSolid.vue"
 import IconQwik from "../components/IconQwik.vue"
-
 </script>
 <template>
   <section id="usage">
@@ -127,13 +126,13 @@ import IconQwik from "../components/IconQwik.vue"
         </a>
       </li>
       <li>
-        <a href="#usage-solid"><span>Solid</span><IconSolid /></a>
+        <a href="#usage-vue"><span>Vue</span><IconVue /></a>
       </li>
       <li>
         <a href="#usage-preact"><span>Preact</span><IconPreact /></a>
       </li>
       <li>
-        <a href="#usage-vue"><span>Vue</span><IconVue /></a>
+        <a href="#usage-solid"><span>Solid</span><IconSolid /></a>
       </li>
       <li>
         <a href="#usage-svelte"><span>Svelte</span><IconSvelte /></a>
@@ -141,9 +140,9 @@ import IconQwik from "../components/IconQwik.vue"
       <li>
         <a href="#usage-angular"><span>Angular</span><IconAngular /></a>
       </li>
-       <li>
+      <!-- <li>
         <a href="#usage-qwik"><span>Qwik</span><IconQwik /></a>
-      </li>
+      </li> -->
     </ul>
     <h2 id="usage-react">React hook</h2>
     <p>
@@ -154,34 +153,6 @@ import IconQwik from "../components/IconQwik.vue"
     </p>
     <CodeExample :examples="reactHook" title="App" />
     <ActualReactApp />
-	<h2 id="usage-preact">Preact hook</h2>
-    <p>
-      Preact users can use the hook <code>useAutoAnimate</code> by importing it
-      from <code>@formkit/auto-animate/preact</code>. This hook returns a ref to
-      apply to the parent element, as well as a function to
-      <a href="#usage-disable">enable or disable</a> animations.
-    </p>
-    <CodeExample :examples="preactHook" title="App" />
-    <ActualPreactApp />
-
-
-    <h2 id="usage-solid">Solid Primitive</h2>
-    <p>
-      Solid users can use the function <code>createAutoAnimate</code> by
-      importing it from <code>@formkit/auto-animate/solid</code>. This hook
-      returns a ref to apply to the parent element, as well as a function to
-      <a href="#usage-disable">enable or disable</a> animations.
-    </p>
-    <CodeExample :examples="solidPrimitive" title="App" />
-    <ActualSolidApp />
-
-    <h3 id="usage-solid-directive">Solid Directive</h3>
-    <p>
-      Solid users can also use the directive <code>autoAnimate</code> by
-      importing it from <code>@formkit/auto-animate/solid</code>.
-    </p>
-    <CodeExample :examples="solidDirective" title="App" />
-
     <h2 id="usage-vue">Vue directive</h2>
     <p>
       Vue users can globally register the
@@ -231,6 +202,33 @@ import IconQwik from "../components/IconQwik.vue"
       <code>useAutoAnimate({ duration: 100 })</code>
     </AsideTip>
 
+    <h2 id="usage-preact">Preact hook</h2>
+    <p>
+      Preact users can use the hook <code>useAutoAnimate</code> by importing it
+      from <code>@formkit/auto-animate/preact</code>. This hook returns a ref to
+      apply to the parent element, as well as a function to
+      <a href="#usage-disable">enable or disable</a> animations.
+    </p>
+    <CodeExample :examples="preactHook" title="App" />
+    <ActualPreactApp />
+
+    <h2 id="usage-solid">Solid Primitive</h2>
+    <p>
+      Solid users can use the function <code>createAutoAnimate</code> by
+      importing it from <code>@formkit/auto-animate/solid</code>. This hook
+      returns a ref to apply to the parent element, as well as a function to
+      <a href="#usage-disable">enable or disable</a> animations.
+    </p>
+    <CodeExample :examples="solidPrimitive" title="App" />
+    <ActualSolidApp />
+
+    <h3 id="usage-solid-directive">Solid Directive</h3>
+    <p>
+      Solid users can also use the directive <code>autoAnimate</code> by
+      importing it from <code>@formkit/auto-animate/solid</code>.
+    </p>
+    <CodeExample :examples="solidDirective" title="App" />
+
     <h2 id="usage-svelte">Svelte action</h2>
     <p>
       The root <code>autoAnimate</code> function can be directly used as a
@@ -268,15 +266,14 @@ import IconQwik from "../components/IconQwik.vue"
       <code>&lt;ul auto-animate [options]="{ duration: 100 }"&gt;</code>
     </AsideTip>
 
-    <h2 id="usage-qwik">Qwik hook</h2>
+    <!-- <h2 id="usage-qwik">Qwik hook</h2>
     <p>
       Qwik users can use the hook <code>useAutoAnimate</code> by importing it
       from <code>@formkit/auto-animate/qwik</code>. This hook returns a ref to
       apply to the parent element, as well as a function to
       <a href="#usage-disable">enable or disable</a> animations.
     </p>
-    <CodeExample :examples="qwikHook" title="App" />
-
+    <CodeExample :examples="qwikHook" title="App" /> -->
 
     <h2 id="usage-disable">Disable animations</h2>
     <p>

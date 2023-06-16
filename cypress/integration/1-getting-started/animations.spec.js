@@ -37,7 +37,7 @@ describe("the documentation site", () => {
   })
 
   it("animates the react example", () => {
-    cy.get(".react-example button").click()
+    cy.get(".react-example .add").click()
     cy.hasAnimations(5)
   })
 

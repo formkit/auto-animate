@@ -102,25 +102,25 @@ function copyCode(value) {
           <IconReact />React
         </li>
         <li
-          v-if="'preact' in props.examples"
-          @click="current = 'preact'"
-          :data-selected="current === 'preact' || null"
-        >
-          <IconPreact />Preact
-         </li>
-         <li
-          v-if="'solid' in props.examples"
-          @click="current = 'solid'"
-          :data-selected="current === 'solid' || null"
-        >
-          <IconSolid />Solid
-        </li>
-        <li
           v-if="'vue' in props.examples"
           @click="current = 'vue'"
           :data-selected="current === 'vue' || null"
         >
           <IconVue />Vue
+        </li>
+        <li
+          v-if="'preact' in props.examples"
+          @click="current = 'preact'"
+          :data-selected="current === 'preact' || null"
+        >
+          <IconPreact />Preact
+        </li>
+        <li
+          v-if="'solid' in props.examples"
+          @click="current = 'solid'"
+          :data-selected="current === 'solid' || null"
+        >
+          <IconSolid />Solid
         </li>
         <li
           v-if="'svelte' in props.examples"

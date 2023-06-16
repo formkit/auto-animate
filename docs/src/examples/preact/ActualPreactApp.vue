@@ -2,7 +2,10 @@
 import { useAutoAnimate } from "../../../../src/vue/index.ts"
 import { ref } from "vue"
 const [parent] = useAutoAnimate()
-const items = ref([0, 1, 2])
+const items = ref(["🎁", "📦", "🚚", "💪", "🐽", "🐸", "🐻", "🪱", "🪳"])
+setInterval(() => {
+  items.value.unshift(items.value.pop())
+}, 500)
 </script>
 
 <template>
@@ -10,15 +13,17 @@ const items = ref([0, 1, 2])
     <ul ref="parent">
       <li v-for="item in items" :key="item">{{ item }}</li>
     </ul>
-    <button @click="items.push(items.length)" class="button button--alt">
-      Add number
-    </button>
   </div>
 </template>
 
 <style scoped>
 ul {
-  list-style-type: disc;
+  list-style-type: none;
+  padding: 0;
+}
+li {
+  display: inline-block;
+  margin: 0.5em;
 }
 li::before {
   display: none;

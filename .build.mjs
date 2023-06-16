@@ -180,6 +180,7 @@ async function bundleDeclarations() {
     `${rootDir}/dist/preact/index.d.ts`,
   ])
   await execa("shx", [
+    "mv",
     `${rootDir}/dist/src/solid/index.d.ts`,
     `${rootDir}/dist/solid/index.d.ts`,
   ])

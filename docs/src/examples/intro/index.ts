@@ -12,20 +12,20 @@ export default {
     ext: "jsx",
     language: "jsx",
   },
-  preact: {
-    example: preactExample,
-    ext: "jsx",
-    language: "jsx",
+  vue: {
+    ext: "vue",
+    language: "html",
+    example: vueExample,
   },
   solid: {
     example: solidExample,
     ext: "jsx",
     language: "jsx",
   },
-  vue: {
-    ext: "vue",
-    language: "html",
-    example: vueExample,
+  preact: {
+    example: preactExample,
+    ext: "jsx",
+    language: "jsx",
   },
   svelte: {
     example: svelteExample,
