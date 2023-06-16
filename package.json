@@ -48,6 +48,11 @@
       "types": "./angular/index.d.ts",
       "default": "./angular/index.mjs"
     },
+    "./qwik": {
+      "import": "./qwik/index.mjs",
+      "types": "./qwik/index.d.ts",
+      "default": "./qwik/index.mjs"
+    },
     ".": {
       "import": "./index.mjs",
       "default": "./index.mjs"
@@ -55,6 +60,7 @@
   },
   "devDependencies": {
     "@angular/core": "^13.3.11",
+    "@builder.io/qwik": "^1.1.5",
     "@formkit/vue": "^1.0.0-beta.8",
     "@rollup/plugin-typescript": "^8.3.2",
     "@types/node": "^17.0.33",

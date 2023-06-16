@@ -115,6 +115,24 @@ async function angularBuild() {
   await fs.writeFile(resolve(rootDir, "dist/angular/index.mjs"), raw)
 }
 
+async function qwikBuild() {
+  info("Rolling up Qwik package")
+  await execa("npx", [
+    "rollup",
+    "-c",
+    "rollup.config.js",
+    "--environment",
+    "FRAMEWORK:qwik",
+  ])
+  /**
+   * This is a super hack — for some reason these imports need to be explicitly
+   * to .mjs files so...we make it so.
+   */
+  let raw = await fs.readFile(resolve(rootDir, "dist/qwik/index.mjs"), "utf8")
+  raw = raw.replace("from '../index'", "from '../index.mjs'")
+  await fs.writeFile(resolve(rootDir, "dist/qwik/index.mjs"), raw)
+}
+
 async function declarationsBuild() {
   info("Outputting declarations")
   await execa("npx", [
@@ -152,6 +170,11 @@ async function bundleDeclarations() {
     "mv",
     `${rootDir}/dist/src/angular/index.d.ts`,
     `${rootDir}/dist/angular/index.d.ts`,
+  ])
+  await execa("shx", [
+    "mv",
+    `${rootDir}/dist/src/qwik/index.d.ts`,
+    `${rootDir}/dist/qwik/index.d.ts`,
   ])
   await execa("shx", ["rm", "-rf", `${rootDir}/dist/src`])
   await execa("shx", ["rm", `${rootDir}/dist/index.js`])
@@ -243,6 +266,7 @@ await reactBuild()
 await solidBuild()
 await vueBuild()
 await angularBuild()
+await qwikBuild()
 await declarationsBuild()
 await bundleDeclarations()
 await addPackageJSON()
