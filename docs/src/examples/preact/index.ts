@@ -7,14 +7,12 @@ import { useAutoAnimate } from '@formkit/auto-animate/preact'
 
 const App = function () {
   const [items, setItems] = useState(["🎁", "📦", "🚚", "💪", "🐽", "🐸", "🐻", "🪱", "🪳"])
-  const [parent, enableAnimations] = useAutoAnimate(/* optional config */)
+  const [parent] = useAutoAnimate(/* optional config */)
 
-
-  useEffect(() => {
-    setInterval(() => {
-      setItems(items.unshift(items.pop()))
-    }, 500)
-  }, [])
+  function cycle() {
+    items.unshift(items.pop())
+    setItems(items)
+  }
 
   return <>
   <ul ref={parent}>
@@ -22,6 +20,7 @@ const App = function () {
       item => <li key={item}>{ item }</li>
     )}
   </ul>
+  <button onClick={cycle}>Cycle Emoji</button>
 </>
 }
 

@@ -3,9 +3,9 @@ import { useAutoAnimate } from "../../../../src/vue/index.ts"
 import { ref } from "vue"
 const [parent] = useAutoAnimate()
 const items = ref(["🎁", "📦", "🚚", "💪", "🐽", "🐸", "🐻", "🪱", "🪳"])
-setInterval(() => {
+function cycle() {
   items.value.unshift(items.value.pop())
-}, 500)
+}
 </script>
 
 <template>
@@ -14,6 +14,7 @@ setInterval(() => {
       <li v-for="item in items" :key="item">{{ item }}</li>
     </ul>
   </div>
+  <button @click="cycle" class="button button--alt">Cycle Emoji</button>
 </template>
 
 <style scoped>
