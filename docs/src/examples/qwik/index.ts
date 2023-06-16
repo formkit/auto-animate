@@ -8,7 +8,6 @@ import { useAutoAnimate } from '@formkit/auto-animate/qwik'
 const App = function () {
   const items = useSignal([0, 1, 2])
   const [parentRef, enableAnimations] = useAutoAnimate(/* optional config */)
-  const add = () => setItems([...items, items.length])
   return <>
   <ul ref={parentRef}>
     {items.value.map(
@@ -16,7 +15,7 @@ const App = function () {
     )}
   </ul>
   <button onClick$={() => (items.value = [...items.value, items.value.length])}>Add number</button>
-  <button onClick={() => enableAnimations(false)}>Disable</button>
+  <button onClick$={() => enableAnimations(false)}>Disable</button>
 </>
 }
 
