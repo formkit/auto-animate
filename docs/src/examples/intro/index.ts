@@ -1,6 +1,7 @@
 import vueExample from "./intro.vue?raw"
 import reactExample from "./intro.jsx?raw"
 import preactExample from "./intro-preact.jsx?raw"
+import solidExample from "./intro-solid.jsx?raw"
 import htmlExample from "./intro.html?raw"
 import svelteExample from "./intro.svelte?raw"
 import angularExample from "./intro.angular?raw"
@@ -13,6 +14,11 @@ export default {
   },
   preact: {
     example: preactExample,
+    ext: "jsx",
+    language: "jsx",
+  },
+  solid: {
+    example: solidExample,
     ext: "jsx",
     language: "jsx",
   },

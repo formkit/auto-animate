@@ -11,7 +11,7 @@ interface Coordinates {
 /**
  * Allows start/stop control of the animation
  */
-export interface AnimationController {
+export interface AnimationController<P = unknown> {
   /**
    * The original animation parent.
    */
@@ -28,6 +28,14 @@ export interface AnimationController {
    * A function that returns true if the animations are currently enabled.
    */
   isEnabled: () => boolean
+  /**
+   * (Svelte Specific) A function that runs if the parameters are changed.
+   */
+  update?: (newParams: P) => void
+  /**
+   * (Svelte Specific) A function that runs when the componnet is removed from the DOM.
+   */
+  destroy?: () => void
 }
 
 /**
@@ -154,9 +162,14 @@ function updatePos(el: Element) {
     el,
     setTimeout(async () => {
       const currentAnimation = animations.get(el)
-      if (!currentAnimation || (await currentAnimation.finished)) {
+
+      try {
+        await currentAnimation?.finished
+
         coords.set(el, getCoords(el))
         observePosition(el)
+      } catch {
+        // ignore errors as the `.finished` promise is rejected when animations were cancelled
       }
     }, delay)
   )
@@ -299,7 +312,7 @@ function target(el: Element, child?: Element) {
  * @param el - The specific element to animate.
  */
 function animate(el: Element) {
-  const isMounted = root.contains(el)
+  const isMounted = el.isConnected
   const preExisting = coords.has(el)
   if (isMounted && siblings.has(el)) siblings.delete(el)
   if (animations.has(el)) {
@@ -324,15 +337,32 @@ function raw(str: string): number {
 }
 
 /**
+ * Get the scroll offset of elements
+ * @param el - Element
+ * @returns
+ */
+function getScrollOffset(el: Element) {
+  let p = el.parentElement
+  while (p) {
+    if (p.scrollLeft || p.scrollTop) {
+      return { x: p.scrollLeft, y: p.scrollTop }
+    }
+    p = p.parentElement
+  }
+  return { x: 0, y: 0 }
+}
+
+/**
  * Get the coordinates of elements adjusted for scroll position.
  * @param el - Element
  * @returns
  */
 function getCoords(el: Element): Coordinates {
   const rect = el.getBoundingClientRect()
+  const { x, y } = getScrollOffset(el)
   return {
-    top: rect.top + window.scrollY,
-    left: rect.left + window.scrollX,
+    top: rect.top + y,
+    left: rect.left + x,
     width: rect.width,
     height: rect.height,
   }

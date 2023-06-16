@@ -9,13 +9,16 @@ import {
   vueComposable,
 } from "../examples/vue"
 import { angularDirectiveMain, angularDirectiveApp } from "../examples/angular"
+import { solidPrimitive, solidDirective } from "../examples/solid"
 import reactHook from "../examples/react"
 import preactHook from "../examples/preact"
 import disabledExamples from "../examples/disable"
 import ActualReactApp from "../examples/react/ActualReactApp.vue"
 import ActualPreactApp from "../examples/preact/ActualPreactApp.vue"
+import ActualSolidApp from "../examples/solid/ActualSolidApp.vue"
 import ActualDropdown from "../examples/dropdown/ActualDropdown.vue"
 import svelteAction from "../examples/svelte"
+import qwikHook from "../examples/qwik"
 import ActualSvelteApp from "../examples/svelte/ActualSvelteApp.vue"
 import ActualVueApp from "../examples/vue/ActualVueApp.vue"
 import ActualVueAppHook from "../examples/vue/ActualVueAppHook.vue"
@@ -26,6 +29,9 @@ import IconPreact from "../components/IconPreact.vue"
 import IconVue from "../components/IconVue.vue"
 import IconAngular from "../components/IconAngular.vue"
 import IconSvelte from "../components/IconSvelte.vue"
+import IconSolid from "../components/IconSolid.vue"
+import IconQwik from "../components/IconQwik.vue"
+
 </script>
 <template>
   <section id="usage">
@@ -85,8 +91,11 @@ import IconSvelte from "../components/IconSvelte.vue"
     <AsideTip
       >AutoAnimate respects a user’s <code>prefers-reduced-motion</code> setting
       and will automatic disable if the user has indicated they want reduced
-      motion. Checkout the [MDN docs for more
-      information](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion)
+      motion. Checkout the
+      <a
+        href="https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion"
+        >MDN docs for more information</a
+      >
       on this media feature.
     </AsideTip>
     <h3>Configuration</h3>
@@ -112,7 +121,13 @@ import IconSvelte from "../components/IconSvelte.vue"
     </p>
     <ul class="framework-jumplinks">
       <li>
-        <a href="#usage-react"><span>React</span><IconReact /></a>
+        <a href="#usage-react"
+          ><span>React</span>
+          <IconReact />
+        </a>
+      </li>
+      <li>
+        <a href="#usage-solid"><span>Solid</span><IconSolid /></a>
       </li>
       <li>
         <a href="#usage-preact"><span>Preact</span><IconPreact /></a>
@@ -125,6 +140,9 @@ import IconSvelte from "../components/IconSvelte.vue"
       </li>
       <li>
         <a href="#usage-angular"><span>Angular</span><IconAngular /></a>
+      </li>
+       <li>
+        <a href="#usage-qwik"><span>Qwik</span><IconQwik /></a>
       </li>
     </ul>
     <h2 id="usage-react">React hook</h2>
@@ -146,6 +164,24 @@ import IconSvelte from "../components/IconSvelte.vue"
     <CodeExample :examples="preactHook" title="App" />
     <ActualPreactApp />
 
+
+    <h2 id="usage-solid">Solid Primitive</h2>
+    <p>
+      Solid users can use the function <code>createAutoAnimate</code> by
+      importing it from <code>@formkit/auto-animate/solid</code>. This hook
+      returns a ref to apply to the parent element, as well as a function to
+      <a href="#usage-disable">enable or disable</a> animations.
+    </p>
+    <CodeExample :examples="solidPrimitive" title="App" />
+    <ActualSolidApp />
+
+    <h3 id="usage-solid-directive">Solid Directive</h3>
+    <p>
+      Solid users can also use the directive <code>autoAnimate</code> by
+      importing it from <code>@formkit/auto-animate/solid</code>.
+    </p>
+    <CodeExample :examples="solidDirective" title="App" />
+
     <h2 id="usage-vue">Vue directive</h2>
     <p>
       Vue users can globally register the
@@ -162,7 +198,8 @@ import IconSvelte from "../components/IconSvelte.vue"
     <CodeExample :examples="vueDirectiveApp" title="App" />
     <ActualVueApp />
     <AsideTip>
-      Please bare in mind that value passed to <code>:key</code> should be a unique value, otherwise animation might not work as expected.
+      Please bare in mind that value passed to <code>:key</code> should be a
+      unique value, otherwise animation might not work as expected.
     </AsideTip>
     <AsideTip>
       Vue users can pass options by directly setting the directive’s value
@@ -230,6 +267,17 @@ import IconSvelte from "../components/IconSvelte.vue"
       Angular users can pass options by directly setting the options input
       <code>&lt;ul auto-animate [options]="{ duration: 100 }"&gt;</code>
     </AsideTip>
+
+    <h2 id="usage-qwik">Qwik hook</h2>
+    <p>
+      Qwik users can use the hook <code>useAutoAnimate</code> by importing it
+      from <code>@formkit/auto-animate/qwik</code>. This hook returns a ref to
+      apply to the parent element, as well as a function to
+      <a href="#usage-disable">enable or disable</a> animations.
+    </p>
+    <CodeExample :examples="qwikHook" title="App" />
+
+
     <h2 id="usage-disable">Disable animations</h2>
     <p>
       Occasionally it may be necessary to temporarily disable animations and

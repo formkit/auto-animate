@@ -2,6 +2,8 @@
 import IconVue from "./IconVue.vue"
 import IconReact from "./IconReact.vue"
 import IconPreact from "./IconPreact.vue"
+import IconSolid from "./IconSolid.vue"
+import IconQwik from "./IconQwik.vue"
 import IconHTML from "./IconHTML.vue"
 import IconYarn from "./IconYarn.vue"
 import IconNPM from "./IconNPM.vue"
@@ -105,6 +107,13 @@ function copyCode(value) {
           :data-selected="current === 'preact' || null"
         >
           <IconPreact />Preact
+         </li>
+         <li
+          v-if="'solid' in props.examples"
+          @click="current = 'solid'"
+          :data-selected="current === 'solid' || null"
+        >
+          <IconSolid />Solid
         </li>
         <li
           v-if="'vue' in props.examples"
@@ -126,6 +135,13 @@ function copyCode(value) {
           :data-selected="current === 'angular' || null"
         >
           <IconAngular />Angular
+        </li>
+        <li
+          v-if="'qwik' in props.examples"
+          @click="current = 'qwik'"
+          :data-selected="current === 'qwik' || null"
+        >
+          <IconQwik />Qwik
         </li>
         <li
           v-if="'js' in props.examples"

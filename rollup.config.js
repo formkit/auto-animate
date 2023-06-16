@@ -11,6 +11,7 @@ const external = [
   "react",
   "angular",
   "process",
+  "solid-js",
   "rollup-plugin-terser",
   "../index",
 ]
