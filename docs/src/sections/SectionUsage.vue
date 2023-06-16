@@ -11,8 +11,10 @@ import {
 import { angularDirectiveMain, angularDirectiveApp } from "../examples/angular"
 import { solidPrimitive, solidDirective } from "../examples/solid"
 import reactHook from "../examples/react"
+import preactHook from "../examples/preact"
 import disabledExamples from "../examples/disable"
 import ActualReactApp from "../examples/react/ActualReactApp.vue"
+import ActualPreactApp from "../examples/preact/ActualPreactApp.vue"
 import ActualSolidApp from "../examples/solid/ActualSolidApp.vue"
 import ActualDropdown from "../examples/dropdown/ActualDropdown.vue"
 import svelteAction from "../examples/svelte"
@@ -23,6 +25,7 @@ import ActualVueAppHook from "../examples/vue/ActualVueAppHook.vue"
 import ActualAngularApp from "../examples/angular/ActualAngularApp.vue"
 import ActualDisable from "../examples/disable/ActualDisable.vue"
 import IconReact from "../components/IconReact.vue"
+import IconPreact from "../components/IconPreact.vue"
 import IconVue from "../components/IconVue.vue"
 import IconAngular from "../components/IconAngular.vue"
 import IconSvelte from "../components/IconSvelte.vue"
@@ -127,6 +130,9 @@ import IconQwik from "../components/IconQwik.vue"
         <a href="#usage-solid"><span>Solid</span><IconSolid /></a>
       </li>
       <li>
+        <a href="#usage-preact"><span>Preact</span><IconPreact /></a>
+      </li>
+      <li>
         <a href="#usage-vue"><span>Vue</span><IconVue /></a>
       </li>
       <li>
@@ -148,6 +154,16 @@ import IconQwik from "../components/IconQwik.vue"
     </p>
     <CodeExample :examples="reactHook" title="App" />
     <ActualReactApp />
+	<h2 id="usage-preact">Preact hook</h2>
+    <p>
+      Preact users can use the hook <code>useAutoAnimate</code> by importing it
+      from <code>@formkit/auto-animate/preact</code>. This hook returns a ref to
+      apply to the parent element, as well as a function to
+      <a href="#usage-disable">enable or disable</a> animations.
+    </p>
+    <CodeExample :examples="preactHook" title="App" />
+    <ActualPreactApp />
+
 
     <h2 id="usage-solid">Solid Primitive</h2>
     <p>

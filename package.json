@@ -7,6 +7,7 @@
     "animation",
     "transition",
     "react",
+    "preact",
     "vue",
     "angular",
     "svelte",
@@ -32,6 +33,11 @@
       "import": "./vue/index.mjs",
       "types": "./vue/index.d.ts",
       "default": "./vue/index.mjs"
+    },
+    "./preact": {
+      "import": "./preact/index.mjs",
+      "types": "./preact/index.d.ts",
+      "default": "./preact/index.mjs"
     },
     "./react": {
       "import": "./react/index.mjs",
@@ -72,6 +78,7 @@
     "chalk": "^5.0.1",
     "cypress": "^9.6.1",
     "execa": "^6.1.0",
+    "preact": "^10.11.3",
     "pretty-bytes": "^6.0.0",
     "prompts": "^2.4.2",
     "react": "^18.1.0",
@@ -86,6 +93,5 @@
     "vue": "^3.2.33",
     "vue-github-button": "^3.0.3",
     "vue-router": "4"
-  },
-  "dependencies": {}
+  }
 }

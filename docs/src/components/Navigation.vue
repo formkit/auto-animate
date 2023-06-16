@@ -39,6 +39,7 @@ if (typeof window !== "undefined") {
       <li><a href="#installation">Installation</a></li>
       <li><a href="#usage">Usage</a></li>
       <li><a href="#usage-react">React</a></li>
+      <li><a href="#usage-preact">Preact</a></li>
       <li><a href="#usage-solid">Solid</a></li>
       <li><a href="#usage-vue">Vue</a></li>
       <li><a href="#usage-svelte">Svelte</a></li>
