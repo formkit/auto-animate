@@ -16,6 +16,7 @@ import ActualReactApp from "../examples/react/ActualReactApp.vue"
 import ActualSolidApp from "../examples/solid/ActualSolidApp.vue"
 import ActualDropdown from "../examples/dropdown/ActualDropdown.vue"
 import svelteAction from "../examples/svelte"
+import qwikHook from "../examples/qwik"
 import ActualSvelteApp from "../examples/svelte/ActualSvelteApp.vue"
 import ActualVueApp from "../examples/vue/ActualVueApp.vue"
 import ActualVueAppHook from "../examples/vue/ActualVueAppHook.vue"
@@ -26,6 +27,8 @@ import IconVue from "../components/IconVue.vue"
 import IconAngular from "../components/IconAngular.vue"
 import IconSvelte from "../components/IconSvelte.vue"
 import IconSolid from "../components/IconSolid.vue"
+import IconQwik from "../components/IconQwik.vue"
+
 </script>
 <template>
   <section id="usage">
@@ -131,6 +134,9 @@ import IconSolid from "../components/IconSolid.vue"
       </li>
       <li>
         <a href="#usage-angular"><span>Angular</span><IconAngular /></a>
+      </li>
+       <li>
+        <a href="#usage-qwik"><span>Qwik</span><IconQwik /></a>
       </li>
     </ul>
     <h2 id="usage-react">React hook</h2>
@@ -245,6 +251,17 @@ import IconSolid from "../components/IconSolid.vue"
       Angular users can pass options by directly setting the options input
       <code>&lt;ul auto-animate [options]="{ duration: 100 }"&gt;</code>
     </AsideTip>
+
+    <h2 id="usage-qwik">Qwik hook</h2>
+    <p>
+      Qwik users can use the hook <code>useAutoAnimate</code> by importing it
+      from <code>@formkit/auto-animate/qwik</code>. This hook returns a ref to
+      apply to the parent element, as well as a function to
+      <a href="#usage-disable">enable or disable</a> animations.
+    </p>
+    <CodeExample :examples="qwikHook" title="App" />
+
+
     <h2 id="usage-disable">Disable animations</h2>
     <p>
       Occasionally it may be necessary to temporarily disable animations and
