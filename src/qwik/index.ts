@@ -2,17 +2,18 @@ import {
   $,
   NoSerialize,
   noSerialize,
+  QRL,
   Signal,
   useSignal,
   useVisibleTask$,
-} from '@builder.io/qwik'
+} from "@builder.io/qwik"
 
-import { isBrowser } from '@builder.io/qwik/build'
+import { isBrowser } from "@builder.io/qwik/build"
 import autoAnimate, {
   AnimationController,
   AutoAnimateOptions,
   AutoAnimationPlugin,
-} from '../index'
+} from "../index"
 
 /**
  * AutoAnimate hook for adding dead-simple transitions and animations to qwik.
@@ -20,10 +21,10 @@ import autoAnimate, {
  * @returns
  */
 export function useAutoAnimate<T extends HTMLElement>(
-  options?: Partial<AutoAnimateOptions> | AutoAnimationPlugin,
+  options?: Partial<AutoAnimateOptions> | AutoAnimationPlugin
 ): [
   Signal<T | undefined>,
-  (enabled: boolean | ((isEnabled: boolean) => boolean)) => void,
+  QRL<(enabled: boolean | ((isEnabled: boolean) => boolean)) => void>
 ] {
   const parentRef = useSignal<T>()
   const controller = useSignal<NoSerialize<AnimationController | undefined>>()
@@ -39,7 +40,7 @@ export function useAutoAnimate<T extends HTMLElement>(
     (enabled: boolean | ((isEnabled: boolean) => boolean)) => {
       const ctl = controller.value
       if (ctl) {
-        typeof enabled === 'function'
+        typeof enabled === "function"
           ? enabled(ctl.isEnabled())
             ? ctl.enable()
             : ctl.disable()
@@ -47,7 +48,7 @@ export function useAutoAnimate<T extends HTMLElement>(
           ? ctl.enable()
           : ctl.disable()
       }
-    },
+    }
   )
   return [parentRef, setEnabled]
 }
