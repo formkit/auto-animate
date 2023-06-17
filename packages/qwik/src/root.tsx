@@ -1,4 +1,4 @@
-import { List } from './components/list/counter';
+import { List } from './components/list/list';
 import { Logo } from './components/logo/logo';
 
 export default () => {
