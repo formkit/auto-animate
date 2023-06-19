@@ -8,7 +8,6 @@ import {
   useVisibleTask$,
 } from "@builder.io/qwik"
 
-import { isBrowser } from "@builder.io/qwik/build"
 import autoAnimate, {
   AnimationController,
   AutoAnimateOptions,
@@ -33,7 +32,7 @@ export function useAutoAnimate<T extends HTMLElement>(
 
   useVisibleTask$(({ track }) => {
     const element = track(() => parentRef.value)
-    if (element && isBrowser) {
+    if (element) {
       controller.value = noSerialize(autoAnimate(element, options))
     }
   })
