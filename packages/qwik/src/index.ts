@@ -21,12 +21,12 @@ import autoAnimate, {
  */
 export function useAutoAnimate<T extends HTMLElement>(
   options?: Partial<AutoAnimateOptions> | AutoAnimationPlugin
-): {
-  parentRef: Signal<T | undefined>
+): [
+  parentRef: Signal<T | undefined>,
   setEnabled$: QRL<
     (enabled: boolean | ((isEnabled: boolean) => boolean)) => void
   >
-} {
+] {
   const parentRef = useSignal<T>()
   const controller = useSignal<NoSerialize<AnimationController | undefined>>()
 
@@ -51,5 +51,5 @@ export function useAutoAnimate<T extends HTMLElement>(
       }
     }
   )
-  return { parentRef, setEnabled$ }
+  return [parentRef, setEnabled$]
 }

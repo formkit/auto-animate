@@ -7,7 +7,7 @@ import { useAutoAnimate } from '@formkit/auto-animate/qwik'
 
 const App = function () {
   const items = useSignal([0, 1, 2])
-  const { parentRef, setEnabled$ } = useAutoAnimate(/* optional config */)
+  const [ parentRef, setEnabled$ ] = useAutoAnimate(/* optional config */)
   return <>
   <ul ref={parentRef}>
     {items.value.map(

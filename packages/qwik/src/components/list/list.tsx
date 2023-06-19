@@ -1,16 +1,10 @@
-import {
-  component$,
-  useSignal,
-  useStore,
-  useVisibleTask$,
-} from "@builder.io/qwik"
+import { component$, useStore } from "@builder.io/qwik"
 import { useAutoAnimate } from "../../index"
 
 export const List = component$(() => {
   const items = useStore(["one", "two", "three"])
-  const enabled = useSignal(false)
 
-  const { parentRef, setEnabled$ } = useAutoAnimate()
+  const [parentRef, setEnabled$] = useAutoAnimate()
 
   return (
     <>
