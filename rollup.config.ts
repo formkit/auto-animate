@@ -1,4 +1,5 @@
 import typescript from "@rollup/plugin-typescript"
+import { qwikRollup } from "@builder.io/qwik/optimizer"
 import { terser } from "rollup-plugin-terser"
 
 const FRAMEWORK = process.env.FRAMEWORK || "index"
@@ -14,12 +15,19 @@ const external = [
   "solid-js",
   "rollup-plugin-terser",
   "../index",
+  "../index.ts",
 ]
 
 function createOutput() {
   if (DECLARATIONS) {
     return {
       dir: "./dist",
+      format: "esm",
+    }
+  }
+  if (FRAMEWORK === "qwik") {
+    return {
+      dir: "./dist/qwik",
       format: "esm",
     }
   }
@@ -41,11 +49,26 @@ const plugins = [
         }
       : {},
     rootDir: "./",
-    outDir: `./dist`,
-    include: ["./src/**/*"],
+    outDir: `./dist${FRAMEWORK === "qwik" ? "/qwik" : ""}`,
+    include: DECLARATIONS
+      ? [`./src/**/*`]
+      : [`./src/${FRAMEWORK}/index.ts`, "./src/index.ts"],
     exclude: ["./docs"],
   }),
 ]
+
+if (FRAMEWORK === "qwik") {
+  plugins.push(
+    qwikRollup({
+      target: "lib",
+      forceFullBuild: true,
+      buildMode: "production",
+      debug: false,
+      entryStrategy: { type: "inline" },
+      srcDir: "./src/qwik",
+    })
+  )
+}
 
 if (MIN) {
   plugins.push(terser())
