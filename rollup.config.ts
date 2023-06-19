@@ -6,6 +6,7 @@ const FRAMEWORK = process.env.FRAMEWORK || "index"
 const DECLARATIONS = process.env.DECLARATIONS || false
 const MIN = process.env.MIN || false
 
+let qwikOptions = {}
 const external = [
   "vue",
   "preact",
@@ -58,7 +59,10 @@ const plugins = [
 ]
 
 if (FRAMEWORK === "qwik") {
-  plugins.push(
+  qwikOptions = {
+    preserveEntrySignatures: "exports-only",
+  }
+  plugins.unshift(
     qwikRollup({
       target: "lib",
       forceFullBuild: true,
@@ -75,6 +79,7 @@ if (MIN) {
 }
 
 export default {
+  ...qwikOptions,
   external,
   input: `./src/${FRAMEWORK === "index" ? "" : FRAMEWORK + "/"}index.ts`,
   output: createOutput(),
