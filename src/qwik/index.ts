@@ -7,12 +7,11 @@ import {
   useSignal,
   useVisibleTask$,
 } from "@builder.io/qwik"
-
 import autoAnimate, {
   AnimationController,
   AutoAnimateOptions,
   AutoAnimationPlugin,
-} from "@formkit/auto-animate"
+} from "../index"
 
 /**
  * AutoAnimate hook for adding dead-simple transitions and animations to qwik.

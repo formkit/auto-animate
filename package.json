@@ -56,18 +56,15 @@
       "default": "./angular/index.mjs"
     },
     "./qwik": {
-      "import": "./qwik/index.qwik.mjs",
+      "import": "./qwik/index.mjs",
       "types": "./qwik/index.d.ts",
-      "default": "./qwik/index.qwik.mjs"
+      "default": "./qwik/index.mjs"
     },
     ".": {
       "import": "./index.mjs",
       "default": "./index.mjs"
     }
   },
-  "workspaces": [
-    "packages/*"
-  ],
   "devDependencies": {
     "@angular/core": "^13.3.11",
     "@builder.io/qwik": "^1.1.5",
