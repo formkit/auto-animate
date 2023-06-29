@@ -13,7 +13,7 @@ import GithubButton from "vue-github-button"
       <a href="https://discord.gg/SHYT8pyeNm" aria-label="Discord"
         ><IconDiscord class="icon"
       /></a>
-      <a href="https://twitter.com/useFormKit" aria-label="Twitter"
+      <a href="https://twitter.com/FormKit" aria-label="Twitter"
         ><IconTwitter class="icon"
       /></a>
       <GithubButton
