@@ -43,7 +43,7 @@ function createCard(card) {
         :submit-attrs="{ inputClass: 'button button--alt' }"
       >
         <FormKit name="title" label="Title" value="New years party" />
-        <FormKit name="date" label="Title" value="January 1st" />
+        <FormKit name="date" label="Date" value="January 1st" />
         <FormKit
           name="description"
           type="textarea"
