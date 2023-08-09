@@ -632,7 +632,7 @@ export interface AutoAnimateOptions {
    * The type of easing to use.
    * Default: ease-in-out
    */
-  easing: "linear" | "ease-in" | "ease-out" | "ease-in-out" | string
+  easing: "linear" | "ease-in" | "ease-out" | "ease-in-out" | ({} & string)
   /**
    * Ignore a user’s "reduce motion" setting and enable animations. It is not
    * recommended to use this.
