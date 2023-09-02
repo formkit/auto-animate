@@ -18,8 +18,8 @@ import introExample from "../examples/intro"
       </h1>
       <p>
         AutoAnimate is a zero-config, drop-in animation utility that adds smooth
-        transitions to your web app. You can use it with React, Solid, Vue, Svelte, or
-        any other JavaScript application.
+        transitions to your web app. You can use it with React, Solid, Vue,
+        Svelte, or any other JavaScript application.
       </p>
       <div>
         <a class="button" href="#installation">Get started<IconArrow /></a>
@@ -65,6 +65,11 @@ section {
   background-image: linear-gradient(-45deg, var(--primary), var(--purple-m));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+.title .highlight::selection {
+  color: white;
+  -webkit-text-fill-color: white;
 }
 
 @media (min-width: 28em) {
