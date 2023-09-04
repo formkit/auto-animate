@@ -11,11 +11,23 @@ import IconPNPM from "./IconPNPM.vue"
 import IconJavaScript from "./IconJavaScript.vue"
 import IconSvelte from "./IconSvelte.vue"
 import IconAngular from "./IconAngular.vue"
-import { computed, PropType, ref } from "vue"
+import { computed, ref } from "vue"
 import { vAutoAnimate } from "../../../src"
 import "../../assets/prism.css"
 
-type LanguageOption = "react" | "preact" | "vue" | "html"
+type LanguageOption =
+  | "react"
+  | "preact"
+  | "vue"
+  | "html"
+  | "solid"
+  | "svelte"
+  | "angular"
+  | "qwik"
+  | "js"
+  | "yarn"
+  | "npm"
+  | "pnpm"
 
 type Language = {
   ext: "jsx" | "vue" | "html"
@@ -24,15 +36,28 @@ type Language = {
   language: string
 }
 
-const current = ref<LanguageOption>(Object.keys(props.examples)[0])
+type ParsedExamplesType = {
+  [T in LanguageOption]?: Language & { highlighted: string }
+}
+
+const props = defineProps<{
+  title: string
+  examples: { [T in LanguageOption]: Language }
+}>()
+
+const current = ref<LanguageOption>(
+  Object.keys(props.examples)[0] as LanguageOption
+)
 
 const type = computed(() => {
   return props.examples[current.value]
 })
 const allExamples = computed(() => {
   if (typeof window === "undefined") return ""
-  const parsedExamples = {}
-  for (const key in props.examples) {
+  const parsedExamples: ParsedExamplesType = {}
+  const keys = Object.keys(props.examples) as (keyof typeof props.examples)[]
+  for (let i = 0; i < keys.length; i++) {
+    const key = keys[i]
     const example = props.examples[key]
     parsedExamples[key] = {
       ...example,
@@ -46,19 +71,8 @@ const allExamples = computed(() => {
   return parsedExamples
 })
 
-const props = defineProps({
-  title: {
-    type: String,
-    required: true,
-  },
-  examples: {
-    type: Object as PropType<{ [T in LanguageOption]: Language }>,
-    required: false,
-  },
-})
-
-var copyStatus = ref(false)
-function copyCode(value) {
+const copyStatus = ref(false)
+function copyCode(value: string) {
   window.navigator.clipboard.writeText(value)
   copyStatus.value = true
   setTimeout(() => {
@@ -77,14 +91,14 @@ function copyCode(value) {
         type.title || `${title}.${type.ext}`
       }}</span>
     </div>
-    <div class="code-block" v-auto-animate>
+    <div v-if="allExamples" class="code-block" v-auto-animate>
       <template v-for="(currentExample, key) in allExamples" :key="key">
         <code
           v-if="key === current"
           class="code-example"
           :key="key"
-          v-html="currentExample.highlighted"
-          @click="copyCode(currentExample.example)"
+          v-html="currentExample!.highlighted"
+          @click="copyCode(currentExample!.example)"
         ></code>
       </template>
       <template v-if="copyStatus">
