@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { ref } from "vue"
 import { vAutoAnimate } from "../../../src/index"
 const show = ref(false)
@@ -8,11 +8,17 @@ const records = ref([
   { id: 3, name: "Sally", career: "Engineer" },
   { id: 4, name: "Todd", career: "Chef" },
 ])
+
+const items = ref(new Array(100).fill(0).map((_, i) => ({ key: Math.random(), value: i, height: `${Math.floor(Math.random() * 200)}px` })))
+
+function remove (item: { key: number; value: number }) {
+  items.value.splice(items.value.indexOf(item), 1)
+}
 </script>
 
 <template>
   <table border="1" style="table-layout: fixed">
-    <thead>
+    <thead>``
       <tr>
         <th>Name</th>
         <th>Career</th>
@@ -51,6 +57,10 @@ const records = ref([
       </div>
     </div>
   </div>
+  <ul v-auto-animate="{}">
+    <li v-for="item in items" :key="item.key" class="pusher" :style="{ minHeight: item.height }">Item {{ item.value }} <button @click.prevent="remove(item)">Remove item</button></li>
+  </ul>
+  <div class="box-background"></div>
 </template>
 <style>
 body {
@@ -67,6 +77,16 @@ body {
 }
 .dropdown-content {
   margin-top: 1em;
+}
+
+.pusher {
+  border: 2px solid var(--gray-m);
+}
+.box-background {
+  width: 500px;
+  height: 100px;
+  background-image: linear-gradient(to right, grey 1px, transparent 1px), linear-gradient(to bottom, grey 1px, transparent 1px);
+  background-size: 20px 20px;
 }
 
 /* [data-index="1"] {
