@@ -11,6 +11,7 @@
     "vue",
     "angular",
     "svelte",
+    "qwik",
     "solid"
   ],
   "type": "module",

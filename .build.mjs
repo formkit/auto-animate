@@ -24,7 +24,7 @@ async function clean() {
 
 async function baseBuild() {
   info("Rolling up primary package")
-  await execa("npx", ["rollup", "-c", "rollup.config.js"])
+  await execa("npx", ["rollup", "-c", "rollup.config.ts"])
 }
 
 async function baseBuildMin() {
@@ -32,7 +32,7 @@ async function baseBuildMin() {
   await execa("npx", [
     "rollup",
     "-c",
-    "rollup.config.js",
+    "rollup.config.ts",
     "--environment",
     "MIN:true",
   ])
@@ -43,7 +43,7 @@ async function reactBuild() {
   await execa("npx", [
     "rollup",
     "-c",
-    "rollup.config.js",
+    "rollup.config.ts",
     "--environment",
     "FRAMEWORK:react",
   ])
@@ -60,7 +60,7 @@ async function solidBuild() {
   await execa("npx", [
     "rollup",
     "-c",
-    "rollup.config.js",
+    "rollup.config.ts",
     "--environment",
     "FRAMEWORK:solid",
   ])
@@ -78,7 +78,7 @@ async function preactBuild() {
   await execa("npx", [
     "rollup",
     "-c",
-    "rollup.config.js",
+    "rollup.config.ts",
     "--environment",
     "FRAMEWORK:preact",
   ])
@@ -96,7 +96,7 @@ async function vueBuild() {
   await execa("npx", [
     "rollup",
     "-c",
-    "rollup.config.js",
+    "rollup.config.ts",
     "--environment",
     "FRAMEWORK:vue",
   ])
@@ -114,7 +114,7 @@ async function angularBuild() {
   await execa("npx", [
     "rollup",
     "-c",
-    "rollup.config.js",
+    "rollup.config.ts",
     "--environment",
     "FRAMEWORK:angular",
   ])
@@ -138,16 +138,24 @@ async function qwikBuild() {
   await execa("npx", [
     "rollup",
     "-c",
-    "rollup.config.js",
+    "rollup.config.ts",
     "--environment",
     "FRAMEWORK:qwik",
+  ])
+  await execa("shx", [
+    "mv",
+    `${rootDir}/dist/qwik/index.js`,
+    `${rootDir}/dist/qwik/index.mjs`,
   ])
   /**
    * This is a super hack — for some reason these imports need to be explicitly
    * to .mjs files so...we make it so.
    */
   let raw = await fs.readFile(resolve(rootDir, "dist/qwik/index.mjs"), "utf8")
-  raw = raw.replace("from '../index'", "from '../index.mjs'")
+  raw = raw.replace(
+    "import autoAnimate from '../index';",
+    "import autoAnimate from '../index.mjs';"
+  )
   await fs.writeFile(resolve(rootDir, "dist/qwik/index.mjs"), raw)
 }
 
@@ -156,7 +164,7 @@ async function declarationsBuild() {
   await execa("npx", [
     "rollup",
     "-c",
-    "rollup.config.js",
+    "rollup.config.ts",
     "--environment",
     "DECLARATIONS:true",
   ])
