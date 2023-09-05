@@ -153,6 +153,10 @@ import IconQwik from "../components/IconQwik.vue"
     </p>
     <CodeExample :examples="reactHook" title="App" />
     <ActualReactApp />
+    <AsideTip>
+      Please bare in mind that the value passed to <code>key</code> should be a
+      unique value, otherwise animation will not work as expected.
+    </AsideTip>
     <h2 id="usage-vue">Vue directive</h2>
     <p>
       Vue users can globally register the
@@ -169,8 +173,8 @@ import IconQwik from "../components/IconQwik.vue"
     <CodeExample :examples="vueDirectiveApp" title="App" />
     <ActualVueApp />
     <AsideTip>
-      Please bare in mind that value passed to <code>:key</code> should be a
-      unique value, otherwise animation might not work as expected.
+      Please bare in mind that the value passed to <code>:key</code> should be a
+      unique value, otherwise animation will not work as expected.
     </AsideTip>
     <AsideTip>
       Vue users can pass options by directly setting the directive’s value
