@@ -162,8 +162,7 @@ function observePosition(el: Element) {
 function updatePos(el: Element) {
   clearTimeout(debounces.get(el))
   const optionsOrPlugin = getOptions(el)
-  const delay =
-    typeof optionsOrPlugin === "function" ? 500 : optionsOrPlugin.duration
+  const delay = isPlugin(optionsOrPlugin) ? 500 : optionsOrPlugin.duration
   debounces.set(
     el,
     setTimeout(async () => {
@@ -468,6 +467,26 @@ function forEach(
 }
 
 /**
+ * Always return tuple to provide consistent interface
+ */
+function getPluginTuple(
+  pluginReturn: ReturnType<AutoAnimationPlugin>
+): [KeyframeEffect, AutoAnimationPluginOptions] | [KeyframeEffect] {
+  if (Array.isArray(pluginReturn)) return pluginReturn
+
+  return [pluginReturn]
+}
+
+/**
+ * Determine if config is plugin
+ */
+function isPlugin(
+  config: Partial<AutoAnimateOptions> | AutoAnimationPlugin
+): config is AutoAnimationPlugin {
+  return typeof config === "function"
+}
+
+/**
  * The element in question is remaining in the DOM.
  * @param el - Element to flip
  * @returns
@@ -506,9 +525,10 @@ function remain(el: Element) {
       easing: pluginOrOptions.easing,
     })
   } else {
-    animation = new Animation(
+    const [keyframes] = getPluginTuple(
       pluginOrOptions(el, "remain", oldCoords, newCoords)
     )
+    animation = new Animation(keyframes)
     animation.play()
   }
   animations.set(el, animation)
@@ -539,7 +559,8 @@ function add(el: Element) {
       }
     )
   } else {
-    animation = new Animation(pluginOrOptions(el, "add", newCoords))
+    const [keyframes] = getPluginTuple(pluginOrOptions(el, "add", newCoords))
+    animation = new Animation(keyframes)
     animation.play()
   }
   animations.set(el, animation)
@@ -582,10 +603,7 @@ function remove(el: Element) {
   }
 
   let animation: Animation
-
-  // Here we force the element to be re-added to the DOM and positioned exactly
-  // where it was before so we can animate it out from that position.
-  Object.assign((el as HTMLElement).style, {
+  const defaultStyleReset = {
     position: "absolute",
     top: `${top}px`,
     left: `${left}px`,
@@ -595,9 +613,10 @@ function remove(el: Element) {
     pointerEvents: "none",
     transformOrigin: "center",
     zIndex: 100,
-  })
-
-  if (typeof optionsOrPlugin !== "function") {
+  }
+  
+  if (!isPlugin(optionsOrPlugin)) {
+    Object.assign((el as HTMLElement).style, defaultStyleReset)
     animation = el.animate(
       [
         {
@@ -612,7 +631,16 @@ function remove(el: Element) {
       { duration: optionsOrPlugin.duration, easing: "ease-out" }
     )
   } else {
-    animation = new Animation(optionsOrPlugin(el, "remove", oldCoords))
+    const [keyframes, options] = getPluginTuple(
+      optionsOrPlugin(el, "remove", oldCoords)
+    )
+    if (options?.styleReset !== false) {
+      Object.assign(
+        (el as HTMLElement).style,
+        options?.styleReset || defaultStyleReset
+      )
+    }
+    animation = new Animation(keyframes)
     animation.play()
   }
   animations.set(el, animation)
@@ -725,6 +753,14 @@ export interface AutoAnimateOptions {
 }
 
 /**
+ * A custom plugin config object
+ */
+export interface AutoAnimationPluginOptions {
+  // provide your own css styles or disable style reset
+  styleReset: CSSStyleDeclaration | false
+}
+
+/**
  * A custom plugin that determines what the effects to run
  */
 export interface AutoAnimationPlugin {
@@ -735,7 +771,7 @@ export interface AutoAnimationPlugin {
       ? Coordinates
       : undefined,
     oldCoordinates?: T extends "remain" ? Coordinates : undefined
-  ): KeyframeEffect
+  ): KeyframeEffect | [KeyframeEffect, AutoAnimationPluginOptions]
 }
 
 /**
@@ -753,7 +789,7 @@ export default function autoAnimate(
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)")
     const isDisabledDueToReduceMotion =
       mediaQuery.matches &&
-      typeof config !== "function" &&
+      !isPlugin(config) &&
       !config.disrespectUserMotionPreference
     if (!isDisabledDueToReduceMotion) {
       enabled.add(el)
@@ -761,7 +797,7 @@ export default function autoAnimate(
         Object.assign(el.style, { position: "relative" })
       }
       forEach(el, updatePos, poll, (element) => resize?.observe(element))
-      if (typeof config === "function") {
+      if (isPlugin(config)) {
         options.set(el, config)
       } else {
         options.set(el, { duration: 250, easing: "ease-in-out", ...config })
