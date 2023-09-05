@@ -93,6 +93,12 @@ const TGT = "__aa_tgt"
  * Used to sign an element as being part of a removal.
  */
 const DEL = "__aa_del"
+/**
+ * Used to sign an element as being "new". When an element is removed from the
+ * dom, but may cycle back in we can sign it with new to ensure the next time
+ * it is recognized we consider it new.
+ */
+const NEW = "__aa_new"
 
 /**
  * Callback for handling all mutations.
@@ -261,7 +267,6 @@ function getElements(mutations: MutationRecord[]): Set<Element> | false {
       ...Array.from(mutation.removedNodes),
     ]
   }, [])
-
   // Short circuit if _only_ comment nodes are observed
   const onlyCommentNodesObserved = observedNodes.every(
     (node) => node.nodeName === "#comment"
@@ -280,7 +285,9 @@ function getElements(mutations: MutationRecord[]): Set<Element> | false {
         for (let i = 0; i < mutation.target.children.length; i++) {
           const child = mutation.target.children.item(i)
           if (!child) continue
-          if (DEL in child) return false
+          if (DEL in child) {
+            return false
+          }
           target(mutation.target, child)
           elements.add(child)
         }
@@ -288,7 +295,9 @@ function getElements(mutations: MutationRecord[]): Set<Element> | false {
       if (mutation.removedNodes.length) {
         for (let i = 0; i < mutation.removedNodes.length; i++) {
           const child = mutation.removedNodes[i]
-          if (DEL in child) return false
+          if (DEL in child) {
+            return false
+          }
           if (child instanceof Element) {
             elements.add(child)
             target(mutation.target, child)
@@ -327,7 +336,9 @@ function animate(el: Element) {
   if (animations.has(el)) {
     animations.get(el)?.cancel()
   }
-  if (preExisting && isMounted) {
+  if (NEW in el) {
+    add(el)
+  } else if (preExisting && isMounted) {
     remain(el)
   } else if (preExisting && !isMounted) {
     remove(el)
@@ -541,6 +552,7 @@ function remain(el: Element) {
  * @param el - Animates the element being added.
  */
 function add(el: Element) {
+  if (NEW in el) delete el[NEW]
   const newCoords = getCoords(el)
   coords.set(el, newCoords)
   const pluginOrOptions = getOptions(el)
@@ -568,6 +580,28 @@ function add(el: Element) {
 }
 
 /**
+ * Clean up after removing an element from the dom.
+ * @param el - Element being removed
+ * @param styles - Optional styles that should be removed from the element.
+ */
+function cleanUp(el: Element, styles?: Partial<CSSStyleDeclaration>) {
+  el.remove()
+  coords.delete(el)
+  siblings.delete(el)
+  animations.delete(el)
+  intersections.get(el)?.disconnect()
+  setTimeout(() => {
+    if (DEL in el) delete el[DEL]
+    Object.defineProperty(el, NEW, { value: true, configurable: true })
+    if (styles && el instanceof HTMLElement) {
+      for (const style in styles) {
+        el.style[style as any] = ""
+      }
+    }
+  }, 0)
+}
+
+/**
  * Animates the removal of an element.
  * @param el - Element to remove
  */
@@ -575,7 +609,7 @@ function remove(el: Element) {
   if (!siblings.has(el) || !coords.has(el)) return
 
   const [prev, next] = siblings.get(el)!
-  Object.defineProperty(el, DEL, { value: true })
+  Object.defineProperty(el, DEL, { value: true, configurable: true })
   const finalX = window.scrollX
   const finalY = window.scrollY
 
@@ -586,14 +620,7 @@ function remove(el: Element) {
   } else {
     getTarget(el)?.appendChild(el)
   }
-  function cleanUp() {
-    el.remove()
-    coords.delete(el)
-    siblings.delete(el)
-    animations.delete(el)
-    intersections.get(el)?.disconnect()
-  }
-  if (!isEnabled(el)) return cleanUp()
+  if (!isEnabled(el)) return cleanUp(el)
 
   const [top, left, width, height] = deletePosition(el)
   const optionsOrPlugin = getOptions(el)
@@ -603,20 +630,20 @@ function remove(el: Element) {
   }
 
   let animation: Animation
-  const defaultStyleReset = {
+  let styleReset: Partial<CSSStyleDeclaration> = {
     position: "absolute",
     top: `${top}px`,
     left: `${left}px`,
     width: `${width}px`,
     height: `${height}px`,
-    margin: 0,
+    margin: "0",
     pointerEvents: "none",
     transformOrigin: "center",
-    zIndex: 100,
+    zIndex: "100",
   }
 
   if (!isPlugin(optionsOrPlugin)) {
-    Object.assign((el as HTMLElement).style, defaultStyleReset)
+    Object.assign((el as HTMLElement).style, styleReset)
     animation = el.animate(
       [
         {
@@ -635,16 +662,14 @@ function remove(el: Element) {
       optionsOrPlugin(el, "remove", oldCoords)
     )
     if (options?.styleReset !== false) {
-      Object.assign(
-        (el as HTMLElement).style,
-        options?.styleReset || defaultStyleReset
-      )
+      styleReset = options?.styleReset || styleReset
+      Object.assign((el as HTMLElement).style, styleReset)
     }
     animation = new Animation(keyframes)
     animation.play()
   }
   animations.set(el, animation)
-  animation.addEventListener("finish", cleanUp)
+  animation.addEventListener("finish", cleanUp.bind(null, el, styleReset))
 }
 
 /**
