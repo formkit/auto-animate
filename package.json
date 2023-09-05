@@ -30,36 +30,37 @@
   },
   "exports": {
     "./vue": {
-      "import": "./vue/index.mjs",
       "types": "./vue/index.d.ts",
+      "import": "./vue/index.mjs",
       "default": "./vue/index.mjs"
     },
     "./preact": {
-      "import": "./preact/index.mjs",
       "types": "./preact/index.d.ts",
+      "import": "./preact/index.mjs",
       "default": "./preact/index.mjs"
     },
     "./react": {
-      "import": "./react/index.mjs",
       "types": "./react/index.d.ts",
+      "import": "./react/index.mjs",
       "default": "./react/index.mjs"
     },
     "./solid": {
-      "import": "./solid/index.mjs",
       "types": "./solid/index.d.ts",
+      "import": "./solid/index.mjs",
       "default": "./solid/index.mjs"
     },
     "./angular": {
-      "import": "./angular/index.mjs",
       "types": "./angular/index.d.ts",
+      "import": "./angular/index.mjs",
       "default": "./angular/index.mjs"
     },
     "./qwik": {
-      "import": "./qwik/index.mjs",
       "types": "./qwik/index.d.ts",
+      "import": "./qwik/index.mjs",
       "default": "./qwik/index.mjs"
     },
     ".": {
+      "types": "./index.d.ts",
       "import": "./index.mjs",
       "default": "./index.mjs"
     }

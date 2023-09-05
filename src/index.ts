@@ -79,6 +79,12 @@ const enabled = new WeakSet<Element>()
  * The document used to calculate transitions.
  */
 let root: HTMLElement
+
+/**
+ * The root’s XY scroll positions.
+ */
+let scrollX = 0
+let scrollY = 0
 /**
  * Used to sign an element as the target.
  */
@@ -235,6 +241,10 @@ if (typeof window !== "undefined") {
   root = document.documentElement
   mutations = new MutationObserver(handleMutations)
   resize = new ResizeObserver(handleResizes)
+  window.addEventListener("scroll", () => {
+    scrollY = window.scrollY
+    scrollX = window.scrollX
+  })
   resize.observe(root)
 }
 /**
@@ -566,6 +576,9 @@ function remove(el: Element) {
 
   const [prev, next] = siblings.get(el)!
   Object.defineProperty(el, DEL, { value: true })
+  const finalX = window.scrollX
+  const finalY = window.scrollY
+
   if (next && next.parentNode && next.parentNode instanceof Element) {
     next.parentNode.insertBefore(el, next)
   } else if (prev && prev.parentNode) {
@@ -581,9 +594,14 @@ function remove(el: Element) {
     intersections.get(el)?.disconnect()
   }
   if (!isEnabled(el)) return cleanUp()
+
   const [top, left, width, height] = deletePosition(el)
   const optionsOrPlugin = getOptions(el)
   const oldCoords = coords.get(el)!
+  if (finalX !== scrollX || finalY !== scrollY) {
+    adjustScroll(el, finalX, finalY, optionsOrPlugin)
+  }
+
   let animation: Animation
   const defaultStyleReset = {
     position: "absolute",
@@ -596,6 +614,7 @@ function remove(el: Element) {
     transformOrigin: "center",
     zIndex: 100,
   }
+  
   if (!isPlugin(optionsOrPlugin)) {
     Object.assign((el as HTMLElement).style, defaultStyleReset)
     animation = el.animate(
@@ -628,6 +647,68 @@ function remove(el: Element) {
   animation.addEventListener("finish", cleanUp)
 }
 
+/**
+ * If the element being removed is at the very bottom of the page, and the
+ * the page was scrolled into a space being "made available" by the element
+ * that was removed, the page scroll will have jumped up some amount. We need
+ * to offset the jump by the amount that the page was "automatically" scrolled
+ * up. We can do this by comparing the scroll position before and after the
+ * element was removed, and then offsetting by that amount.
+ *
+ * @param el - The element being deleted
+ * @param finalX - The final X scroll position
+ * @param finalY - The final Y scroll position
+ * @param optionsOrPlugin - The options or plugin
+ * @returns
+ */
+function adjustScroll(
+  el: Element,
+  finalX: number,
+  finalY: number,
+  optionsOrPlugin: AutoAnimateOptions | AutoAnimationPlugin
+) {
+  const scrollDeltaX = scrollX - finalX
+  const scrollDeltaY = scrollY - finalY
+  const scrollBefore = document.documentElement.style.scrollBehavior
+  const scrollBehavior = getComputedStyle(root).scrollBehavior
+  if (scrollBehavior === "smooth") {
+    document.documentElement.style.scrollBehavior = "auto"
+  }
+  window.scrollTo(window.scrollX + scrollDeltaX, window.scrollY + scrollDeltaY)
+  if (!el.parentElement) return
+  const parent = el.parentElement
+  let lastHeight = parent.clientHeight
+  let lastWidth = parent.clientWidth
+  const startScroll = performance.now()
+  // Here we use a manual scroll animation to keep the element using the same
+  // easing and timing as the parent’s scroll animation.
+  function smoothScroll() {
+    requestAnimationFrame(() => {
+      if (typeof optionsOrPlugin !== "function") {
+        const deltaY = lastHeight - parent.clientHeight
+        const deltaX = lastWidth - parent.clientWidth
+        if (startScroll + optionsOrPlugin.duration > performance.now()) {
+          window.scrollTo({
+            left: window.scrollX - deltaX!,
+            top: window.scrollY - deltaY!,
+          })
+          lastHeight = parent.clientHeight
+          lastWidth = parent.clientWidth
+          smoothScroll()
+        } else {
+          document.documentElement.style.scrollBehavior = scrollBefore
+        }
+      }
+    })
+  }
+  smoothScroll()
+}
+
+/**
+ * Determines the position of the element being removed.
+ * @param el - The element being deleted
+ * @returns
+ */
 function deletePosition(
   el: Element
 ): [top: number, left: number, width: number, height: number] {
@@ -663,7 +744,7 @@ export interface AutoAnimateOptions {
    * The type of easing to use.
    * Default: ease-in-out
    */
-  easing: "linear" | "ease-in" | "ease-out" | "ease-in-out" | string
+  easing: "linear" | "ease-in" | "ease-out" | "ease-in-out" | ({} & string)
   /**
    * Ignore a user’s "reduce motion" setting and enable animations. It is not
    * recommended to use this.
