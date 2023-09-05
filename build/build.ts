@@ -1,21 +1,21 @@
 import { dirname, resolve } from "path"
 import { fileURLToPath } from "url"
-import fs from "fs/promises"
+import { readFile, writeFile } from "fs/promises"
 import { execa } from "execa"
 import { execSync } from "child_process"
 import chalk from "chalk"
 import prompts from "prompts"
-import brotliSize from "brotli-size"
+import { sync } from "brotli-size"
 import prettyBytes from "pretty-bytes"
+import { buildModule } from "./build-nuxt"
 
-const info = (m) => console.log(chalk.blue(m))
-const error = (m) => console.log(chalk.red(m))
-const success = (m) => console.log(chalk.green(m))
-const details = (m) => console.log(chalk.pink(m))
+const info = (m: string) => console.log(chalk.blue(m))
+const error = (m: string) => console.log(chalk.red(m))
+const success = (m: string) => console.log(chalk.green(m))
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
-const rootDir = resolve(__dirname)
+const rootDir = resolve(`${__dirname}/../`)
 const isPublishing = process.argv[2] === "--publish"
 
 async function clean() {
@@ -51,9 +51,9 @@ async function reactBuild() {
    * This is a super hack — for some reason these imports need to be explicitly
    * to .mjs files so...we make it so.
    */
-  let raw = await fs.readFile(resolve(rootDir, "dist/react/index.mjs"), "utf8")
+  let raw = await readFile(resolve(rootDir, "dist/react/index.mjs"), "utf8")
   raw = raw.replace("from '../index'", "from '../index.mjs'")
-  await fs.writeFile(resolve(rootDir, "dist/react/index.mjs"), raw)
+  await writeFile(resolve(rootDir, "dist/react/index.mjs"), raw)
 }
 async function solidBuild() {
   info("Rolling up Solid package")
@@ -68,9 +68,9 @@ async function solidBuild() {
    * This is a super hack — for some reason these imports need to be explicitly
    * to .mjs files so...we make it so.
    */
-  let raw = await fs.readFile(resolve(rootDir, "dist/solid/index.mjs"), "utf8")
+  let raw = await readFile(resolve(rootDir, "dist/solid/index.mjs"), "utf8")
   raw = raw.replace("from '../index'", "from '../index.mjs'")
-  await fs.writeFile(resolve(rootDir, "dist/solid/index.mjs"), raw)
+  await writeFile(resolve(rootDir, "dist/solid/index.mjs"), raw)
 }
 
 async function preactBuild() {
@@ -86,9 +86,9 @@ async function preactBuild() {
    * This is a super hack — for some reason these imports need to be explicitly
    * to .mjs files so...we make it so.
    */
-  let raw = await fs.readFile(resolve(rootDir, "dist/preact/index.mjs"), "utf8")
+  let raw = await readFile(resolve(rootDir, "dist/preact/index.mjs"), "utf8")
   raw = raw.replace("from '../index'", "from '../index.mjs'")
-  await fs.writeFile(resolve(rootDir, "dist/preact/index.mjs"), raw)
+  await writeFile(resolve(rootDir, "dist/preact/index.mjs"), raw)
 }
 
 async function vueBuild() {
@@ -104,9 +104,9 @@ async function vueBuild() {
    * This is a super hack — for some reason these imports need to be explicitly
    * to .mjs files so...we make it so.
    */
-  let raw = await fs.readFile(resolve(rootDir, "dist/vue/index.mjs"), "utf8")
+  let raw = await readFile(resolve(rootDir, "dist/vue/index.mjs"), "utf8")
   raw = raw.replace("from '../index'", "from '../index.mjs'")
-  await fs.writeFile(resolve(rootDir, "dist/vue/index.mjs"), raw)
+  await writeFile(resolve(rootDir, "dist/vue/index.mjs"), raw)
 }
 
 async function angularBuild() {
@@ -122,33 +122,38 @@ async function angularBuild() {
    * This is a super hack — for some reason these imports need to be explicitly
    * to .mjs files so...we make it so.
    */
-  let raw = await fs.readFile(
-    resolve(rootDir, "dist/angular/index.mjs"),
-    "utf8"
-  )
+  let raw = await readFile(resolve(rootDir, "dist/angular/index.mjs"), "utf8")
   raw = raw.replace(
     "import autoAnimate from '../index';",
     "import autoAnimate from '../index.mjs';"
   )
-  await fs.writeFile(resolve(rootDir, "dist/angular/index.mjs"), raw)
+  await writeFile(resolve(rootDir, "dist/angular/index.mjs"), raw)
 }
 
-async function qwikBuild() {
-  info("Rolling up Qwik package")
-  await execa("npx", [
-    "rollup",
-    "-c",
-    "rollup.config.js",
-    "--environment",
-    "FRAMEWORK:qwik",
-  ])
-  /**
-   * This is a super hack — for some reason these imports need to be explicitly
-   * to .mjs files so...we make it so.
-   */
-  let raw = await fs.readFile(resolve(rootDir, "dist/qwik/index.mjs"), "utf8")
-  raw = raw.replace("from '../index'", "from '../index.mjs'")
-  await fs.writeFile(resolve(rootDir, "dist/qwik/index.mjs"), raw)
+// async function qwikBuild() {
+//   info("Rolling up Qwik package")
+//   await execa("npx", [
+//     "rollup",
+//     "-c",
+//     "rollup.config.js",
+//     "--environment",
+//     "FRAMEWORK:qwik",
+//   ])
+//   /**
+//    * This is a super hack — for some reason these imports need to be explicitly
+//    * to .mjs files so...we make it so.
+//    */
+//   let raw = await readFile(resolve(rootDir, "dist/qwik/index.mjs"), "utf8")
+//   raw = raw.replace("from '../index'", "from '../index.mjs'")
+//   await writeFile(resolve(rootDir, "dist/qwik/index.mjs"), raw)
+// }
+
+async function nuxtBuild() {
+  info("Building nuxt module")
+  await buildModule({
+    rootDir,
+    srcDir: "src/nuxt",
+  })
 }
 
 async function declarationsBuild() {
@@ -205,12 +210,12 @@ async function bundleDeclarations() {
 
 async function addPackageJSON() {
   info("Writing package.json")
-  const raw = await fs.readFile(resolve(rootDir, "package.json"), "utf8")
+  const raw = await readFile(resolve(rootDir, "package.json"), "utf8")
   const packageJSON = JSON.parse(raw)
   delete packageJSON.private
   delete packageJSON.devDependencies
   delete packageJSON.scripts
-  await fs.writeFile(
+  await writeFile(
     resolve(rootDir, "dist/package.json"),
     JSON.stringify(packageJSON, null, 2)
   )
@@ -228,7 +233,10 @@ async function addAssets() {
 
 async function prepareForPublishing() {
   info("Preparing for publication")
-  if (!/npm-cli\.js$/.test(process.env.npm_execpath)) {
+  if (
+    process.env.npm_execpath &&
+    !/npm-cli\.js$/.test(process.env.npm_execpath)
+  ) {
     error(`⚠️ You must run this command with npm instead of yarn.`)
     info("Please try again with:\n\n» npm run publish\n\n")
     process.exit()
@@ -240,7 +248,7 @@ async function prepareForPublishing() {
     error("Commit your changes before publishing.")
     process.exit()
   }
-  const raw = await fs.readFile(resolve(rootDir, "package.json"), "utf8")
+  const raw = await readFile(resolve(rootDir, "package.json"), "utf8")
   const packageJSON = JSON.parse(raw)
   const response = await prompts([
     {
@@ -259,7 +267,7 @@ async function prepareForPublishing() {
 }
 
 async function publish() {
-  const raw = await fs.readFile(resolve(rootDir, "package.json"), "utf8")
+  const raw = await readFile(resolve(rootDir, "package.json"), "utf8")
   const packageJSON = JSON.parse(raw)
   const response = await prompts([
     {
@@ -277,23 +285,28 @@ async function publish() {
 }
 
 async function outputSize() {
-  const raw = await fs.readFile(resolve(rootDir, "dist/index.min.js"), "utf8")
-  console.log("Brotli size: " + prettyBytes(brotliSize.sync(raw)))
+  const raw = await readFile(resolve(rootDir, "dist/index.min.js"), "utf8")
+  console.log("Brotli size: " + prettyBytes(sync(raw)))
 }
 
-if (isPublishing) await prepareForPublishing()
-await clean()
-await baseBuild()
-await baseBuildMin()
-await reactBuild()
-await preactBuild()
-await solidBuild()
-await vueBuild()
-await angularBuild()
-await qwikBuild()
-await declarationsBuild()
-await bundleDeclarations()
-await addPackageJSON()
-await addAssets()
-await outputSize()
-isPublishing ? await publish() : success("Build complete")
+async function main() {
+  if (isPublishing) await prepareForPublishing()
+  await clean()
+  await nuxtBuild()
+  // await baseBuild()
+  // await baseBuildMin()
+  // await reactBuild()
+  // await preactBuild()
+  // await solidBuild()
+  // await vueBuild()
+  // await angularBuild()
+  // // await qwikBuild()
+  // await declarationsBuild()
+  // await bundleDeclarations()
+  // await addPackageJSON()
+  // await addAssets()
+  // await outputSize()
+  isPublishing ? await publish() : success("Build complete")
+}
+
+main()
