@@ -165,6 +165,10 @@ import IconQwik from "../components/IconQwik.vue"
       <code>@formkit/auto-animate/vue</code> and register it with your Vue app:
     </p>
     <CodeExample :examples="vueDirectiveMain" title="main" />
+    <AsideTip>
+      If you prefer to not register the Vue directive globally, you can import
+      it directly into the component where you want to use it <code>import { vAutoAnimate } from '@formkit/auto-animate'</code>.
+    </AsideTip>
     <p>
       Once you’ve registered the plugin, it can be applied anywhere in your
       application by adding the <code>v-auto-animate</code> directive to the
