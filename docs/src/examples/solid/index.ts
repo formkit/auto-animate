@@ -7,7 +7,7 @@ import { createAutoAnimate } from "@formkit/auto-animate/solid"
 
 const App = function () {
   let parent: HTMLDivElement
-  createAutoAnimate(() => parent, /* optional config */)
+  const [parent, setEnabled] = createAutoAnimate(/* optional config */)
 
   const menuItems = ["Home", "Settings", "Logout"]
   const [isExpanded, setIsExpanded] = createSignal(true)
@@ -42,12 +42,10 @@ const solidDirective = {
     language: "tsx",
     ext: "tsx",
     example: `import { createSignal } from 'solid-js'
-import { autoAnimate } from '@formkit/auto-animate/solid'
+import { createAutoAnimateDirective } from '@formkit/auto-animate/solid'
 
 const App = function () {
-  // Required to prevent TS from removing the directive
-  autoAnimate;
-
+  const autoAnimate = createAutoAnimateDirective()
   const menuItems = ["Home", "Settings", "Logout"]
   const [isExpanded, setIsExpanded] = createSignal(true)
 
