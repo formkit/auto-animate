@@ -614,7 +614,7 @@ function remove(el: Element) {
     transformOrigin: "center",
     zIndex: 100,
   }
-  
+
   if (!isPlugin(optionsOrPlugin)) {
     Object.assign((el as HTMLElement).style, defaultStyleReset)
     animation = el.animate(
@@ -684,7 +684,7 @@ function adjustScroll(
   // easing and timing as the parent’s scroll animation.
   function smoothScroll() {
     requestAnimationFrame(() => {
-      if (typeof optionsOrPlugin !== "function") {
+      if (!isPlugin(optionsOrPlugin)) {
         const deltaY = lastHeight - parent.clientHeight
         const deltaX = lastWidth - parent.clientWidth
         if (startScroll + optionsOrPlugin.duration > performance.now()) {
