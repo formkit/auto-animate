@@ -8,11 +8,16 @@ jobs:
       options: --user 1001
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+      - name: pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
       # Install NPM dependencies, cache them correctly
       # and run all Cypress tests
       - name: Cypress run
-        uses: cypress-io/github-action@v2
+        uses: cypress-io/github-action@v6
         env:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
         with:
@@ -20,4 +25,4 @@ jobs:
           wait-on: 'http://localhost:5555'
           wait-on-timeout: 180
           record: true
-          start: yarn cypress:server
+          start: pnpm cypress:server

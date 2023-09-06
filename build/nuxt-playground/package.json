@@ -1,0 +1,13 @@
+{
+  "private": true,
+  "name": "auto-animate-nuxt-module",
+  "type": "module",
+  "scripts": {
+    "dev": "nuxi dev",
+    "build": "nuxi build",
+    "generate": "nuxi generate"
+  },
+  "devDependencies": {
+    "nuxt": "latest"
+  }
+}

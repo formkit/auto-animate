@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 import CodeExample from "../components/CodeExample.vue"
 import AsideTip from "../components/AsideTip.vue"
 import dropdown from "../examples/dropdown"
@@ -160,7 +160,7 @@ import IconQwik from "../components/IconQwik.vue"
     <h2 id="usage-vue">Vue directive</h2>
     <p>
       Vue users can globally register the
-      <code>v-auto-animate</code> directive. This makes adding transitions and
+      <code>v-auto-animate</code> directive or install the Nuxt module. This makes adding transitions and
       animations as easy as applying an attribute. Import the Vue plugin from
       <code>@formkit/auto-animate/vue</code> and register it with your Vue app:
     </p>
@@ -193,7 +193,8 @@ import IconQwik from "../components/IconQwik.vue"
       <a href="usage-disable">enable and disable</a> animations.
     </p>
     <p>
-      Import the composable from <code>@formkit/auto-animate/vue</code>, and
+      Import the composable from <code>@formkit/auto-animate/vue</code> (the
+      Nuxt will automatically import <code>useAutoAnimate</code> for you), and
       call it in <code>script setup</code> to create a
       <a
         href="https://vuejs.org/guide/essentials/template-refs.html#template-refs"
