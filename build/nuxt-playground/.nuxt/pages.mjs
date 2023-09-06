@@ -1,1 +1,0 @@
-export { useRoute } from '#app'
