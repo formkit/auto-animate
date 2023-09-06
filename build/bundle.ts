@@ -235,10 +235,10 @@ async function prepareForPublishing() {
   info("Preparing for publication")
   if (
     process.env.npm_execpath &&
-    !/npm-cli\.js$/.test(process.env.npm_execpath)
+    !/pnpm\.cjs$/.test(process.env.npm_execpath)
   ) {
-    error(`⚠️ You must run this command with npm instead of yarn.`)
-    info("Please try again with:\n\n» npm run publish\n\n")
+    error(`⚠️ You must run this command with pnpm.`)
+    info("Please try again with:\n\n» pnpm run publish\n\n")
     process.exit()
   }
   const isClean = !execSync(`git status --untracked-files=no --porcelain`, {
@@ -278,7 +278,7 @@ async function publish() {
     },
   ])
   if (response.value) {
-    execSync("npm publish ./dist")
+    execSync("pnpm publish ./dist")
     execSync(`git tag ${packageJSON.version}`)
     execSync(`git push origin --tags`)
   }
