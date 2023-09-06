@@ -24,7 +24,7 @@
     "dev": "cd docs && vite --config=./vite.config.ts",
     "build": "node ./build/build.mjs",
     "build-docs": "cd docs && vite-ssg build --config=./docs/vite.config.ts",
-    "publish": "node ./.build.mjs --publish",
+    "publish": "node ./build/build.mjs --publish",
     "nuxt:dev": "nuxi dev build/nuxt-playground",
     "cypress:open": "cypress open",
     "cypress:server": "cd docs && npx vite --config=./vite.config.ts --port=5555"
