@@ -2,11 +2,10 @@ import { existsSync, promises as fsp } from "fs"
 import { pathToFileURL } from "url"
 import { resolve } from "pathe"
 import { consola } from "consola"
-import type { ModuleMeta, NuxtModule } from "@nuxt/schema"
+import type { ModuleMeta, NuxtModule, NuxtConfig } from "@nuxt/schema"
 import { findExports } from "mlly"
-import { build } from "unbuild"
 
-export interface BuildModuleOptions {
+interface BuildModuleOptions {
   rootDir: string
   srcDir?: string
   sourcemap?: boolean
@@ -14,22 +13,70 @@ export interface BuildModuleOptions {
   outDir?: string
 }
 
+interface PrepareModuleOptions {
+  rootDir: string
+  srcDir: string
+}
+
+/**
+ * Original source: https://github.com/nuxt/module-builder/blob/main/src/prepare.ts
+ * @param options
+ */
+async function prepareModule (options: PrepareModuleOptions) {
+  const { runCommand } = await import('nuxi')
+
+  return runCommand('prepare', [resolve(options.rootDir, 'build/nuxt-playground')], {
+    overrides: {
+      typescript: {
+        builder: 'shared'
+      },
+      imports: {
+        autoImport: false
+      },
+      modules: [
+        resolve(options.rootDir, `${options.srcDir}/module`),
+        function (_options, nuxt) {
+          nuxt.hooks.hook('app:templates', (app) => {
+            for (const template of app.templates) {
+              template.write = true
+            }
+          })
+        }
+      ]
+    } satisfies NuxtConfig
+  })
+}
+
+
+/**
+ * Original source: https://github.com/nuxt/module-builder/blob/main/src/build.ts
+ * @param opts - options
+ */
 export async function buildModule(opts: BuildModuleOptions) {
+  const { build } = await import("unbuild")
+
   const outDir = opts.outDir || "dist"
   const srcDir = opts.srcDir || "src"
 
+  await prepareModule({ rootDir: opts.rootDir, srcDir })
+
   await build(opts.rootDir, false, {
+    clean: false, // auto-animate’s build does its own cleaning
+    failOnWarn: false, // unbuild will validate the package.json, but we don’t want to fail on warnings
     declaration: true,
     sourcemap: opts.sourcemap,
     stub: opts.stub,
     outDir,
     entries: [
-      `${srcDir}/module`,
-      { input: `${srcDir}/runtime/`, outDir: `${outDir}/runtime`, ext: "mjs" },
+      { input: `${srcDir}/module`, outDir: `${outDir}/nuxt` },
+      { input: `${srcDir}/runtime/`, outDir: `${outDir}/nuxt/runtime`, ext: "mjs" },
     ],
     rollup: {
       emitCJS: false,
-      cjsBridge: true,
+      cjsBridge: false,
+      dts: {
+        tsconfig: "./build/nuxt-playground/tsconfig.json",
+      },
     },
     externals: [
       "@nuxt/schema",
@@ -44,11 +91,12 @@ export async function buildModule(opts: BuildModuleOptions) {
     ],
     hooks: {
       async "rollup:done"(ctx) {
+        const outDir = resolve(ctx.options.outDir, 'nuxt')
         // Generate CommonJS stub
-        await writeCJSStub(ctx.options.outDir)
+        await writeCJSStub(outDir)
 
         // Load module meta
-        const moduleEntryPath = resolve(ctx.options.outDir, "module.mjs")
+        const moduleEntryPath = resolve(outDir, "module.mjs")
         const moduleFn: NuxtModule<any> = await import(
           pathToFileURL(moduleEntryPath).toString()
         )
@@ -78,7 +126,7 @@ export async function buildModule(opts: BuildModuleOptions) {
         }
 
         // Write meta
-        const metaFile = resolve(ctx.options.outDir, "module.json")
+        const metaFile = resolve(outDir, "module.json")
         await fsp.writeFile(
           metaFile,
           JSON.stringify(moduleMeta, null, 2),
@@ -86,7 +134,7 @@ export async function buildModule(opts: BuildModuleOptions) {
         )
 
         // Generate types
-        await writeTypes(ctx.options.outDir, moduleMeta)
+        await writeTypes(outDir, moduleMeta)
       },
     },
   })

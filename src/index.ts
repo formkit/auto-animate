@@ -855,4 +855,6 @@ export const vAutoAnimate = {
   ) => {
     autoAnimate(el, binding.value || {})
   },
+  // ignore ssr see #96:
+  getSSRProps: () => ({}),
 }

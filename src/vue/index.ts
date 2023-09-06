@@ -1,10 +1,16 @@
 import { ref, onMounted, watchEffect, Plugin, Ref } from "vue"
+import type { Directive } from "vue"
 import autoAnimate, {
-  vAutoAnimate,
+  vAutoAnimate as autoAnimateDirective,
   AutoAnimateOptions,
   AutoAnimationPlugin,
   AnimationController,
 } from "../index"
+
+export const vAutoAnimate: Directive<
+  HTMLElement,
+  Partial<AutoAnimateOptions>
+> = autoAnimateDirective
 
 export const autoAnimatePlugin: Plugin = {
   install(app) {

@@ -22,9 +22,10 @@
   "license": "MIT",
   "scripts": {
     "dev": "cd docs && vite --config=./vite.config.ts",
-    "build": "npx jiti ./build/build.ts",
+    "build": "node ./build/build.mjs",
     "build-docs": "cd docs && vite-ssg build --config=./docs/vite.config.ts",
     "publish": "node ./.build.mjs --publish",
+    "nuxt:dev": "nuxi dev build/nuxt-playground",
     "cypress:open": "cypress open",
     "cypress:server": "cd docs && npx vite --config=./vite.config.ts --port=5555"
   },
@@ -54,10 +55,11 @@
       "import": "./angular/index.mjs",
       "default": "./angular/index.mjs"
     },
-    "./qwik": {
-      "types": "./qwik/index.d.ts",
-      "import": "./qwik/index.mjs",
-      "default": "./qwik/index.mjs"
+    "./nuxt": {
+      "types": "./nuxt/module.d.ts",
+      "import": "./nuxt/module.mjs",
+      "require": "./nuxt/module.cjs",
+      "default": "./nuxt/module.mjs"
     },
     ".": {
       "types": "./index.d.ts",
@@ -69,6 +71,7 @@
     "@angular/core": "^13.3.11",
     "@builder.io/qwik": "^1.1.5",
     "@formkit/vue": "^1.0.0-beta.8",
+    "@nuxt/kit": "^3.7.1",
     "@nuxt/module-builder": "^0.5.1",
     "@nuxt/schema": "^3.7.1",
     "@rollup/plugin-typescript": "^8.3.2",
@@ -80,23 +83,28 @@
     "@vueuse/head": "^0.7.6",
     "brotli-size": "^4.0.0",
     "chalk": "^5.0.1",
+    "consola": "^3.2.3",
     "cypress": "^9.6.1",
     "execa": "^6.1.0",
     "jiti": "^1.19.3",
+    "mlly": "^1.4.2",
+    "nuxi": "^3.7.3",
+    "pathe": "^1.1.1",
     "preact": "^10.11.3",
     "pretty-bytes": "^6.0.0",
     "prompts": "^2.4.2",
     "react": "^18.1.0",
-    "rollup": "^2.72.1",
+    "rollup": "^3.28.1",
     "rollup-plugin-terser": "^7.0.2",
     "shx": "^0.3.4",
     "solid-js": "^1.6.8",
     "tslib": "^2.4.0",
-    "typescript": "^4.6.4",
+    "typescript": "^5.2.2",
+    "unbuild": "^2.0.0",
     "vite": "^2.9.9",
     "vite-ssg": "^0.20.0",
-    "vue": "^3.2.33",
+    "vue": "^3.3.4",
     "vue-github-button": "^3.0.3",
-    "vue-router": "4"
+    "vue-router": "^4.2.4"
   }
 }
