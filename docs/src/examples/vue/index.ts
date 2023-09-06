@@ -9,6 +9,15 @@ import App from 'App.vue'
 createApp(App).use(autoAnimatePlugin).mount('#app')
 `,
   },
+  nuxt: {
+    language: "typescript",
+    ext: "ts",
+    example: `// nuxt.config.ts
+export default defineNuxtConfig({
+  modules: ['@formkit/auto-animate/nuxt'],
+})
+`,
+  },
 }
 
 const vueDirectiveApp = {

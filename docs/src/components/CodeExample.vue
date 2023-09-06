@@ -11,6 +11,7 @@ import IconPNPM from "./IconPNPM.vue"
 import IconJavaScript from "./IconJavaScript.vue"
 import IconSvelte from "./IconSvelte.vue"
 import IconAngular from "./IconAngular.vue"
+import IconNuxt from "./IconNuxt.vue"
 import { computed, ref } from "vue"
 import { vAutoAnimate } from "../../../src"
 import "../../assets/prism.css"
@@ -28,6 +29,7 @@ type LanguageOption =
   | "yarn"
   | "npm"
   | "pnpm"
+  | "nuxt"
 
 type Language = {
   ext: "jsx" | "vue" | "html"
@@ -191,6 +193,13 @@ function copyCode(value: string) {
           :data-selected="current === 'pnpm' || null"
         >
           <IconPNPM />pnpm
+        </li>
+        <li
+          v-if="'nuxt' in props.examples"
+          @click="current = 'nuxt'"
+          :data-selected="current === 'nuxt' || null"
+        >
+          <IconNuxt />Nuxt
         </li>
       </ul>
     </div>
