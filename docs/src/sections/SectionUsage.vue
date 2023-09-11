@@ -194,7 +194,7 @@ import IconQwik from "../components/IconQwik.vue"
     </p>
     <p>
       Import the composable from <code>@formkit/auto-animate/vue</code> (the
-      Nuxt will automatically import <code>useAutoAnimate</code> for you), and
+      Nuxt module will automatically import <code>useAutoAnimate</code> for you), and
       call it in <code>script setup</code> to create a
       <a
         href="https://vuejs.org/guide/essentials/template-refs.html#template-refs"
