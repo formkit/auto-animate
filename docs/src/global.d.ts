@@ -1,3 +1,5 @@
+import * as Prism from "prismjs"
+
 interface Window {
-  Prism: any
+  Prism: typeof Prism
 }

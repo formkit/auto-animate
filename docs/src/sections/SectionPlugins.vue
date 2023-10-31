@@ -1,7 +1,8 @@
 <script setup>
 import CodeExample from "../components/CodeExample.vue"
-import Bouncy from '../examples/plugin'
+import { bouncy,usingPreset } from "../examples/plugin"
 import ActualPlugin from '../examples/plugin/ActualPlugin.vue'
+import UsingPreset from "../examples/plugin/UsingPreset.vue"
 </script>
 
 <template>
@@ -21,12 +22,16 @@ import ActualPlugin from '../examples/plugin/ActualPlugin.vue'
       Here we will create a new set of keyframes for the <code>add</code>, <code>remove</code> and <code>remain</code>
       actions that overshoot their destinations to create a "bouncy" animation effect.
     </p>
-    <CodeExample title="~/bouncy" :examples="Bouncy"></CodeExample>
+    <CodeExample title="~/bouncy" :examples="bouncy"></CodeExample>
     <p>
       We can use our newly defined keyframes in any previous example to see the
       effect it has. Here's our previous list example with the "bouncy" keyframes
       applied to it:
     </p>
     <ActualPlugin />
+    <h2>Preset Plugins</h2>
+    <p>Here are some preset plugins</p>
+    <using-preset/>
+    <CodeExample title="usingPreset" :examples="usingPreset"></CodeExample>
   </section>
 </template>

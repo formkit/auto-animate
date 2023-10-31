@@ -63,18 +63,19 @@ const allExamples = computed(() => {
     const example = props.examples[key]
     parsedExamples[key] = {
       ...example,
-      highlighted: window.Prism.highlight(
+      highlighted: window.Prism?.highlight(
         example.example,
         window.Prism.languages[example.language],
         example.language
-      ),
+      )
     }
   }
   return parsedExamples
 })
 
 const copyStatus = ref(false)
-function copyCode(value: string) {
+
+function copyCode (value: string) {
   window.navigator.clipboard.writeText(value)
   copyStatus.value = true
   setTimeout(() => {
@@ -90,8 +91,8 @@ function copyCode(value: string) {
       <div class="control control--minimize"></div>
       <div class="control control--expand"></div>
       <span class="control-title">{{
-        type.title || `${title}.${type.ext}`
-      }}</span>
+          type.title || `${title}.${type.ext}`
+        }}</span>
     </div>
     <div v-if="allExamples" class="code-block" v-auto-animate>
       <template v-for="(currentExample, key) in allExamples" :key="key">
@@ -115,91 +116,104 @@ function copyCode(value: string) {
           @click="current = 'react'"
           :data-selected="current === 'react' || null"
         >
-          <IconReact />React
+          <IconReact />
+          React
         </li>
         <li
           v-if="'vue' in props.examples"
           @click="current = 'vue'"
           :data-selected="current === 'vue' || null"
         >
-          <IconVue />Vue
+          <IconVue />
+          Vue
         </li>
         <li
           v-if="'preact' in props.examples"
           @click="current = 'preact'"
           :data-selected="current === 'preact' || null"
         >
-          <IconPreact />Preact
+          <IconPreact />
+          Preact
         </li>
         <li
           v-if="'solid' in props.examples"
           @click="current = 'solid'"
           :data-selected="current === 'solid' || null"
         >
-          <IconSolid />Solid
+          <IconSolid />
+          Solid
         </li>
         <li
           v-if="'svelte' in props.examples"
           @click="current = 'svelte'"
           :data-selected="current === 'svelte' || null"
         >
-          <IconSvelte />Svelte
+          <IconSvelte />
+          Svelte
         </li>
         <li
           v-if="'angular' in props.examples"
           @click="current = 'angular'"
           :data-selected="current === 'angular' || null"
         >
-          <IconAngular />Angular
+          <IconAngular />
+          Angular
         </li>
         <li
           v-if="'qwik' in props.examples"
           @click="current = 'qwik'"
           :data-selected="current === 'qwik' || null"
         >
-          <IconQwik />Qwik
+          <IconQwik />
+          Qwik
         </li>
         <li
           v-if="'js' in props.examples"
           @click="current = 'js'"
           :data-selected="current === 'js' || null"
         >
-          <IconJavaScript />Native JS
+          <IconJavaScript />
+          Native JS
         </li>
         <li
           v-if="'html' in props.examples"
           @click="current = 'html'"
           :data-selected="current === 'html' || null"
         >
-          <IconHTML />HTML
+          <IconHTML />
+          HTML
         </li>
         <li
           v-if="'yarn' in props.examples"
           @click="current = 'yarn'"
           :data-selected="current === 'yarn' || null"
         >
-          <IconYarn />yarn
+          <IconYarn />
+          yarn
         </li>
         <li
           v-if="'npm' in props.examples"
           @click="current = 'npm'"
           :data-selected="current === 'npm' || null"
         >
-          <IconNPM />npm
+          <IconNPM />
+          npm
         </li>
         <li
           v-if="'pnpm' in props.examples"
           @click="current = 'pnpm'"
           :data-selected="current === 'pnpm' || null"
         >
-          <IconPNPM />pnpm
+          <IconPNPM />
+          pnpm
         </li>
         <li
           v-if="'nuxt' in props.examples"
           @click="current = 'nuxt'"
           :data-selected="current === 'nuxt' || null"
         >
-          <IconNuxt />Nuxt
+          <IconNuxt />
+          Nuxt
         </li>
       </ul>
     </div>
@@ -231,6 +245,7 @@ function copyCode(value: string) {
   justify-content: flex-start;
   color: var(--gray-l);
 }
+
 .control-title {
   font-size: 14px;
   justify-self: center;
@@ -270,12 +285,15 @@ function copyCode(value: string) {
   background-color: transparent;
   margin-right: 0.5em;
 }
+
 .control--close {
   background-color: var(--ui-red);
 }
+
 .control--minimize {
   background-color: var(--ui-yellow);
 }
+
 .control--expand {
   background-color: var(--ui-green);
 }
@@ -315,12 +333,15 @@ function copyCode(value: string) {
   margin-bottom: 0;
   white-space: nowrap;
 }
+
 .frameworks li:hover {
   background-color: var(--gray-m);
 }
+
 .frameworks li[data-selected] {
   background-color: rgba(255, 255, 255, 0.1);
 }
+
 .frameworks svg {
   display: block;
   width: 0.9em;

@@ -4,6 +4,8 @@ import App from "./App.vue"
 import PageHome from "./pages/PageHome.vue"
 import type { RouteRecordRaw } from "vue-router"
 import "../assets/main.css"
+import 'virtual:uno.css';
+import 'virtual:unocss-devtools';
 
 const routes: RouteRecordRaw[] = [
   { path: "/", component: PageHome },
