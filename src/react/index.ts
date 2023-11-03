@@ -1,4 +1,4 @@
-import { useState, useCallback, RefCallback } from "react"
+import { useState, useCallback, RefCallback, useMemo } from "react"
 import autoAnimate, {
   AutoAnimateOptions,
   AutoAnimationPlugin,
@@ -16,15 +16,16 @@ export function useAutoAnimate<T extends Element>(
   const [controller, setController] = useState<
     AnimationController | undefined
   >()
+  const memoizedOptions = useMemo(() => options, [])
   const element = useCallback(
     (node: T) => {
       if (node instanceof HTMLElement) {
-        setController(autoAnimate(node, options))
+        setController(autoAnimate(node, memoizedOptions))
       } else {
         setController(undefined)
       }
     },
-    [options]
+    [memoizedOptions]
   )
   const setEnabled = useCallback(
     (enabled: boolean) => {
