@@ -33,7 +33,7 @@ export interface AnimationController<P = unknown> {
    */
   update?: (newParams: P) => void
   /**
-   * (Svelte Specific) A function that runs when the componnet is removed from the DOM.
+   * (Svelte Specific) A function that runs when the component is removed from the DOM.
    */
   destroy?: () => void
 }
