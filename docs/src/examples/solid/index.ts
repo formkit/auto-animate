@@ -2,11 +2,10 @@ const solidPrimitive = {
   solid: {
     language: "tsx",
     ext: "tsx",
-    example: `import { createSignal, For, Show } from "solid-js"
-import { createAutoAnimate } from "@formkit/auto-animate/solid"
+    example: `import { createSignal, For, Show } from 'solid-js'
+import { createAutoAnimate } from '@formkit/auto-animate/solid'
 
 const App = function () {
-  let parent: HTMLDivElement
   const [parent, setEnabled] = createAutoAnimate(/* optional config */)
 
   const menuItems = ["Home", "Settings", "Logout"]
@@ -41,7 +40,7 @@ const solidDirective = {
   solid: {
     language: "tsx",
     ext: "tsx",
-    example: `import { createSignal } from 'solid-js'
+    example: `import { createSignal, For, Show } from 'solid-js'
 import { createAutoAnimateDirective } from '@formkit/auto-animate/solid'
 
 const App = function () {
@@ -67,7 +66,6 @@ const App = function () {
       </button>
     </div>
   </div>
-</>
 }
 
 export default App`,
