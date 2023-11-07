@@ -1,4 +1,4 @@
-import { defineNuxtPlugin } from "#app"
+import { defineNuxtPlugin } from "#imports"
 import { vAutoAnimate } from "@formkit/auto-animate/vue"
 
 export default defineNuxtPlugin((app) => {
