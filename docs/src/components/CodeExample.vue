@@ -12,9 +12,11 @@ import IconJavaScript from "./IconJavaScript.vue"
 import IconSvelte from "./IconSvelte.vue"
 import IconAngular from "./IconAngular.vue"
 import IconNuxt from "./IconNuxt.vue"
-import { computed, ref } from "vue"
+import { computed, ref, onBeforeUnmount } from "vue";
 import { vAutoAnimate } from "../../../src"
 import "../../assets/prism.css"
+
+const timeOutID = ref();
 
 type LanguageOption =
   | "react"
@@ -77,10 +79,14 @@ const copyStatus = ref(false)
 function copyCode(value: string) {
   window.navigator.clipboard.writeText(value)
   copyStatus.value = true
-  setTimeout(() => {
+  timeOutID.value = setTimeout(() => {
     copyStatus.value = false
   }, 2000)
 }
+
+onBeforeUnmount(() => {
+  clearTimeout(timeOutID.value);
+});
 </script>
 
 <template>
