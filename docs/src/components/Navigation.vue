@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import { ref } from "vue"
+import { ref, onBeforeUnmount } from "vue";
 import IconDown from "./IconDown.vue"
 import PoliteAd from "./PoliteAd.vue"
 import { vAutoAnimate } from "../../../src/index"
+
+const controller = new window.AbortController();
 
 const show = ref(false)
 const activeTitle = ref("Docs Navigation")
@@ -19,14 +21,22 @@ const handleClick = () => {
   show.value = window.innerWidth >= 672
 }
 
-let resizeTimer
+const resizeTimer = ref<NodeJS.Timeout | undefined>();
+
 if (typeof window !== "undefined") {
   show.value = window.innerWidth >= 672
-  clearTimeout(resizeTimer)
+  clearTimeout(resizeTimer.value)
   window.addEventListener("resize", () => {
-    resizeTimer = setTimeout(applySizing, 200)
+    resizeTimer.value = setTimeout(applySizing, 200)
+  }, {
+    signal: controller?.signal
   })
 }
+
+onBeforeUnmount(() => {
+  controller.abort();
+  clearTimeout(resizeTimer.value)
+});
 </script>
 
 <template>

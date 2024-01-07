@@ -13,6 +13,10 @@ onMounted(() => {
       clearInterval(interval)
     }
   }, duration)
+
+  this.$once('hook:beforeUnmount', () => {
+    clearInterval(interval);
+  });
 })
 </script>
 

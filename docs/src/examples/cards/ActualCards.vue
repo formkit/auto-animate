@@ -1,6 +1,8 @@
 <script setup>
-import { ref } from "vue"
+import { ref, onBeforeUnmount } from "vue";
 import { vAutoAnimate } from "../../../../src/index"
+
+const timeOutID = ref();
 
 const showForm = ref(false)
 const cards = ref([
@@ -20,10 +22,14 @@ const cards = ref([
 
 function createCard(card) {
   cards.value.unshift(card)
-  setTimeout(() => {
+  timeOutID.value = setTimeout(() => {
     showForm.value = false
   }, 300)
 }
+
+onBeforeUnmount(() => {
+  clearTimeout(timeOutID.value);
+});
 </script>
 
 <template>
