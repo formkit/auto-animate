@@ -7,5 +7,5 @@ export default defineConfig({
   ssgOptions: {
     includeAllRoutes: true,
   },
-  assetsInclude: ["**/*.svg"],
+  assetsInclude: ["**/*.svg", "**/*.png"],
 })
