@@ -209,12 +209,10 @@ function updateAllPos() {
  * random offset.
  * @param el - Element
  */
+let intervalIds: NodeJS.Timeout[] = [];
 function poll(el: Element) {
   setTimeout(() => {
-    intervals.set(
-      el,
-      setInterval(() => lowPriority(updatePos.bind(null, el)), 2000)
-    )
+    intervalIds.push(setInterval(() => lowPriority(updatePos.bind(null, el)), 2000));
   }, Math.round(2000 * Math.random()))
 }
 
@@ -745,7 +743,7 @@ function deletePosition(
     offsetParent &&
     (getComputedStyle(offsetParent).position === "static" ||
       offsetParent instanceof HTMLBodyElement)
-  ) {
+    ) {
     offsetParent = offsetParent.parentElement
   }
   if (!offsetParent) offsetParent = document.body
@@ -839,6 +837,13 @@ export default function autoAnimate(
     disable: () => {
       enabled.delete(el)
     },
+    destroy() {
+      parents.delete(this.parent);
+      mutations?.disconnect();
+      resize?.disconnect();
+      intervalIds.forEach(id => clearInterval(id));
+      intervalIds = [];
+    },
     isEnabled: () => enabled.has(el),
   })
 }
@@ -850,10 +855,21 @@ export const vAutoAnimate = {
   mounted: (
     el: HTMLElement,
     binding: {
-      value: Partial<AutoAnimateOptions> | AutoAnimationPlugin | undefined
+      value: Partial<AutoAnimateOptions> | AutoAnimationPlugin | undefined,
+      instance: {
+        animate: AnimationController,
+      }
     }
   ) => {
-    autoAnimate(el, binding.value || {})
+    binding.instance.animate = autoAnimate(el, binding.value || {})
+  },
+  unmounted(el: HTMLElement, binding: {
+    value: Partial<AutoAnimateOptions> | AutoAnimationPlugin | undefined,
+    instance: {
+      animate: AnimationController,
+    }
+  }) {
+    binding.instance.animate.destroy!()
   },
   // ignore ssr see #96:
   getSSRProps: () => ({}),
