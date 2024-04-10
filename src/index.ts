@@ -241,9 +241,15 @@ let mutations: MutationObserver | undefined
 let resize: ResizeObserver | undefined
 
 /**
+ * Ensure the browser is supported.
+ */
+const supportedBrowser =
+  typeof window !== "undefined" && "ResizeObserver" in window
+
+/**
  * If this is in a browser, initialize our Web APIs
  */
-if (typeof window !== "undefined") {
+if (supportedBrowser) {
   root = document.documentElement
   mutations = new MutationObserver(handleMutations)
   resize = new ResizeObserver(handleResizes)
