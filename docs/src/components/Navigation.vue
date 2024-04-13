@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import { ref } from "vue"
+import { ref, onBeforeUnmount } from "vue";
 import IconDown from "./IconDown.vue"
 import PoliteAd from "./PoliteAd.vue"
 import { vAutoAnimate } from "../../../src/index"
+
+const controller = new window.AbortController();
 
 const show = ref(false)
 const activeTitle = ref("Docs Navigation")
@@ -25,8 +27,18 @@ if (typeof window !== "undefined") {
   clearTimeout(resizeTimer)
   window.addEventListener("resize", () => {
     resizeTimer = setTimeout(applySizing, 200)
+
+    this.$once('hook:beforeUnmount', () => {
+      clearTimeout(resizeTimer);
+    });
+  }, {
+    signal: controller?.signal
   })
 }
+
+onBeforeUnmount(() => {
+  controller.abort();
+});
 </script>
 
 <template>
