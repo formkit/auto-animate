@@ -1,27 +1,22 @@
 import {
-  AfterViewInit,
   Directive,
   ElementRef,
-  Input,
-  NgModule,
-} from "@angular/core"
+  effect,
+  input,
+} from '@angular/core';
 import autoAnimate, { AutoAnimateOptions } from "../index"
 
+
 @Directive({
-  selector: "[auto-animate]",
+  selector: '[auto-animate]',
+  standalone: true,
 })
-export class AutoAnimateDirective implements AfterViewInit {
-  @Input() options?: Partial<AutoAnimateOptions>
+export class AutoAnimateDirective {
+  readonly options = input<Partial<AutoAnimateOptions>>({});
 
-  constructor(private el: ElementRef) {}
-
-  ngAfterViewInit(): void {
-    autoAnimate(this.el.nativeElement, this.options || {})
+  constructor(el: ElementRef) {
+    effect(() => {
+      autoAnimate(el.nativeElement, this.options());
+    });
   }
 }
-
-@NgModule({
-  declarations: [AutoAnimateDirective],
-  exports: [AutoAnimateDirective],
-})
-export class AutoAnimateModule {}
