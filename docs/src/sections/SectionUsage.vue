@@ -8,7 +8,7 @@ import {
   vueDirectiveApp,
   vueComposable,
 } from "../examples/vue"
-import { angularDirectiveMain, angularDirectiveApp } from "../examples/angular"
+import { angularDirectiveMain } from "../examples/angular"
 import { solidPrimitive, solidDirective } from "../examples/solid"
 import reactHook from "../examples/react"
 import preactHook from "../examples/preact"
@@ -160,14 +160,16 @@ import IconQwik from "../components/IconQwik.vue"
     <h2 id="usage-vue">Vue directive</h2>
     <p>
       Vue users can globally register the
-      <code>v-auto-animate</code> directive or install the Nuxt module. This makes adding transitions and
-      animations as easy as applying an attribute. Import the Vue plugin from
-      <code>@formkit/auto-animate/vue</code> and register it with your Vue app:
+      <code>v-auto-animate</code> directive or install the Nuxt module. This
+      makes adding transitions and animations as easy as applying an attribute.
+      Import the Vue plugin from <code>@formkit/auto-animate/vue</code> and
+      register it with your Vue app:
     </p>
     <CodeExample :examples="vueDirectiveMain" title="main" />
     <AsideTip>
       If you prefer to not register the Vue directive globally, you can import
-      it directly into the component where you want to use it <code>import { vAutoAnimate } from '@formkit/auto-animate'</code>.
+      it directly into the component where you want to use it
+      <code>import { vAutoAnimate } from '@formkit/auto-animate'</code>.
     </AsideTip>
     <p>
       Once you’ve registered the plugin, it can be applied anywhere in your
@@ -194,8 +196,8 @@ import IconQwik from "../components/IconQwik.vue"
     </p>
     <p>
       Import the composable from <code>@formkit/auto-animate/vue</code> (the
-      Nuxt module will automatically import <code>useAutoAnimate</code> for you), and
-      call it in <code>script setup</code> to create a
+      Nuxt module will automatically import <code>useAutoAnimate</code> for
+      you), and call it in <code>script setup</code> to create a
       <a
         href="https://vuejs.org/guide/essentials/template-refs.html#template-refs"
         target="_blank"
@@ -259,7 +261,8 @@ import IconQwik from "../components/IconQwik.vue"
       Import <code>AutoAnimateDirective</code> from
       <code>@formkit/auto-animate/angular</code> into a module or a standalone
       component to easily add transitions and animations by applying the
-      <code>auto-animate</code> attribute to the parent element in your template:
+      <code>auto-animate</code> attribute to the parent element in your
+      template:
     </p>
     <CodeExample :examples="angularDirectiveMain" title="App" />
     <ActualAngularApp />
@@ -268,9 +271,10 @@ import IconQwik from "../components/IconQwik.vue"
       <code>&lt;ul auto-animate [options]="{ duration: 100 }"&gt;</code>
     </AsideTip>
     <AsideTip>
-      In Angular versions &lt;16 you can only import <code>AutoAnimateModule</code>
-      in <code>NgModule</code>s. And you have to use auto-animate v0.8.2 or earlier.
-      Angular v16 isn't directly supported, but you can easily write a wrapper.
+      In Angular versions &lt;16 you can only import
+      <code>AutoAnimateModule</code> in <code>NgModule</code>s. And you have to
+      use auto-animate v0.8.2 or earlier. Angular v16 isn't directly supported,
+      but you can easily write a wrapper.
     </AsideTip>
 
     <!-- <h2 id="usage-qwik">Qwik hook</h2>
