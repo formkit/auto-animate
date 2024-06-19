@@ -3,7 +3,7 @@ import {
   ElementRef,
   effect,
   input,
-} from '@angular/core';
+} from "@angular/core";
 import autoAnimate, { AutoAnimateOptions } from "../index"
 
 
