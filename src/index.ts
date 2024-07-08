@@ -108,7 +108,9 @@ const handleMutations: MutationCallback = (mutations) => {
   const elements = getElements(mutations)
   // If elements is "false" that means this mutation that should be ignored.
   if (elements) {
-    elements.forEach((el) => animate(el))
+    for (const element of elements) {
+      animate(element)
+    }
   }
 }
 
@@ -194,9 +196,9 @@ function updateAllPos() {
   debounces.set(
     root,
     setTimeout(() => {
-      parents.forEach((parent) =>
+      for (const parent of parents) {
         forEach(parent, (el) => lowPriority(() => updatePos(el)))
-      )
+      }
     }, 100)
   )
 }
@@ -284,29 +286,34 @@ function getElements(mutations: MutationRecord[]): Set<Element> | false {
     // Short circuit if we find a purposefully deleted node.
     if (elements === false) return false
 
-    if (mutation.target instanceof Element) {
-      target(mutation.target)
-      if (!elements.has(mutation.target)) {
-        elements.add(mutation.target)
-        for (let i = 0; i < mutation.target.children.length; i++) {
-          const child = mutation.target.children.item(i)
+    const targetEl = mutation.target
+    if (targetEl instanceof Element) {
+      target(targetEl)
+      if (!elements.has(targetEl)) {
+        elements.add(targetEl)
+        const targetChildren = targetEl.children
+        const length = targetChildren.length
+        for (let i = 0; i < length; i++) {
+          const child = targetChildren.item(i)
           if (!child) continue
           if (DEL in child) {
             return false
           }
-          target(mutation.target, child)
+          target(targetEl, child)
           elements.add(child)
         }
       }
-      if (mutation.removedNodes.length) {
-        for (let i = 0; i < mutation.removedNodes.length; i++) {
-          const child = mutation.removedNodes[i]
+      const removedNodes = mutation.removedNodes
+      const length = removedNodes.length
+      if (length) {
+        for (let i = 0; i < length; i++) {
+          const child = removedNodes[i]
           if (DEL in child) {
             return false
           }
           if (child instanceof Element) {
             elements.add(child)
-            target(mutation.target, child)
+            target(targetEl, child)
             siblings.set(child, [
               mutation.previousSibling,
               mutation.nextSibling,
@@ -339,9 +346,9 @@ function animate(el: Element) {
   const isMounted = el.isConnected
   const preExisting = coords.has(el)
   if (isMounted && siblings.has(el)) siblings.delete(el)
-  if (animations.has(el)) {
-    animations.get(el)?.cancel()
-  }
+  const animation = animations.get(el)
+  if (animation) animation.cancel()
+
   if (NEW in el) {
     add(el)
   } else if (preExisting && isMounted) {
@@ -465,6 +472,15 @@ function isEnabled(el: Element): boolean {
   return target ? enabled.has(target) : false
 }
 
+function callCallbacks(
+  callbacks: Array<(el: Element, isRoot?: boolean) => void>,
+  element: Element
+) {
+  for (const callback of callbacks) {
+    callback(element, options.has(element))
+  }
+}
+
 /**
  * Iterate over the children of a given parent.
  * @param parent - A parent element
@@ -474,12 +490,11 @@ function forEach(
   parent: Element,
   ...callbacks: Array<(el: Element, isRoot?: boolean) => void>
 ) {
-  callbacks.forEach((callback) => callback(parent, options.has(parent)))
-  for (let i = 0; i < parent.children.length; i++) {
+  callCallbacks(callbacks, parent)
+  const length = parent.children.length
+  for (let i = 0; i < length; i++) {
     const child = parent.children.item(i)
-    if (child) {
-      callbacks.forEach((callback) => callback(child, options.has(child)))
-    }
+    if (child) callCallbacks(callbacks, child)
   }
 }
 
@@ -706,8 +721,8 @@ function adjustScroll(
     document.documentElement.style.scrollBehavior = "auto"
   }
   window.scrollTo(window.scrollX + scrollDeltaX, window.scrollY + scrollDeltaY)
-  if (!el.parentElement) return
   const parent = el.parentElement
+  if (!parent) return
   let lastHeight = parent.clientHeight
   let lastWidth = parent.clientWidth
   const startScroll = performance.now()
@@ -817,10 +832,13 @@ export default function autoAnimate(
   config: Partial<AutoAnimateOptions> | AutoAnimationPlugin = {}
 ): AnimationController {
   if (mutations && resize) {
-    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)")
+    const mediaQueryMatches = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches
+    const isConfigPlugin = isPlugin(config)
     const isDisabledDueToReduceMotion =
-      mediaQuery.matches &&
-      !isPlugin(config) &&
+      mediaQueryMatches &&
+      !isConfigPlugin &&
       !config.disrespectUserMotionPreference
     if (!isDisabledDueToReduceMotion) {
       enabled.add(el)
@@ -828,7 +846,7 @@ export default function autoAnimate(
         Object.assign(el.style, { position: "relative" })
       }
       forEach(el, updatePos, poll, (element) => resize?.observe(element))
-      if (isPlugin(config)) {
+      if (isConfigPlugin) {
         options.set(el, config)
       } else {
         options.set(el, { duration: 250, easing: "ease-in-out", ...config })
