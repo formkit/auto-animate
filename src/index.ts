@@ -524,9 +524,9 @@ function remain(el: Element) {
   if (typeof pluginOrOptions !== "function") {
     let deltaLeft = oldCoords.left - newCoords.left
     let deltaTop = oldCoords.top - newCoords.top
-    let deltaRight =
+    const deltaRight =
       oldCoords.left + oldCoords.width - (newCoords.left + newCoords.width)
-    let deltaBottom =
+    const deltaBottom =
       oldCoords.top + oldCoords.height - (newCoords.top + newCoords.height)
 
     // element is probably anchored and doesn't need to be offset
