@@ -17,17 +17,20 @@ export const autoAnimatePlugin: Plugin = {
     app.directive("auto-animate", vAutoAnimate)
   },
 }
-
 /**
  * AutoAnimate hook for adding dead-simple transitions and animations to Vue.
- * @param options - Auto animate options or a plugin
  * @returns A template ref. Use the `ref` attribute of your parent element
  * to store the element in this template ref.
+ * @param config {useAutoAnimateOptions}
  */
-export function useAutoAnimate<T extends Element>(
-  options?: Partial<AutoAnimateOptions> | AutoAnimationPlugin
-): [Ref<T>, (enabled: boolean) => void] {
-  const element = ref<T>()
+type MaybeRefOrGetter<T>=T|Ref<T>|(()=>T)
+type options = Partial<AutoAnimateOptions> | AutoAnimationPlugin
+type useAutoAnimateOptions = options & {
+  el?: MaybeRefOrGetter<Element>
+}
+export function useAutoAnimate<T extends Element>(config:useAutoAnimateOptions): [Ref<T>, (enabled: boolean) => void] {
+  const {el,...options} = config
+  const element = ref(el) as Ref<T>
   let controller: AnimationController | undefined
   function setEnabled(enabled: boolean) {
     if (controller) {
@@ -41,5 +44,5 @@ export function useAutoAnimate<T extends Element>(
     })
   })
 
-  return [element as Ref<T>, setEnabled]
+  return [element, setEnabled]
 }
