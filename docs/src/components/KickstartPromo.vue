@@ -130,7 +130,7 @@
     </div>
     <div class="kickstart-promo__content">
       <h2 class="kickstart-promo__title">
-        AI-generated Vue forms in seconds
+        AI-generated forms in seconds
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
           <path
             fill="currentColor"
