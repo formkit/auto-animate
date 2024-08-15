@@ -43,10 +43,6 @@ import TheHeader from "./components/TheHeader.vue"
   border-bottom: 1px solid var(--ui-border-light);
   overflow: clip;
 
-  .dark & {
-    border-bottom-color: var(--dark-ll);
-  }
-
   .container {
     display: flex;
     align-items: center;
@@ -89,10 +85,6 @@ import TheHeader from "./components/TheHeader.vue"
     bottom: 0;
     width: 100dvw;
     z-index: -1;
-
-    .dark & {
-      mix-blend-mode: overlay;
-    }
   }
 
   &::before {
@@ -101,20 +93,27 @@ import TheHeader from "./components/TheHeader.vue"
     width: 33%;
     height: 100%;
     background: linear-gradient(90deg, rgb(218, 231, 245), transparent);
-
-    .dark & {
-      background: linear-gradient(90deg, rgb(101, 196, 233), transparent);
-    }
   }
   &::after {
     top: 0;
     right: 0;
     height: 100%;
     background: linear-gradient(-90deg, rgb(247, 211, 249), transparent);
+  }
+}
 
-    .dark & {
-      background: linear-gradient(-90deg, rgb(255, 108, 255), transparent);
-    }
+[data-dark-mode="true"] .site-wide-announcement {
+  &::before,
+  &::after {
+    opacity: 0.75;
+    mix-blend-mode: overlay;
+  }
+
+  &::before {
+    background: linear-gradient(90deg, rgb(101, 196, 233), transparent);
+  }
+  &::after {
+    background: linear-gradient(-90deg, rgb(255, 108, 255), transparent);
   }
 }
 </style>
