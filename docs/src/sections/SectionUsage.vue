@@ -190,7 +190,7 @@ import IconQwik from "../components/IconQwik.vue"
       As an alternative to the <code>v-auto-animate</code> directive, Vue devs
       can use the <code>useAutoAnimate</code> composable. This composable
       supports all the same great features, but also provides a mechanism to
-      <a href="usage-disable">enable and disable</a> animations.
+      <a href="#usage-disable">enable and disable</a> animations.
     </p>
     <p>
       Import the composable from <code>@formkit/auto-animate/vue</code> (the
