@@ -1,6 +1,8 @@
 <script setup>
-import { ref } from "vue"
+import { ref, onBeforeUnmount } from "vue";
 import { useAutoAnimate } from "../../../../src/vue"
+
+const intervalID = ref();
 
 const balls = ref(["red", "green", "blue"])
 const [parent, enable] = useAutoAnimate({ duration: 500 })
@@ -10,9 +12,14 @@ function toggle() {
   isEnabled.value ? enable(false) : enable(true)
   isEnabled.value = !isEnabled.value
 }
-setInterval(() => {
+
+intervalID.value = setInterval(() => {
   balls.value.push(balls.value.shift()!)
 }, 600)
+
+onBeforeUnmount(() => {
+  clearInterval(intervalID.value);
+});
 </script>
 
 <template>
