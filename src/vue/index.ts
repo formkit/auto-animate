@@ -36,8 +36,9 @@ export function useAutoAnimate<T extends Element>(
   }
   onMounted(() => {
     watchEffect(() => {
-      if (element.value instanceof HTMLElement)
-        controller = autoAnimate(element.value, options || {})
+      const el = element.value?.$el || element.value
+      if (el instanceof HTMLElement)
+        controller = autoAnimate(el, options || {})
     })
   })
 
