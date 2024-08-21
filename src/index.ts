@@ -550,7 +550,10 @@ function remain(el: Element) {
   }
   animations.set(el, animation)
   coords.set(el, newCoords)
-  animation.addEventListener("finish", updatePos.bind(null, el))
+  animation.addEventListener("finish", ()=>{
+    updatePos.bind(null, el);
+    !isPlugin(pluginOrOptions) && pluginOrOptions?.onEnd ? pluginOrOptions.onEnd() : null;
+  })
 }
 
 /**
@@ -582,7 +585,10 @@ function add(el: Element) {
     animation.play()
   }
   animations.set(el, animation)
-  animation.addEventListener("finish", updatePos.bind(null, el))
+  animation.addEventListener("finish", ()=>{
+    updatePos.bind(null, el);
+    !isPlugin(pluginOrOptions) && pluginOrOptions?.onEnd ? pluginOrOptions.onEnd() : null;
+  })
 }
 
 /**
@@ -675,7 +681,10 @@ function remove(el: Element) {
     animation.play()
   }
   animations.set(el, animation)
-  animation.addEventListener("finish", cleanUp.bind(null, el, styleReset))
+  animation.addEventListener("finish", ()=> {
+    cleanUp.bind(null, el, styleReset);
+    (!isPlugin(optionsOrPlugin) && optionsOrPlugin?.onEnd) ? optionsOrPlugin.onEnd() : null;
+  })
 }
 
 /**
@@ -781,6 +790,10 @@ export interface AutoAnimateOptions {
    * recommended to use this.
    */
   disrespectUserMotionPreference?: boolean
+  /**
+   * The animation end callback
+   */
+  onEnd?: () => void
 }
 
 /**
