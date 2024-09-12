@@ -840,9 +840,11 @@ export default function autoAnimate(
   return Object.freeze({
     parent: el,
     enable: () => {
+      mutations.observe(el, { childList: true })
       enabled.add(el)
     },
     disable: () => {
+      mutations.disconnect()
       enabled.delete(el)
     },
     isEnabled: () => enabled.has(el),
