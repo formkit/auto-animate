@@ -845,6 +845,9 @@ export default function autoAnimate(
     disable: () => {
       enabled.delete(el)
     },
+    destroy() {
+      parents.delete(el)
+    },
     isEnabled: () => enabled.has(el),
   })
 }
@@ -857,9 +860,23 @@ export const vAutoAnimate = {
     el: HTMLElement,
     binding: {
       value: Partial<AutoAnimateOptions> | AutoAnimationPlugin | undefined
-    }
+      instance: {
+        animate: AnimationController
+      }
+    },
   ) => {
-    autoAnimate(el, binding.value || {})
+    binding.instance.animate = autoAnimate(el, binding.value || {})
+  },
+  unmounted: (
+    el: HTMLElement,
+    binding: {
+      value: Partial<AutoAnimateOptions> | AutoAnimationPlugin | undefined
+      instance: {
+        animate: AnimationController
+      }
+    },
+  ) => {
+    binding.instance.animate.destroy!()
   },
   // ignore ssr see #96:
   getSSRProps: () => ({}),
