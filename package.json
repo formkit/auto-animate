@@ -71,7 +71,7 @@
     "@angular/core": "^13.4.0",
     "@formkit/vue": "^1.6.5",
     "@nuxt/kit": "^3.12.4",
-    "@nuxt/module-builder": "^0.5.5",
+    "@nuxt/module-builder": "^0.8.3",
     "@nuxt/schema": "^3.12.4",
     "@rollup/plugin-typescript": "^11.1.6",
     "@types/node": "^20.14.15",
