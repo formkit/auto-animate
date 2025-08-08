@@ -101,6 +101,11 @@ const DEL = "__aa_del"
 const NEW = "__aa_new"
 
 /**
+ * Track elements that have had an off-viewport initialization update.
+ */
+const seen = new WeakSet<Element>()
+
+/**
  * Callback for handling all mutations.
  * @param mutations - A mutation list
  */
@@ -148,7 +153,13 @@ function observePosition(el: Element) {
     .map((px) => `${-1 * Math.floor(px)}px`)
     .join(" ")
   const observer = new IntersectionObserver(
-    () => {
+    (entries) => {
+      const entry = entries[0]
+      if (entry && entry.target === el && !entry.isIntersecting && !seen.has(el)) {
+        seen.add(el)
+        updatePos(el)
+        return
+      }
       ++invocations > 1 && updatePos(el)
     },
     {
@@ -442,7 +453,21 @@ export function getTransitionSizes(
 function getOptions(el: Element): AutoAnimateOptions | AutoAnimationPlugin {
   return TGT in el && options.has((el as Element & { __aa_tgt: Element })[TGT])
     ? options.get((el as Element & { __aa_tgt: Element })[TGT])!
-    : { duration: 250, easing: "ease-in-out" }
+    : defaultOptions
+}
+
+/**
+ * Global default options used when none are provided.
+ */
+let defaultOptions: AutoAnimateOptions = { duration: 250, easing: "ease-in-out" }
+
+/**
+ * Allows consumers to configure library-wide default options.
+ */
+export function setAutoAnimateDefaults(
+  opts: Partial<AutoAnimateOptions>
+): void {
+  defaultOptions = { ...defaultOptions, ...opts }
 }
 
 /**
@@ -812,7 +837,7 @@ export interface AutoAnimationPlugin {
  * @param el - A parent element to add animations to.
  * @param options - An optional object of options.
  */
-export default function autoAnimate(
+export function autoAnimate(
   el: HTMLElement,
   config: Partial<AutoAnimateOptions> | AutoAnimationPlugin = {}
 ): AnimationController {
@@ -831,7 +856,7 @@ export default function autoAnimate(
       if (isPlugin(config)) {
         options.set(el, config)
       } else {
-        options.set(el, { duration: 250, easing: "ease-in-out", ...config })
+        options.set(el, { ...defaultOptions, ...config })
       }
       mutations.observe(el, { childList: true })
       parents.add(el)
@@ -844,6 +869,11 @@ export default function autoAnimate(
     },
     disable: () => {
       enabled.delete(el)
+      // Cancel in-flight animations and immediate timers
+      forEach(el, (child) => {
+        animations.get(child)?.cancel()
+        clearTimeout(debounces.get(child))
+      })
     },
     isEnabled: () => enabled.has(el),
   })

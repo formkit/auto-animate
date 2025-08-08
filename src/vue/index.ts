@@ -5,7 +5,10 @@ import autoAnimate, {
   AutoAnimateOptions,
   AutoAnimationPlugin,
   AnimationController,
+  setAutoAnimateDefaults,
 } from "../index"
+
+export { setAutoAnimateDefaults }
 
 export const vAutoAnimate: Directive<
   HTMLElement,
