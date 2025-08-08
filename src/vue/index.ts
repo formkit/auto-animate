@@ -1,4 +1,4 @@
-import { ref, onMounted, watchEffect, Plugin, Ref } from "vue"
+import { ref, onMounted, watchEffect, Plugin, Ref, onBeforeUnmount } from "vue"
 import type { Directive } from "vue"
 import autoAnimate, {
   vAutoAnimate as autoAnimateDirective,
@@ -10,7 +10,10 @@ import autoAnimate, {
 export const vAutoAnimate: Directive<
   HTMLElement,
   Partial<AutoAnimateOptions>
-> = autoAnimateDirective
+> = autoAnimateDirective as unknown as Directive<
+  HTMLElement,
+  Partial<AutoAnimateOptions>
+>
 
 export const autoAnimatePlugin: Plugin = {
   install(app) {
@@ -39,6 +42,10 @@ export function useAutoAnimate<T extends Element>(
       if (element.value instanceof HTMLElement)
         controller = autoAnimate(element.value, options || {})
     })
+  })
+  onBeforeUnmount(() => {
+    controller?.destroy?.()
+    controller = undefined
   })
 
   return [element as Ref<T>, setEnabled]
