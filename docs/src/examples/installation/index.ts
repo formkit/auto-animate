@@ -14,4 +14,9 @@ export default {
     language: "shell",
     title: "~/my-app",
   },
+  bun:{
+    example:"bun install @formkit/auto-animate",
+    language:"shell",
+    title:"~/my-app",
+  },
 }
