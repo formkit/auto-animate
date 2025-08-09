@@ -3,7 +3,7 @@ import autoAnimate, {
   AutoAnimationPlugin,
   AnimationController,
 } from "../index"
-import { createSignal, onMount, Setter, Accessor } from "solid-js"
+import { createSignal, onMount, Setter, Accessor, onCleanup } from "solid-js"
 
 declare module "solid-js" {
   namespace JSX {
@@ -19,7 +19,6 @@ export const createAutoAnimate = <T extends HTMLElement>(
   const [element, setElement] = createSignal<T | null>(null)
 
   let controller: AnimationController | undefined
-  // Will help us set enabled even before the element is mounted
   let active = true
 
   onMount(() => {
@@ -28,6 +27,7 @@ export const createAutoAnimate = <T extends HTMLElement>(
       controller = autoAnimate(el, options)
       if (active) controller.enable()
       else controller.disable()
+      onCleanup(() => controller?.destroy?.())
     }
   })
 
@@ -49,6 +49,7 @@ export const createAutoAnimateDirective = () => {
     let optionsValue = options()
     let resolvedOptions: Partial<AutoAnimateOptions> | AutoAnimationPlugin = {}
     if (optionsValue !== true) resolvedOptions = optionsValue
-    autoAnimate(el, resolvedOptions)
+    const controller = autoAnimate(el, resolvedOptions)
+    onCleanup(() => controller.destroy?.())
   }
 }

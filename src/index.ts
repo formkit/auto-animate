@@ -60,6 +60,10 @@ const animations = new WeakMap<Element, Animation>()
  */
 const intersections = new WeakMap<Element, IntersectionObserver>()
 /**
+ * A map of existing mutation observers used to track element movements.
+ */
+const mutationObservers = new WeakMap<Element, MutationObserver>()
+/**
  * Intervals for automatically checking the position of elements occasionally.
  */
 const intervals = new WeakMap<Element, NodeJS.Timeout>()
@@ -538,8 +542,8 @@ function remain(el: Element) {
       end.height = `${heightTo}px`
     }
     animation = el.animate([start, end], {
-      duration: pluginOrOptions.duration,
-      easing: pluginOrOptions.easing,
+      duration: (pluginOrOptions as AutoAnimateOptions).duration,
+      easing: (pluginOrOptions as AutoAnimateOptions).easing,
     })
   } else {
     const [keyframes] = getPluginTuple(
@@ -550,7 +554,7 @@ function remain(el: Element) {
   }
   animations.set(el, animation)
   coords.set(el, newCoords)
-  animation.addEventListener("finish", updatePos.bind(null, el))
+  animation.addEventListener("finish", () => updatePos(el), { once: true })
 }
 
 /**
@@ -558,21 +562,21 @@ function remain(el: Element) {
  * @param el - Animates the element being added.
  */
 function add(el: Element) {
-  if (NEW in el) delete el[NEW]
+  if (NEW in el) delete (el as any)[NEW]
   const newCoords = getCoords(el)
   coords.set(el, newCoords)
   const pluginOrOptions = getOptions(el)
   if (!isEnabled(el)) return
   let animation: Animation
   if (typeof pluginOrOptions !== "function") {
-    animation = el.animate(
+    animation = (el as HTMLElement).animate(
       [
         { transform: "scale(.98)", opacity: 0 },
         { transform: "scale(0.98)", opacity: 0, offset: 0.5 },
         { transform: "scale(1)", opacity: 1 },
       ],
       {
-        duration: pluginOrOptions.duration * 1.5,
+        duration: (pluginOrOptions as AutoAnimateOptions).duration * 1.5,
         easing: "ease-in",
       }
     )
@@ -582,7 +586,7 @@ function add(el: Element) {
     animation.play()
   }
   animations.set(el, animation)
-  animation.addEventListener("finish", updatePos.bind(null, el))
+  animation.addEventListener("finish", () => updatePos(el), { once: true })
 }
 
 /**
@@ -597,11 +601,11 @@ function cleanUp(el: Element, styles?: Partial<CSSStyleDeclaration>) {
   animations.delete(el)
   intersections.get(el)?.disconnect()
   setTimeout(() => {
-    if (DEL in el) delete el[DEL]
+    if (DEL in el) delete (el as any)[DEL]
     Object.defineProperty(el, NEW, { value: true, configurable: true })
     if (styles && el instanceof HTMLElement) {
       for (const style in styles) {
-        el.style[style as any] = ""
+        ;(el.style as any)[style as any] = ""
       }
     }
   }, 0)
@@ -619,10 +623,14 @@ function remove(el: Element) {
   const finalX = window.scrollX
   const finalY = window.scrollY
 
-  if (next && next.parentNode && next.parentNode instanceof Element) {
-    next.parentNode.insertBefore(el, next)
-  } else if (prev && prev.parentNode) {
-    prev.parentNode.appendChild(el)
+  if (
+    next &&
+    (next.parentNode as any) &&
+    (next.parentNode as any) instanceof Element
+  ) {
+    ;(next.parentNode as Element).insertBefore(el, next)
+  } else if (prev && (prev.parentNode as any)) {
+    ;(prev.parentNode as Element).appendChild(el)
   } else {
     getTarget(el)?.appendChild(el)
   }
@@ -650,7 +658,7 @@ function remove(el: Element) {
 
   if (!isPlugin(optionsOrPlugin)) {
     Object.assign((el as HTMLElement).style, styleReset)
-    animation = el.animate(
+    animation = (el as HTMLElement).animate(
       [
         {
           transform: "scale(1)",
@@ -661,21 +669,30 @@ function remove(el: Element) {
           opacity: 0,
         },
       ],
-      { duration: optionsOrPlugin.duration, easing: "ease-out" }
+      {
+        duration: (optionsOrPlugin as AutoAnimateOptions).duration,
+        easing: "ease-out",
+      }
     )
   } else {
     const [keyframes, options] = getPluginTuple(
-      optionsOrPlugin(el, "remove", oldCoords)
+      (optionsOrPlugin as AutoAnimationPlugin)(el, "remove", oldCoords)
     )
-    if (options?.styleReset !== false) {
-      styleReset = options?.styleReset || styleReset
+    if (
+      (options as AutoAnimationPluginOptions | undefined)?.styleReset !== false
+    ) {
+      styleReset =
+        (options as AutoAnimationPluginOptions | undefined)?.styleReset ||
+        styleReset
       Object.assign((el as HTMLElement).style, styleReset)
     }
     animation = new Animation(keyframes)
     animation.play()
   }
   animations.set(el, animation)
-  animation.addEventListener("finish", cleanUp.bind(null, el, styleReset))
+  animation.addEventListener("finish", () => cleanUp(el, styleReset), {
+    once: true,
+  })
 }
 
 /**
@@ -706,8 +723,8 @@ function adjustScroll(
     document.documentElement.style.scrollBehavior = "auto"
   }
   window.scrollTo(window.scrollX + scrollDeltaX, window.scrollY + scrollDeltaY)
-  if (!el.parentElement) return
-  const parent = el.parentElement
+  if (!(el as any).parentElement) return
+  const parent = (el as HTMLElement).parentElement!
   let lastHeight = parent.clientHeight
   let lastWidth = parent.clientWidth
   const startScroll = performance.now()
@@ -718,10 +735,13 @@ function adjustScroll(
       if (!isPlugin(optionsOrPlugin)) {
         const deltaY = lastHeight - parent.clientHeight
         const deltaX = lastWidth - parent.clientWidth
-        if (startScroll + optionsOrPlugin.duration > performance.now()) {
+        if (
+          startScroll + (optionsOrPlugin as AutoAnimateOptions).duration >
+          performance.now()
+        ) {
           window.scrollTo({
-            left: window.scrollX - deltaX!,
-            top: window.scrollY - deltaY!,
+            left: window.scrollX - (deltaX as number),
+            top: window.scrollY - (deltaY as number),
           })
           lastHeight = parent.clientHeight
           lastWidth = parent.clientWidth
@@ -746,13 +766,13 @@ function deletePosition(
   const oldCoords = coords.get(el)!
   const [width, , height] = getTransitionSizes(el, oldCoords, getCoords(el))
 
-  let offsetParent: Element | null = el.parentElement
+  let offsetParent: Element | null = (el as HTMLElement).parentElement
   while (
     offsetParent &&
     (getComputedStyle(offsetParent).position === "static" ||
       offsetParent instanceof HTMLBodyElement)
   ) {
-    offsetParent = offsetParent.parentElement
+    offsetParent = (offsetParent as HTMLElement).parentElement
   }
   if (!offsetParent) offsetParent = document.body
   const parentStyles = getComputedStyle(offsetParent)
@@ -816,12 +836,12 @@ export default function autoAnimate(
   el: HTMLElement,
   config: Partial<AutoAnimateOptions> | AutoAnimationPlugin = {}
 ): AnimationController {
-  if (mutations && resize) {
+  if (supportedBrowser && resize) {
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)")
     const isDisabledDueToReduceMotion =
       mediaQuery.matches &&
       !isPlugin(config) &&
-      !config.disrespectUserMotionPreference
+      !(config as Partial<AutoAnimateOptions>).disrespectUserMotionPreference
     if (!isDisabledDueToReduceMotion) {
       enabled.add(el)
       if (getComputedStyle(el).position === "static") {
@@ -829,15 +849,21 @@ export default function autoAnimate(
       }
       forEach(el, updatePos, poll, (element) => resize?.observe(element))
       if (isPlugin(config)) {
-        options.set(el, config)
+        options.set(el, config as AutoAnimationPlugin)
       } else {
-        options.set(el, { duration: 250, easing: "ease-in-out", ...config })
+        options.set(el, {
+          duration: 250,
+          easing: "ease-in-out",
+          ...(config as Partial<AutoAnimateOptions>),
+        })
       }
-      mutations.observe(el, { childList: true })
+      const mo = new MutationObserver(handleMutations)
+      mo.observe(el, { childList: true })
+      mutationObservers.set(el, mo)
       parents.add(el)
     }
   }
-  return Object.freeze({
+  const controller: AnimationController = Object.freeze({
     parent: el,
     enable: () => {
       enabled.add(el)
@@ -846,7 +872,40 @@ export default function autoAnimate(
       enabled.delete(el)
     },
     isEnabled: () => enabled.has(el),
+    destroy: () => {
+      enabled.delete(el)
+      parents.delete(el)
+      options.delete(el)
+      const mo = mutationObservers.get(el)
+      mo?.disconnect()
+      mutationObservers.delete(el)
+      forEach(el, (node) => {
+        // unobserve resize
+        resize?.unobserve(node)
+        // cancel animations
+        const a = animations.get(node)
+        try {
+          a?.cancel()
+        } catch {}
+        animations.delete(node)
+        // disconnect observers
+        const io = intersections.get(node)
+        io?.disconnect()
+        intersections.delete(node)
+        // clear intervals and debounces
+        const i = intervals.get(node)
+        if (i) clearInterval(i)
+        intervals.delete(node)
+        const d = debounces.get(node)
+        if (d) clearTimeout(d)
+        debounces.delete(node)
+        // clear state
+        coords.delete(node)
+        siblings.delete(node)
+      })
+    },
   })
+  return controller
 }
 
 /**
@@ -859,8 +918,15 @@ export const vAutoAnimate = {
       value: Partial<AutoAnimateOptions> | AutoAnimationPlugin | undefined
     }
   ) => {
-    autoAnimate(el, binding.value || {})
+    const ctl = autoAnimate(el, binding.value || {})
+    Object.defineProperty(el, "__aa_ctl", { value: ctl, configurable: true })
   },
-  // ignore ssr see #96:
+  unmounted: (el: HTMLElement) => {
+    const ctl = (el as any)["__aa_ctl"] as AnimationController | undefined
+    ctl?.destroy?.()
+    try {
+      delete (el as any)["__aa_ctl"]
+    } catch {}
+  },
   getSSRProps: () => ({}),
 }
