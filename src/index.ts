@@ -159,7 +159,7 @@ function observePosition(el: Element) {
       root,
       threshold: 1,
       rootMargin,
-    }
+    },
   )
   observer.observe(el)
   intersections.set(el, observer)
@@ -168,11 +168,16 @@ function observePosition(el: Element) {
 /**
  * Update the exact position of a given element.
  * @param el - An element to update the position of.
+ * @param debounce - Whether or not to debounce the update. After an animation is finished, it should update as soon as possible to prevent flickering on quick toggles.
  */
-function updatePos(el: Element) {
+function updatePos(el: Element, debounce = true) {
   clearTimeout(debounces.get(el))
   const optionsOrPlugin = getOptions(el)
-  const delay = isPlugin(optionsOrPlugin) ? 500 : optionsOrPlugin.duration
+  const delay = debounce
+    ? isPlugin(optionsOrPlugin)
+      ? 500
+      : optionsOrPlugin.duration
+    : 0
   debounces.set(
     el,
     setTimeout(async () => {
@@ -186,7 +191,7 @@ function updatePos(el: Element) {
       } catch {
         // ignore errors as the `.finished` promise is rejected when animations were cancelled
       }
-    }, delay)
+    }, delay),
   )
 }
 
@@ -199,9 +204,9 @@ function updateAllPos() {
     root,
     setTimeout(() => {
       parents.forEach((parent) =>
-        forEach(parent, (el) => lowPriority(() => updatePos(el)))
+        forEach(parent, (el) => lowPriority(() => updatePos(el))),
       )
-    }, 100)
+    }, 100),
   )
 }
 
@@ -214,12 +219,15 @@ function updateAllPos() {
  * @param el - Element
  */
 function poll(el: Element) {
-  setTimeout(() => {
-    intervals.set(
-      el,
-      setInterval(() => lowPriority(updatePos.bind(null, el)), 2000)
-    )
-  }, Math.round(2000 * Math.random()))
+  setTimeout(
+    () => {
+      intervals.set(
+        el,
+        setInterval(() => lowPriority(updatePos.bind(null, el)), 2000),
+      )
+    },
+    Math.round(2000 * Math.random()),
+  )
 }
 
 /**
@@ -279,7 +287,7 @@ function getElements(mutations: MutationRecord[]): Set<Element> | false {
   }, [])
   // Short circuit if _only_ comment nodes are observed
   const onlyCommentNodesObserved = observedNodes.every(
-    (node) => node.nodeName === "#comment"
+    (node) => node.nodeName === "#comment",
   )
 
   if (onlyCommentNodesObserved) return false
@@ -343,7 +351,8 @@ function animate(el: Element) {
   const isMounted = el.isConnected
   const preExisting = coords.has(el)
   if (isMounted && siblings.has(el)) siblings.delete(el)
-  if (animations.has(el)) {
+
+  if (animations.get(el)?.playState !== "finished") {
     animations.get(el)?.cancel()
   }
   if (NEW in el) {
@@ -409,7 +418,7 @@ function getCoords(el: Element): Coordinates {
 export function getTransitionSizes(
   el: Element,
   oldCoords: Coordinates,
-  newCoords: Coordinates
+  newCoords: Coordinates,
 ) {
   let widthFrom = oldCoords.width
   let heightFrom = oldCoords.height
@@ -491,7 +500,7 @@ function forEach(
  * Always return tuple to provide consistent interface
  */
 function getPluginTuple(
-  pluginReturn: ReturnType<AutoAnimationPlugin>
+  pluginReturn: ReturnType<AutoAnimationPlugin>,
 ): [KeyframeEffect, AutoAnimationPluginOptions] | [KeyframeEffect] {
   if (Array.isArray(pluginReturn)) return pluginReturn
 
@@ -502,7 +511,7 @@ function getPluginTuple(
  * Determine if config is plugin
  */
 function isPlugin(
-  config: Partial<AutoAnimateOptions> | AutoAnimationPlugin
+  config: Partial<AutoAnimateOptions> | AutoAnimationPlugin,
 ): config is AutoAnimationPlugin {
   return typeof config === "function"
 }
@@ -520,15 +529,24 @@ function remain(el: Element) {
   if (!oldCoords) return
   const pluginOrOptions = getOptions(el)
   if (typeof pluginOrOptions !== "function") {
-    const deltaX = oldCoords.left - newCoords.left
-    const deltaY = oldCoords.top - newCoords.top
+    let deltaLeft = oldCoords.left - newCoords.left
+    let deltaTop = oldCoords.top - newCoords.top
+    const deltaRight =
+      oldCoords.left + oldCoords.width - (newCoords.left + newCoords.width)
+    const deltaBottom =
+      oldCoords.top + oldCoords.height - (newCoords.top + newCoords.height)
+
+    // element is probably anchored and doesn't need to be offset
+    if (deltaBottom == 0) deltaTop = 0
+    if (deltaRight == 0) deltaLeft = 0
+
     const [widthFrom, widthTo, heightFrom, heightTo] = getTransitionSizes(
       el,
       oldCoords,
-      newCoords
+      newCoords,
     )
     const start: Record<string, any> = {
-      transform: `translate(${deltaX}px, ${deltaY}px)`,
+      transform: `translate(${deltaLeft}px, ${deltaTop}px)`,
     }
     const end: Record<string, any> = {
       transform: `translate(0, 0)`,
@@ -547,14 +565,16 @@ function remain(el: Element) {
     })
   } else {
     const [keyframes] = getPluginTuple(
-      pluginOrOptions(el, "remain", oldCoords, newCoords)
+      pluginOrOptions(el, "remain", oldCoords, newCoords),
     )
     animation = new Animation(keyframes)
     animation.play()
   }
   animations.set(el, animation)
   coords.set(el, newCoords)
-  animation.addEventListener("finish", () => updatePos(el), { once: true })
+  animation.addEventListener("finish", updatePos.bind(null, el, false), {
+    once: true,
+  })
 }
 
 /**
@@ -578,7 +598,7 @@ function add(el: Element) {
       {
         duration: (pluginOrOptions as AutoAnimateOptions).duration * 1.5,
         easing: "ease-in",
-      }
+      },
     )
   } else {
     const [keyframes] = getPluginTuple(pluginOrOptions(el, "add", newCoords))
@@ -586,7 +606,9 @@ function add(el: Element) {
     animation.play()
   }
   animations.set(el, animation)
-  animation.addEventListener("finish", () => updatePos(el), { once: true })
+  animation.addEventListener("finish", updatePos.bind(null, el, false), {
+    once: true,
+  })
 }
 
 /**
@@ -672,11 +694,11 @@ function remove(el: Element) {
       {
         duration: (optionsOrPlugin as AutoAnimateOptions).duration,
         easing: "ease-out",
-      }
+      },
     )
   } else {
     const [keyframes, options] = getPluginTuple(
-      (optionsOrPlugin as AutoAnimationPlugin)(el, "remove", oldCoords)
+      (optionsOrPlugin as AutoAnimationPlugin)(el, "remove", oldCoords),
     )
     if (
       (options as AutoAnimationPluginOptions | undefined)?.styleReset !== false
@@ -713,7 +735,7 @@ function adjustScroll(
   el: Element,
   finalX: number,
   finalY: number,
-  optionsOrPlugin: AutoAnimateOptions | AutoAnimationPlugin
+  optionsOrPlugin: AutoAnimateOptions | AutoAnimationPlugin,
 ) {
   const scrollDeltaX = scrollX - finalX
   const scrollDeltaY = scrollY - finalY
@@ -761,7 +783,7 @@ function adjustScroll(
  * @returns
  */
 function deletePosition(
-  el: Element
+  el: Element,
 ): [top: number, left: number, width: number, height: number] {
   const oldCoords = coords.get(el)!
   const [width, , height] = getTransitionSizes(el, oldCoords, getCoords(el))
@@ -776,7 +798,11 @@ function deletePosition(
   }
   if (!offsetParent) offsetParent = document.body
   const parentStyles = getComputedStyle(offsetParent)
-  const parentCoords = coords.get(offsetParent) || getCoords(offsetParent)
+  const parentCoords =
+    !animations.has(el) || animations.get(el)?.playState === "finished"
+      ? getCoords(offsetParent)
+      : coords.get(offsetParent)!
+
   const top =
     Math.round(oldCoords.top - parentCoords.top) -
     raw(parentStyles.borderTopWidth)
@@ -821,7 +847,7 @@ export interface AutoAnimationPlugin {
     newCoordinates?: T extends "add" | "remain" | "remove"
       ? Coordinates
       : undefined,
-    oldCoordinates?: T extends "remain" ? Coordinates : undefined
+    oldCoordinates?: T extends "remain" ? Coordinates : undefined,
   ): KeyframeEffect | [KeyframeEffect, AutoAnimationPluginOptions]
 }
 
@@ -834,7 +860,7 @@ export interface AutoAnimationPlugin {
  */
 export default function autoAnimate(
   el: HTMLElement,
-  config: Partial<AutoAnimateOptions> | AutoAnimationPlugin = {}
+  config: Partial<AutoAnimateOptions> | AutoAnimationPlugin = {},
 ): AnimationController {
   if (supportedBrowser && resize) {
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)")
@@ -916,7 +942,7 @@ export const vAutoAnimate = {
     el: HTMLElement,
     binding: {
       value: Partial<AutoAnimateOptions> | AutoAnimationPlugin | undefined
-    }
+    },
   ) => {
     const ctl = autoAnimate(el, binding.value || {})
     Object.defineProperty(el, "__aa_ctl", { value: ctl, configurable: true })
