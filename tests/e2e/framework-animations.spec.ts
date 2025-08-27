@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test'
-import { assertNoConsoleErrors, withAnimationObserver } from './utils'
+import { assertNoConsoleErrors, withAnimationObserver, waitForActiveAnimations } from './utils'
 
 test.describe('Framework examples animate on interaction', () => {
   test.beforeEach(async ({ page }) => {
@@ -38,7 +38,7 @@ test.describe('Framework examples animate on interaction', () => {
     const assertNoErrorsLater = await assertNoConsoleErrors(page)
     const observer = await withAnimationObserver(page, '.solid-example .parent')
     await page.getByRole('button', { name: 'Toggle Drawer' }).click()
-    await page.waitForTimeout(50)
+    await waitForActiveAnimations(page, '.solid-example .parent')
     expect(await observer.count()).toBeGreaterThan(0)
     await assertNoErrorsLater()
   })
@@ -49,7 +49,7 @@ test.describe('Framework examples animate on interaction', () => {
     const input = page.locator('.tag-input input')
     await input.fill('Jazz')
     await input.press('Enter')
-    await page.waitForTimeout(50)
+    await waitForActiveAnimations(page, '.tag-input ul')
     expect(await observer.count()).toBeGreaterThan(0)
     await assertNoErrorsLater()
   })
@@ -58,7 +58,7 @@ test.describe('Framework examples animate on interaction', () => {
     const assertNoErrorsLater = await assertNoConsoleErrors(page)
     const observer = await withAnimationObserver(page, '.angular-example')
     await page.locator('.angular-example .toggle-story-btn').first().click()
-    await page.waitForTimeout(50)
+    await waitForActiveAnimations(page, '.angular-example')
     expect(await observer.count()).toBeGreaterThan(0)
     await assertNoErrorsLater()
   })
