@@ -10,7 +10,9 @@ import autoAnimate, {
  * @param options - Auto animate options or a plugin
  * @returns
  */
-export function useAutoAnimate<T extends Element>(options?: Partial<AutoAnimateOptions> | AutoAnimationPlugin): [Object<T>, (enabled: boolean) => void] {
+export function useAutoAnimate<T extends Element>(
+  options?: Partial<AutoAnimateOptions> | AutoAnimationPlugin
+): [Object<T>, (enabled: boolean) => void] {
   const element = useRef<T>(null)
   const [controller, setController] = useState<
     AnimationController | undefined
@@ -24,5 +26,10 @@ export function useAutoAnimate<T extends Element>(options?: Partial<AutoAnimateO
     if (element.current instanceof HTMLElement)
       setController(autoAnimate(element.current, options || {}))
   }, [])
+  useEffect(() => {
+    return () => {
+      controller?.destroy?.()
+    }
+  }, [controller])
   return [element, setEnabled]
 }

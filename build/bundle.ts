@@ -248,22 +248,7 @@ async function prepareForPublishing() {
     error("Commit your changes before publishing.")
     process.exit()
   }
-  const raw = await readFile(resolve(rootDir, "package.json"), "utf8")
-  const packageJSON = JSON.parse(raw)
-  const response = await prompts([
-    {
-      type: "confirm",
-      name: "value",
-      message: `Confirm you want to publish version ${chalk.red(
-        packageJSON.version
-      )}?`,
-      initial: false,
-    },
-  ])
-  if (!response.value) {
-    error("Please adjust the version and try again")
-    process.exit()
-  }
+  // Version confirmation is now handled by bumpp in the release script
 }
 
 async function publish() {
