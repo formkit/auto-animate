@@ -1,3 +1,16 @@
+node_modules
+dist
+*.log
+.DS_Store
+
+# Playwright artifacts
+playwright-report/
+test-results/
+
+# Cypress artifacts (legacy)
+cypress/videos/
+cypress/screenshots/
+
 dist
 .DS_Store
 node_modules

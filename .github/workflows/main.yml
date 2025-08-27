@@ -1,28 +1,38 @@
-name: Build
-on: [push, workflow_dispatch]
+name: CI
+on:
+  push:
+    branches:
+      - master
+      - 'release/*'
+  pull_request:
+    branches:
+      - master
+      - 'release/*'
+  workflow_dispatch:
+
 jobs:
-  cypress-run:
+  e2e:
     runs-on: ubuntu-latest
-    container:
-      image: cypress/browsers:node16.14.0-chrome99-ff97
-      options: --user 1001
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
-      - name: pnpm
-        uses: pnpm/action-setup@v2
+        uses: actions/checkout@v4
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        # version is read from package.json#packageManager
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          version: 8
-
-      # Install NPM dependencies, cache them correctly
-      # and run all Cypress tests
-      - name: Cypress run
-        uses: cypress-io/github-action@v6
-        env:
-          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+          node-version: 20
+          cache: 'pnpm'
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile=false
+      - name: Install Playwright Browsers
+        run: pnpm exec playwright install --with-deps
+      - name: Run Playwright tests
+        run: pnpm test:e2e
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
         with:
-          browser: chrome
-          wait-on: 'http://localhost:5555'
-          wait-on-timeout: 180
-          record: true
-          start: pnpm cypress:server
+          name: playwright-report
+          path: playwright-report
