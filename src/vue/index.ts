@@ -1,5 +1,5 @@
 import { ref, onMounted, watchEffect, Plugin, Ref, onBeforeUnmount } from "vue"
-import type { Directive } from "vue"
+import type { Component, Directive } from "vue"
 import autoAnimate, {
   vAutoAnimate as autoAnimateDirective,
   AutoAnimateOptions,
@@ -8,10 +8,10 @@ import autoAnimate, {
 } from "../index"
 
 export const vAutoAnimate: Directive<
-  HTMLElement,
+  HTMLElement | Component,
   Partial<AutoAnimateOptions>
 > = autoAnimateDirective as unknown as Directive<
-  HTMLElement,
+  HTMLElement | Component,
   Partial<AutoAnimateOptions>
 >
 
@@ -27,8 +27,8 @@ export const autoAnimatePlugin: Plugin = {
  * @returns A template ref. Use the `ref` attribute of your parent element
  * to store the element in this template ref.
  */
-export function useAutoAnimate<T extends Element>(
-  options?: Partial<AutoAnimateOptions> | AutoAnimationPlugin
+export function useAutoAnimate<T extends Element | Component>(
+  options?: Partial<AutoAnimateOptions> | AutoAnimationPlugin,
 ): [Ref<T>, (enabled: boolean) => void] {
   const element = ref<T>()
   let controller: AnimationController | undefined
@@ -39,9 +39,19 @@ export function useAutoAnimate<T extends Element>(
   }
   onMounted(() => {
     watchEffect(() => {
-      const el = element.value?.$el || element.value
-      if (el instanceof HTMLElement)
+      let el: HTMLElement | undefined
+      if (element.value instanceof HTMLElement) {
+        el = element.value
+      } else if (
+        element.value &&
+        "$el" in element.value &&
+        element.value.$el instanceof HTMLElement
+      ) {
+        el = element.value.$el
+      }
+      if (el) {
         controller = autoAnimate(el, options || {})
+      }
     })
   })
   onBeforeUnmount(() => {
