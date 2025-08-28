@@ -1,6 +1,6 @@
 <img width="300" height="37" alt="AutoAnimate Logo" src="https://cdn.formk.it/web-assets/logo-auto-animate.svg" >
 
-![Latest Build](https://github.com/formkit/auto-animate/actions/workflows/main.yml/badge.svg) ![GitHub Sponsors](https://img.shields.io/github/sponsors/formkit) ![Package Size](https://img.badgesize.io/https:/unpkg.com/@formkit/auto-animate@latest/index.min.js.svg?label=brotli&compression=brotli)
+![Latest Build](https://github.com/formkit/auto-animate/actions/workflows/main.yml/badge.svg) ![GitHub Sponsors](https://img.shields.io/github/sponsors/formkit)
 
 # Add motion to your apps with a single line of code.
 

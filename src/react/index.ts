@@ -1,4 +1,4 @@
-import { useState, useCallback, RefCallback, useMemo } from "react"
+import { useState, useCallback, RefCallback, useMemo, useEffect } from "react"
 import autoAnimate, {
   AutoAnimateOptions,
   AutoAnimationPlugin,
@@ -35,6 +35,12 @@ export function useAutoAnimate<T extends Element>(
     },
     [controller]
   )
+
+  useEffect(() => {
+    return () => {
+      controller?.destroy?.()
+    }
+  }, [controller])
 
   return [element, setEnabled]
 }

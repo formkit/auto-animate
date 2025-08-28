@@ -1,0 +1,142 @@
+### Project overview
+- **Purpose**: Zero-config motion for DOM list changes. Given a parent element, automatically animates its immediate children when they are added, removed, or moved.
+- **Core entry**: `src/index.ts` exports `autoAnimate(el, configOrPlugin)` and types, plus a Vue directive `vAutoAnimate`.
+- **Framework adapters**: Thin wrappers providing hooks/directives for Vue, React, Solid, Preact, Angular, Qwik under `src/<framework>/index.ts`.
+- **Build**: TS → ESM via Rollup; built artifacts land in `dist/`. Package `exports` map serves `index.mjs` and framework subpaths.
+
+### Mental model (how it works)
+- **Observers**
+  - MutationObserver on the parent watches childList changes. For each mutation, `getElements` collects the parent and child elements that changed (including removed ones), tagging each with a non-enumerable target marker `__aa_tgt`.
+  - ResizeObserver on `document.documentElement` (root) and on each observed element updates cached positions when sizes change.
+  - IntersectionObserver is created per element to detect position changes while scrolling; a dynamic `rootMargin` derived from the last known coordinates triggers recalculation. Occasional low-priority polling backs this up.
+- **State tracking** (all with WeakMap/WeakSet to avoid leaks)
+  - `coords`: last known absolute coordinates adjusted for nearest scrolling ancestor.
+  - `siblings`: prev/next references for elements removed from the DOM so they can be temporarily reinserted for exit animations.
+  - `animations`: current Web Animations API `Animation` per element.
+  - `intersections`, `intervals`, `debounces`: observers/intervals/timers per element.
+  - `options`: the per-parent config or plugin; `enabled`: parents with animations enabled.
+- **Deciding what to animate**
+  - `animate(el)` selects one of: `add`, `remain`, or `remove` based on whether the element has cached coordinates and whether it’s still connected.
+  - Flags: `__aa_new` marks newly reinserted nodes to ensure their next cycle is treated as an entry; `__aa_del` marks nodes currently animating out.
+- **Effects**
+  - Default behavior uses Web Animations API: `add` scales/ fades in; `remain` uses FLIP-style transforms (translate from old to new), also animates width/height deltas respecting `box-sizing`; `remove` temporarily re-inserts the node near its original position, absolutely positions it, and scales/fades out.
+  - Plugins: if `config` is a function, it’s treated as an `AutoAnimationPlugin`. Plugin functions return a `KeyframeEffect` or `[KeyframeEffect, { styleReset | false }]`. The library will construct and play an `Animation` from the effect and handle optional style resets.
+- **Scroll handling**
+  - Coordinates are absolute plus the nearest scrollable ancestor’s offset.
+  - During removal at page bottom, the library compensates for scroll jumps by snapshotting pre/post window scroll and performing a manual scroll animation to match the configured duration/easing.
+- **Options & accessibility**
+  - Defaults: `{ duration: 250, easing: 'ease-in-out' }`.
+  - Respects `prefers-reduced-motion: reduce` unless `disrespectUserMotionPreference: true` or a plugin is used.
+  - `AnimationController` controls enable/disable per parent.
+
+### Public API surface
+- **Default export**: `autoAnimate(el: HTMLElement, config?: Partial<AutoAnimateOptions> | AutoAnimationPlugin): AnimationController`
+- **Types**: `AutoAnimateOptions`, `AutoAnimationPlugin`, `AutoAnimationPluginOptions`, `AnimationController`.
+- **Vue**: `vAutoAnimate` directive, `autoAnimatePlugin`, `useAutoAnimate` hook.
+- **React/Preact**: `useAutoAnimate` hook returns `[refCallback | refObject, setEnabled]`.
+- **Solid**: `createAutoAnimate` and `createAutoAnimateDirective`.
+- **Angular**: `AutoAnimateDirective` (`[auto-animate]`).
+- **Qwik**: `useAutoAnimate` returns `[Signal<HTMLElement>, setEnabledQRL]`.
+- **Nuxt**: module that registers the Vue directive and auto-imports `autoAnimate` and `useAutoAnimate`.
+
+### Key invariants and conventions
+- Do not mutate children beyond adding style resets for exit animations; remove those styles in `cleanUp`.
+- All per-node state is in WeakMaps/Sets to prevent memory leaks; never store strong references to DOM nodes outside these registries.
+- Only immediate children of the target parent are animated; traversal utilities (`forEach`) visit the parent first, then its children.
+- Always schedule position updates after animations finish (`animation.addEventListener('finish', updatePos)`), and debounce updates using the current duration (or 500ms for plugins).
+- When computing size deltas, use `getTransitionSizes` to respect `box-sizing: content-box` padding/borders.
+- Tagging properties `__aa_tgt`, `__aa_del`, `__aa_new` are non-enumerable and must be defined via `Object.defineProperty`.
+- Core must remain framework-agnostic; adapters import from `../index` only.
+
+### Files and what lives where
+- `src/index.ts`: All core logic and types; also exports a Vue directive for convenience.
+- `src/debug-utils.ts`: Optional dev-time helpers (e.g., `drawMargins`) to visualize IntersectionObserver margins.
+- `src/{vue,react,preact,solid,angular,qwik}/index.ts`: Framework bindings.
+- `src/nuxt/{module.ts,runtime/plugin.ts}`: Nuxt module and runtime plugin.
+- `docs/`: Vite/Vue demo and docs site.
+- `cypress/`: E2E tests for docs/examples.
+- `rollup.config.js`: Build configuration; `FRAMEWORK`, `DECLARATIONS`, and `MIN` env flags control outputs.
+- `package.json`: Exports map and scripts.
+
+### How to run
+- **Install**: `pnpm install`.
+- **Docs (playground)**: `pnpm dev` (runs Vite in `docs/`).
+- **Build library**: `pnpm build` (runs `node ./build/build.mjs`).
+- **Build docs**: `pnpm build-docs`.
+- **Cypress**: in one terminal `pnpm cypress:server` (docs dev server), in another `pnpm cypress:open`.
+- **Nuxt playground**: `pnpm nuxt:dev` (if playground present).
+
+### Adding or changing behavior
+- **Modify default animations**: adjust `add`, `remain`, `remove` in `src/index.ts`. Maintain invariants around style resets and cleanup. Ensure `updatePos` is called after each animation to keep `coords` fresh and observers connected.
+- **Plugins**: The plugin signature is the extension point. If adding plugin options, keep the tuple return backwards-compatible. Only treat `config` as plugin when it’s a function.
+- **Performance**: Be careful changing IntersectionObserver `threshold`/`rootMargin`; it’s tuned to avoid excessive updates and to catch movement. Use `lowPriority` for non-critical updates.
+- **Accessibility**: Keep the `prefers-reduced-motion` guard; only bypass if explicitly configured.
+
+### Common pitfalls
+- Forgetting to re-observe or update positions after animation causes stale `coords` and erratic flips. Always call `updatePos` on `finish`.
+- Mutating layout-affecting styles outside of animations can desync computed sizes. Prefer transform/opacity for motion; animate width/height only through `getTransitionSizes` path.
+- Not accounting for scroll in coords leads to incorrect deltas. Always use `getCoords` and `getScrollOffset` utilities.
+- Exit animations must temporarily reinsert the element and absolutely position it; skipping style reset or cleanup leaks styles into future reuses of that node.
+
+### Coding style
+- TypeScript strict; avoid `any` in public APIs.
+- Clear, descriptive names; early returns for edge cases.
+- Keep core free of framework-specific imports.
+- Comments explain “why” when logic is subtle (e.g., scroll compensation), not trivial “how”.
+
+### Testing guidance
+- Prefer adding example scenarios in `docs/` for manual verification.
+- E2E flows live in `cypress/integration`; add/extend specs that exercise add/remove/reorder, variable heights, nested scroll containers, and reduced-motion.
+
+### Triage checklist for bugs
+- Repro in `docs/` with a minimal list/grid.
+- Check if prefers-reduced-motion disabled animations.
+- Verify parent element has `position` not left `static` when required (core sets to `relative` if static).
+- Inspect `coords` freshness (use `updatePos` logs or `debug-utils`).
+- Confirm scroll compensation path when removing near viewport bottom.
+
+### External APIs used
+- Web Animations API (`Element.prototype.animate`, `Animation`, `KeyframeEffect`).
+- `MutationObserver`, `ResizeObserver`, `IntersectionObserver`.
+- `requestIdleCallback` (fallback to `requestAnimationFrame`).
+
+### Release & packaging
+- Build uses Rollup; env flags:
+  - `FRAMEWORK=index|vue|react|preact|solid|angular|qwik` controls entry file.
+  - `DECLARATIONS=true` emits types only.
+  - `MIN=true` emits minified `.min.js`.
+- `package.json#exports` serves subpath entries (`./vue`, `./react`, etc.).
+
+### Security & SSR
+- Core guards on `window` and `ResizeObserver` presence; no-ops in unsupported/non-browser contexts.
+- Vue directive exposes `getSSRProps` to be SSR-safe.
+
+### Docs site (Vite + Vue SSG)
+- **Architecture**: A separate Vue 3 SPA in `docs/` built and statically generated with Vite + `vite-ssg`. It produces a fully static site (no server required at runtime).
+- **Entry points**:
+  - `docs/index.html` is the HTML shell that loads `/src/main.ts`.
+  - `docs/src/main.ts` uses `ViteSSG(App, { routes }, setup)` to register routes and install the FormKit Vue plugin.
+  - `docs/src/App.vue` renders a `RouterView` and site chrome (header/footer/announcement).
+- **Routing**:
+  - Routes are declared in `docs/src/main.ts` via an array of `RouteRecordRaw`.
+  - Current routes: `/` → `PageHome.vue`, `/lists` → `PageList.vue`, `/tests` → `PageTests.vue`, `/tests-keep-alive` → `PageTestKeepAlive.vue` (some loaded via dynamic import for code-splitting).
+  - `vite.config.ts` sets `ssgOptions.includeAllRoutes = true`, so all known routes are pre-rendered during `vite-ssg build`.
+- **Content structure**:
+  - `docs/src/pages/`: top-level pages composing sections and examples.
+  - `docs/src/sections/`: content sections used on the home page (installation, usage, examples, plugins, why).
+  - `docs/src/components/`: UI components (navigation, header/footer, icons, code example wrapper, etc.).
+  - `docs/src/examples/`: live examples/demos per framework, showing how to use `@formkit/auto-animate` in practice.
+  - Global styles under `docs/assets/` (`main.css`, `variables.css`, `prism.css`), images under `docs/assets/img/`, and fonts under `docs/assets/fonts/`.
+- **Third-party integrations**:
+  - `@vitejs/plugin-vue` for Vue SFCs.
+  - `vite-ssg` for static generation.
+  - `@formkit/vue` plugin registered in the SSG setup.
+  - PrismJS loaded via `<script>` in `index.html` for code highlighting; GitHub buttons via their script; a site script tag is included for analytics.
+- **Dev/build commands** (from `package.json`):
+  - Dev playground: `pnpm dev` → `cd docs && vite --config=./vite.config.ts`.
+  - Static build: `pnpm build-docs` → `cd docs && vite-ssg build --config=./vite.config.ts` (outputs static assets to the default Vite output directory).
+  - Cypress E2E: start docs dev server `pnpm cypress:server` (port 5555), then run `pnpm cypress:open`.
+- **How examples reference the library**:
+  - Examples import from `@formkit/auto-animate` (and subpaths) to demonstrate public API usage. During local development, ensure the library is built (`pnpm build`) if the examples need the latest compiled artifacts; otherwise Vite may resolve from the package cache.
+- **Deployment**:
+  - The generated static output can be deployed to any static host (Netlify, Cloudflare Pages, GitHub Pages). No server logic is required.

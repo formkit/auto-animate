@@ -11,6 +11,7 @@ import autoAnimate, { AutoAnimateOptions } from "../index"
   selector: '[auto-animate]',
   standalone: true,
 })
+
 export class AutoAnimateDirective {
   readonly options = input<Partial<AutoAnimateOptions>>({});
 

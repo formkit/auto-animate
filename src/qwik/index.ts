@@ -29,11 +29,12 @@ export function useAutoAnimate<T extends HTMLElement>(
   const parentRef = useSignal<T>()
   const controller = useSignal<NoSerialize<AnimationController | undefined>>()
 
-  useVisibleTask$(({ track }) => {
+  useVisibleTask$(({ track, cleanup }) => {
     const element = track(() => parentRef.value)
     if (element && isBrowser) {
       controller.value = noSerialize(autoAnimate(element, options))
     }
+    cleanup(() => controller.value?.destroy?.())
   })
 
   const setEnabled = $(

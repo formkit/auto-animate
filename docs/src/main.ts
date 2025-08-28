@@ -14,6 +14,10 @@ const routes: RouteRecordRaw[] = [
     component: () => import("./pages/PageTestKeepAlive.vue"),
   },
   {
+    path: "/bottom-jump-test",
+    component: () => import("./pages/PageBottomJumpTest.vue"),
+  },
+  {
     path: "/:catchAll(.*)",
     redirect: "/",
   },

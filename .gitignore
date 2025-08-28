@@ -1,3 +1,13 @@
+node_modules
+dist
+*.log
+.DS_Store
+
+# Playwright artifacts
+playwright-report/
+playwright-report/index.html
+test-results/
+
 dist
 .DS_Store
 node_modules

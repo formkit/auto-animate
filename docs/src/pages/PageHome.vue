@@ -10,7 +10,7 @@ import SectionUsage from "../sections/SectionUsage.vue"
 import SectionExamples from "../sections/SectionExamples.vue"
 import SectionPlugins from "../sections/SectionPlugins.vue"
 import ReducedMotionWarning from "../components/ReducedMotionWarning.vue"
-import TempoPromo from "../components/TempoPromo.vue"
+import KickstartPromo from "../components/KickstartPromo.vue"
 
 const prefersReducedMotion = ref(false)
 onMounted(() => {
@@ -23,7 +23,7 @@ onMounted(() => {
 <template>
   <TheHeader />
   <HeroTitle />
-  <TempoPromo />
+  <KickstartPromo />
   <div class="documentation">
     <Navigation />
     <ReducedMotionWarning v-if="prefersReducedMotion" />
