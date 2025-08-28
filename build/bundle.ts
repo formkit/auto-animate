@@ -287,7 +287,10 @@ async function main() {
   // await qwikBuild()
   await declarationsBuild()
   await bundleDeclarations()
-  await nuxtBuild()
+  // Skip nuxt module build in CI or when NO_NUXT is set
+  if (!process.env.NO_NUXT) {
+    await nuxtBuild()
+  }
   await addPackageJSON()
   await addAssets()
   await outputSize()
