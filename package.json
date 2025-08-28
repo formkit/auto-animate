@@ -72,7 +72,7 @@
     }
   },
   "devDependencies": {
-    "@angular/core": "^13.4.0",
+    "@angular/core": "^17.1.0",
     "@formkit/vue": "^1.6.5",
     "@nuxt/kit": "^3.12.4",
     "@nuxt/module-builder": "^0.8.3",
