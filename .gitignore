@@ -5,11 +5,8 @@ dist
 
 # Playwright artifacts
 playwright-report/
+playwright-report/index.html
 test-results/
-
-# Cypress artifacts (legacy)
-cypress/videos/
-cypress/screenshots/
 
 dist
 .DS_Store
