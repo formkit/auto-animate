@@ -128,6 +128,17 @@ const handleResizes: ResizeObserverCallback = (entries) => {
 }
 
 /**
+ * Determine if an element is fully outside of the current viewport.
+ * @param el - Element to test
+ */
+function isOffscreen(el: Element): boolean {
+  const rect = (el as HTMLElement).getBoundingClientRect()
+  const vw = root?.clientWidth || 0
+  const vh = root?.clientHeight || 0
+  return rect.bottom < 0 || rect.top > vh || rect.right < 0 || rect.left > vw
+}
+
+/**
  * Observe this elements position.
  * @param el - The element to observe the position of.
  */
@@ -519,6 +530,12 @@ function remain(el: Element) {
   const oldCoords = coords.get(el)
   const newCoords = getCoords(el)
   if (!isEnabled(el)) return coords.set(el, newCoords)
+  if (isOffscreen(el)) {
+    // When element is offscreen, skip FLIP to avoid broken transforms
+    coords.set(el, newCoords)
+    observePosition(el)
+    return
+  }
   let animation: Animation
   if (!oldCoords) return
   const pluginOrOptions = getOptions(el)
@@ -570,6 +587,11 @@ function add(el: Element) {
   coords.set(el, newCoords)
   const pluginOrOptions = getOptions(el)
   if (!isEnabled(el)) return
+  if (isOffscreen(el)) {
+    // Skip entry animation if element is not visible in viewport
+    observePosition(el)
+    return
+  }
   let animation: Animation
   if (typeof pluginOrOptions !== "function") {
     animation = (el as HTMLElement).animate(
@@ -873,6 +895,20 @@ export default function autoAnimate(
     },
     disable: () => {
       enabled.delete(el)
+      // Cancel any in-flight animations and pending timers for immediate effect
+      forEach(el, (node) => {
+        const a = animations.get(node)
+        try {
+          a?.cancel()
+        } catch {}
+        animations.delete(node)
+        const d = debounces.get(node)
+        if (d) clearTimeout(d)
+        debounces.delete(node)
+        const i = intervals.get(node)
+        if (i) clearInterval(i)
+        intervals.delete(node)
+      })
     },
     isEnabled: () => enabled.has(el),
     destroy: () => {
@@ -910,6 +946,9 @@ export default function autoAnimate(
   })
   return controller
 }
+
+// Also provide a named export for environments expecting it
+export { autoAnimate }
 
 /**
  * The vue directive.
