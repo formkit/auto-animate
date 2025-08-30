@@ -29,6 +29,19 @@ export async function withAnimationObserver(page: Page, selector: string) {
   }
 }
 
+export async function waitForActiveAnimations(page: Page, selector: string, timeoutMs = 1000) {
+  await page.waitForFunction(
+    (sel) => {
+      const el = document.querySelector(sel)
+      if (!el) return false
+      const anims = (el as any).getAnimations ? (el as any).getAnimations({ subtree: true }) : []
+      return anims.some((a: Animation) => a.playState !== 'finished')
+    },
+    selector,
+    { timeout: timeoutMs }
+  )
+}
+
 export async function approximateMemoryUsage(page: Page) {
   // Not all browsers support performance.memory; guard and return undefined when missing
   const mem = await page.evaluate(() => {

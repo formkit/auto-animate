@@ -1,34 +1,23 @@
 import {
-  AfterViewInit,
   Directive,
   ElementRef,
-  Input,
-  NgModule,
-  OnDestroy,
-} from "@angular/core"
-import autoAnimate, { AutoAnimateOptions, AnimationController } from "../index"
+  effect,
+  input,
+} from "@angular/core";
+import autoAnimate, { AutoAnimateOptions } from "../index"
+
 
 @Directive({
-  selector: "[auto-animate]",
+  selector: '[auto-animate]',
+  standalone: true,
 })
-export class AutoAnimateDirective implements AfterViewInit, OnDestroy {
-  @Input() options?: Partial<AutoAnimateOptions>
-  private controller?: AnimationController
 
-  constructor(private el: ElementRef) {}
+export class AutoAnimateDirective {
+  readonly options = input<Partial<AutoAnimateOptions>>({});
 
-  ngAfterViewInit(): void {
-    this.controller = autoAnimate(this.el.nativeElement, this.options || {})
-  }
-
-  ngOnDestroy(): void {
-    this.controller?.destroy?.()
-    this.controller = undefined
+  constructor(el: ElementRef) {
+    effect(() => {
+      autoAnimate(el.nativeElement, this.options());
+    });
   }
 }
-
-@NgModule({
-  declarations: [AutoAnimateDirective],
-  exports: [AutoAnimateDirective],
-})
-export class AutoAnimateModule {}
