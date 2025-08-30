@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test'
-import { assertNoConsoleErrors, withAnimationObserver, waitForActiveAnimations } from './utils'
+import { assertNoConsoleErrors, withAnimationObserver } from './utils'
 
 test.describe('Framework examples animate on interaction', () => {
   test.beforeEach(async ({ page }) => {
@@ -9,10 +9,20 @@ test.describe('Framework examples animate on interaction', () => {
 
   test('Vue example animates on remove', async ({ page }) => {
     const assertNoErrorsLater = await assertNoConsoleErrors(page)
+    await page.locator('.vue-example').scrollIntoViewIfNeeded()
+    await page.waitForTimeout(100)
     const observer = await withAnimationObserver(page, '.vue-example ul')
     await page.locator('.vue-example ul li').first().click()
-    await page.waitForTimeout(50)
-    expect(await observer.count()).toBeGreaterThan(0)
+    
+    // Check multiple times to catch animations on slow systems
+    let animationCount = 0
+    for (let i = 0; i < 10; i++) {
+      animationCount = await observer.count()
+      if (animationCount > 0) break
+      await page.waitForTimeout(50)
+    }
+    
+    expect(animationCount).toBeGreaterThan(0)
     await assertNoErrorsLater()
   })
 
@@ -34,16 +44,28 @@ test.describe('Framework examples animate on interaction', () => {
     await assertNoErrorsLater()
   })
 
-  test('Solid example animates on toggle', async ({ page }) => {
+  test('Solid example animates on toggle', async ({ page, browserName }) => {
     const assertNoErrorsLater = await assertNoConsoleErrors(page)
     // Scroll to make sure the Solid example is visible
     await page.locator('.solid-example').scrollIntoViewIfNeeded()
-    await page.waitForTimeout(200) // Give more time for any scroll-triggered layouts
+    // WebKit needs more time on slow systems
+    await page.waitForTimeout(browserName === 'webkit' ? 1000 : 500)
+    
+    // Set up observer before clicking to catch animations
     const observer = await withAnimationObserver(page, '.solid-example .parent')
+    
+    // Click and immediately start checking for animations
     await page.getByRole('button', { name: 'Toggle Drawer' }).click()
-    await page.waitForTimeout(100) // Additional wait for animation to start
-    await waitForActiveAnimations(page, '.solid-example .parent')
-    expect(await observer.count()).toBeGreaterThan(0)
+    
+    // Check multiple times to catch animations on slow systems
+    let animationCount = 0
+    for (let i = 0; i < 20; i++) { // More attempts for slow systems
+      animationCount = await observer.count()
+      if (animationCount > 0) break
+      await page.waitForTimeout(50)
+    }
+    
+    expect(animationCount).toBeGreaterThan(0)
     await assertNoErrorsLater()
   })
 
@@ -65,11 +87,19 @@ test.describe('Framework examples animate on interaction', () => {
     const assertNoErrorsLater = await assertNoConsoleErrors(page)
     // Scroll to make sure the Angular example is visible
     await page.locator('.angular-example').scrollIntoViewIfNeeded()
-    await page.waitForTimeout(100) // Give time for any scroll-triggered layouts
+    await page.waitForTimeout(200) // Give time for any scroll-triggered layouts
     const observer = await withAnimationObserver(page, '.angular-example')
     await page.locator('.angular-example .toggle-story-btn').first().click()
-    await waitForActiveAnimations(page, '.angular-example')
-    expect(await observer.count()).toBeGreaterThan(0)
+    
+    // Check multiple times to catch animations on slow systems
+    let animationCount = 0
+    for (let i = 0; i < 10; i++) {
+      animationCount = await observer.count()
+      if (animationCount > 0) break
+      await page.waitForTimeout(50)
+    }
+    
+    expect(animationCount).toBeGreaterThan(0)
     await assertNoErrorsLater()
   })
 })

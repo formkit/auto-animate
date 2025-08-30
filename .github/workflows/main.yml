@@ -28,6 +28,8 @@ jobs:
         run: pnpm install --frozen-lockfile=false
       - name: Install Playwright Browsers
         run: pnpm exec playwright install --with-deps
+      - name: Build project
+        run: pnpm build
       - name: Run Playwright tests
         run: pnpm test:e2e
       - name: Upload Playwright report
