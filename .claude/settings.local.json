@@ -1,7 +1,13 @@
 {
   "permissions": {
     "allow": [
-      "Bash(pnpm add:*)"
+      "Bash(pnpm add:*)",
+      "Bash(npm test)",
+      "Bash(npm run:*)",
+      "Bash(pnpm exec playwright:*)",
+      "Bash(npx playwright test:*)",
+      "Bash(curl:*)",
+      "Bash(npm test:*)"
     ],
     "deny": [],
     "ask": []

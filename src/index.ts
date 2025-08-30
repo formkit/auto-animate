@@ -179,11 +179,16 @@ function observePosition(el: Element) {
 /**
  * Update the exact position of a given element.
  * @param el - An element to update the position of.
+ * @param debounce - Whether or not to debounce the update. After an animation is finished, it should update as soon as possible to prevent flickering on quick toggles.
  */
-function updatePos(el: Element) {
+function updatePos(el: Element, debounce = true) {
   clearTimeout(debounces.get(el))
   const optionsOrPlugin = getOptions(el)
-  const delay = isPlugin(optionsOrPlugin) ? 500 : optionsOrPlugin.duration
+  const delay = debounce
+    ? isPlugin(optionsOrPlugin)
+      ? 500
+      : optionsOrPlugin.duration
+    : 0
   debounces.set(
     el,
     setTimeout(async () => {
@@ -357,7 +362,8 @@ function animate(el: Element) {
   const isMounted = el.isConnected
   const preExisting = coords.has(el)
   if (isMounted && siblings.has(el)) siblings.delete(el)
-  if (animations.has(el)) {
+
+  if (animations.get(el)?.playState !== "finished") {
     animations.get(el)?.cancel()
   }
   if (NEW in el) {
@@ -540,15 +546,24 @@ function remain(el: Element) {
   if (!oldCoords) return
   const pluginOrOptions = getOptions(el)
   if (typeof pluginOrOptions !== "function") {
-    const deltaX = oldCoords.left - newCoords.left
-    const deltaY = oldCoords.top - newCoords.top
+    let deltaLeft = oldCoords.left - newCoords.left
+    let deltaTop = oldCoords.top - newCoords.top
+    const deltaRight =
+      oldCoords.left + oldCoords.width - (newCoords.left + newCoords.width)
+    const deltaBottom =
+      oldCoords.top + oldCoords.height - (newCoords.top + newCoords.height)
+
+    // element is probably anchored and doesn't need to be offset
+    if (deltaBottom == 0) deltaTop = 0
+    if (deltaRight == 0) deltaLeft = 0
+
     const [widthFrom, widthTo, heightFrom, heightTo] = getTransitionSizes(
       el,
       oldCoords,
       newCoords,
     )
     const start: Record<string, any> = {
-      transform: `translate(${deltaX}px, ${deltaY}px)`,
+      transform: `translate(${deltaLeft}px, ${deltaTop}px)`,
     }
     const end: Record<string, any> = {
       transform: `translate(0, 0)`,
@@ -574,7 +589,9 @@ function remain(el: Element) {
   }
   animations.set(el, animation)
   coords.set(el, newCoords)
-  animation.addEventListener("finish", () => updatePos(el), { once: true })
+  animation.addEventListener("finish", updatePos.bind(null, el, false), {
+    once: true,
+  })
 }
 
 /**
@@ -611,7 +628,9 @@ function add(el: Element) {
     animation.play()
   }
   animations.set(el, animation)
-  animation.addEventListener("finish", () => updatePos(el), { once: true })
+  animation.addEventListener("finish", updatePos.bind(null, el, false), {
+    once: true,
+  })
 }
 
 /**
@@ -801,7 +820,11 @@ function deletePosition(
   }
   if (!offsetParent) offsetParent = document.body
   const parentStyles = getComputedStyle(offsetParent)
-  const parentCoords = coords.get(offsetParent) || getCoords(offsetParent)
+  const parentCoords =
+    !animations.has(el) || animations.get(el)?.playState === "finished"
+      ? getCoords(offsetParent)
+      : coords.get(offsetParent)!
+
   const top =
     Math.round(oldCoords.top - parentCoords.top) -
     raw(parentStyles.borderTopWidth)

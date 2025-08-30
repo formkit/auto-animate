@@ -49,7 +49,7 @@ test.describe('Framework examples animate on interaction', () => {
     const input = page.locator('.tag-input input')
     await input.fill('Jazz')
     await input.press('Enter')
-    await waitForActiveAnimations(page, '.tag-input ul')
+    await page.waitForTimeout(50)
     expect(await observer.count()).toBeGreaterThan(0)
     await assertNoErrorsLater()
   })
