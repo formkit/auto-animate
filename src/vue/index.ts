@@ -1,5 +1,5 @@
 import { ref, onMounted, watchEffect, Plugin, Ref, onBeforeUnmount } from "vue"
-import type { Directive } from "vue"
+import type { Component, Directive } from "vue"
 import autoAnimate, {
   vAutoAnimate as autoAnimateDirective,
   AutoAnimateOptions,
@@ -8,16 +8,50 @@ import autoAnimate, {
 } from "../index"
 
 export const vAutoAnimate: Directive<
-  HTMLElement,
+  HTMLElement | Component,
   Partial<AutoAnimateOptions>
 > = autoAnimateDirective as unknown as Directive<
-  HTMLElement,
+  HTMLElement | Component,
   Partial<AutoAnimateOptions>
 >
 
+/**
+ * Create a Vue directive instance that merges provided defaults with per-use binding.
+ */
+export function createVAutoAnimate(
+  defaults?: Partial<AutoAnimateOptions> | AutoAnimationPlugin
+): Directive<HTMLElement, Partial<AutoAnimateOptions> | AutoAnimationPlugin> {
+  return {
+    mounted(el, binding) {
+      let resolved: Partial<AutoAnimateOptions> | AutoAnimationPlugin = {}
+      const local = binding.value
+      if (typeof local === "function") {
+        resolved = local
+      } else if (typeof defaults === "function") {
+        resolved = defaults
+      } else {
+        resolved = { ...(defaults || {}), ...(local || {}) }
+      }
+      const ctl = autoAnimate(el, resolved)
+      Object.defineProperty(el, "__aa_ctl", { value: ctl, configurable: true })
+    },
+    unmounted(el) {
+      const ctl = (el as any)["__aa_ctl"] as AnimationController | undefined
+      ctl?.destroy?.()
+      try {
+        delete (el as any)["__aa_ctl"]
+      } catch {}
+    },
+    getSSRProps: () => ({}),
+  } as unknown as Directive<
+    HTMLElement,
+    Partial<AutoAnimateOptions> | AutoAnimationPlugin
+  >
+}
+
 export const autoAnimatePlugin: Plugin = {
-  install(app) {
-    app.directive("auto-animate", vAutoAnimate)
+  install(app, defaults?: Partial<AutoAnimateOptions> | AutoAnimationPlugin) {
+    app.directive("auto-animate", createVAutoAnimate(defaults))
   },
 }
 
@@ -27,8 +61,8 @@ export const autoAnimatePlugin: Plugin = {
  * @returns A template ref. Use the `ref` attribute of your parent element
  * to store the element in this template ref.
  */
-export function useAutoAnimate<T extends Element>(
-  options?: Partial<AutoAnimateOptions> | AutoAnimationPlugin
+export function useAutoAnimate<T extends Element | Component>(
+  options?: Partial<AutoAnimateOptions> | AutoAnimationPlugin,
 ): [Ref<T>, (enabled: boolean) => void] {
   const element = ref<T>()
   let controller: AnimationController | undefined
@@ -38,9 +72,24 @@ export function useAutoAnimate<T extends Element>(
     }
   }
   onMounted(() => {
-    watchEffect(() => {
-      if (element.value instanceof HTMLElement)
-        controller = autoAnimate(element.value, options || {})
+    watchEffect((onCleanup) => {
+      let el: HTMLElement | undefined
+      if (element.value instanceof HTMLElement) {
+        el = element.value
+      } else if (
+        element.value &&
+        "$el" in element.value &&
+        element.value.$el instanceof HTMLElement
+      ) {
+        el = element.value.$el
+      }
+      if (el) {
+        controller = autoAnimate(el, options || {})
+        onCleanup(() => {
+          controller?.destroy?.()
+          controller = undefined
+        })
+      }
     })
   })
   onBeforeUnmount(() => {
