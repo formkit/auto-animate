@@ -20,3 +20,4 @@ temp
 .idea
 .nuxt
 *.local.json
+.node_modules_tmp
