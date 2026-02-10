@@ -905,9 +905,11 @@ export default function autoAnimate(
           ...(config as Partial<AutoAnimateOptions>),
         })
       }
-      const mo = new MutationObserver(handleMutations)
-      mo.observe(el, { childList: true })
-      mutationObservers.set(el, mo)
+      if (!mutationObservers.has(el)) {
+        const mo = new MutationObserver(handleMutations)
+        mo.observe(el, { childList: true })
+        mutationObservers.set(el, mo)
+      }
       parents.add(el)
     }
   }
