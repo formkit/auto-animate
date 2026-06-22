@@ -208,6 +208,22 @@ async function bundleDeclarations() {
   await execa("shx", ["rm", `${rootDir}/dist/index.js`])
 }
 
+async function markoBuild() {
+  info("Copying Marko tag")
+  await execa("shx", ["mkdir", "-p", `${rootDir}/dist/tags`])
+  await execa("shx", [
+    "cp",
+    `${rootDir}/src/marko/auto-animate.marko`,
+    `${rootDir}/dist/tags/auto-animate.marko`,
+  ])
+  // The taglib manifest (marko.json) is a committed static file, copied to dist
+  // by addAssets() alongside README/LICENSE — see there. The tag's `../index`
+  // import is left extensionless on purpose: it is NOT compiled by rollup (the
+  // consumer's @marko/vite compiles it), and Vite resolves the extension to
+  // `index.mjs` in dist and to `index.ts` against source in a dev harness — so
+  // no `.mjs` fixup is needed here, unlike the JS-framework builds.
+}
+
 async function addPackageJSON() {
   info("Writing package.json")
   const raw = await readFile(resolve(rootDir, "package.json"), "utf8")
@@ -222,13 +238,21 @@ async function addPackageJSON() {
 }
 
 async function addAssets() {
-  info("Writing readme and license.")
+  info("Writing readme, license, and marko manifest.")
   await execa("shx", [
     "cp",
     `${rootDir}/README.md`,
     `${rootDir}/dist/README.md`,
   ])
   await execa("shx", ["cp", `${rootDir}/LICENSE`, `${rootDir}/dist/LICENSE`])
+  // marko.json is a committed, static taglib manifest — copied verbatim like
+  // README/LICENSE, never generated. Its "exports" path is authored relative to
+  // the published package root (dist), so "./tags" resolves to dist/tags.
+  await execa("shx", [
+    "cp",
+    `${rootDir}/marko.json`,
+    `${rootDir}/dist/marko.json`,
+  ])
 }
 
 async function prepareForPublishing() {
@@ -291,6 +315,7 @@ async function main() {
   if (!process.env.NO_NUXT) {
     await nuxtBuild()
   }
+  await markoBuild()
   await addPackageJSON()
   await addAssets()
   await outputSize()

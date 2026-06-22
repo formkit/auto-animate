@@ -1,0 +1,48 @@
+client import autoAnimate from "../index";
+import type {
+  AutoAnimateOptions,
+  AutoAnimationPlugin,
+  AnimationController,
+} from "../index";
+
+export interface Input {
+  // A reference to the parent element whose *direct children* will be animated.
+  // Pass a native element tag-variable, e.g. `<ul/listRef>` then `parent=listRef`.
+  parent: () => HTMLElement;
+  // auto-animate options (duration / easing / disrespectUserMotionPreference)
+  // OR a plugin function. Read once when the tag mounts; the core has no setOptions,
+  // so changing this later has no effect (remount the tag to apply new options).
+  options?: Partial<AutoAnimateOptions> | AutoAnimationPlugin;
+  // Reactively enable/disable animations. Defaults to true.
+  enabled?: boolean;
+}
+
+<lifecycle<{
+  controller?: AnimationController;
+  lastEnabled?: boolean;
+}>
+  onMount() {
+    const el = input.parent();
+    if (!el) return;
+    this.controller = autoAnimate(el, input.options ?? {});
+    this.lastEnabled = input.enabled ?? true;
+    if (this.lastEnabled === false) {
+      this.controller.disable();
+    }
+  }
+  onUpdate() {
+    if (!this.controller) return;
+    const enabled = input.enabled ?? true;
+    if (enabled !== this.lastEnabled) {
+      this.lastEnabled = enabled;
+      if (enabled) {
+        this.controller.enable();
+      } else {
+        this.controller.disable();
+      }
+    }
+  }
+  onDestroy() {
+    this.controller?.destroy?.();
+  }
+/>
