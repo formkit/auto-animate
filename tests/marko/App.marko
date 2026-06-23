@@ -1,5 +1,6 @@
 import AutoAnimate from "../../src/marko/auto-animate.marko"
 
+// ── Section A: keyed object list — add / remove-first / reverse / clear / toggle ──
 <let/items = [
   { id: 1, text: "Item 1" },
   { id: 2, text: "Item 2" },
@@ -8,39 +9,99 @@ import AutoAnimate from "../../src/marko/auto-animate.marko"
 <let/nextId = 4>
 <let/enabled = true>
 
+// ── Section B: reactive-unmount teardown (the tag lives inside an <if>) ──
+<let/mounted = true>
+
+// ── Section C: primitive-keyed list (by=n => n) ──
+<let/nums = [10, 20, 30]>
+<let/nextNum = 40>
+
+// ── Section D: conditional parent (the <ul> itself is inside an <if>, tag co-located) ──
+<let/showParent = true>
+<let/condItems = [
+  { id: 1, text: "C1" },
+  { id: 2, text: "C2" },
+]>
+<let/condNextId = 3>
+
 <main>
-  <div class="controls">
+  <section data-testid="sec-main">
     <button data-testid="add" onClick() {
       items = [...items, { id: nextId, text: `Item ${nextId}` }];
       nextId++;
-    }>
-      Add item
-    </button>
-
+    }>Add item</button>
     <button data-testid="remove-first" onClick() {
       items = items.slice(1);
-    }>
-      Remove first
-    </button>
-
+    }>Remove first</button>
     <button data-testid="reverse" onClick() {
       items = [...items].reverse();
-    }>
-      Reverse order
-    </button>
-
+    }>Reverse order</button>
+    <button data-testid="clear" onClick() {
+      items = [];
+    }>Clear all</button>
     <button data-testid="toggle" onClick() {
       enabled = !enabled;
-    }>
-      Animations: ${enabled ? "on" : "off"}
-    </button>
-  </div>
+    }>Animations: ${enabled ? "on" : "off"}</button>
 
-  <ul/listRef data-testid="list">
-    <for|item| of=items by="id">
-      <li data-testid=`item-${item.id}`>${item.text}</li>
-    </for>
-  </ul>
+    <ul/listRef data-testid="list">
+      <for|item| of=items by="id">
+        <li data-testid=`item-${item.id}`>${item.text}</li>
+      </for>
+    </ul>
+    <AutoAnimate parent=listRef enabled=enabled/>
+  </section>
 
-  <AutoAnimate parent=listRef enabled=enabled/>
+  <section data-testid="sec-unmount">
+    <button data-testid="unmount-toggle" onClick() {
+      mounted = !mounted;
+    }>Mounted: ${mounted ? "yes" : "no"}</button>
+
+    <if=mounted>
+      <ul/umRef data-testid="um-list">
+        <li>Always</li>
+        <li>Here</li>
+      </ul>
+      <AutoAnimate parent=umRef/>
+    </if>
+  </section>
+
+  <section data-testid="sec-primitive">
+    <button data-testid="prim-add" onClick() {
+      nums = [...nums, nextNum];
+      nextNum += 10;
+    }>Add number</button>
+    <button data-testid="prim-remove-first" onClick() {
+      nums = nums.slice(1);
+    }>Remove first number</button>
+    <button data-testid="prim-reverse" onClick() {
+      nums = [...nums].reverse();
+    }>Reverse numbers</button>
+
+    <ul/primRef data-testid="prim-list">
+      <for|n| of=nums by=n => n>
+        <li data-testid=`num-${n}`>${n}</li>
+      </for>
+    </ul>
+    <AutoAnimate parent=primRef/>
+  </section>
+
+  <section data-testid="sec-cond">
+    <button data-testid="cond-toggle" onClick() {
+      showParent = !showParent;
+    }>Parent: ${showParent ? "shown" : "hidden"}</button>
+
+    <if=showParent>
+      <button data-testid="cond-add" onClick() {
+        condItems = [...condItems, { id: condNextId, text: `C${condNextId}` }];
+        condNextId++;
+      }>Add to parent</button>
+
+      <ul/condRef data-testid="cond-list">
+        <for|item| of=condItems by="id">
+          <li data-testid=`cond-${item.id}`>${item.text}</li>
+        </for>
+      </ul>
+      <AutoAnimate parent=condRef/>
+    </if>
+  </section>
 </main>
