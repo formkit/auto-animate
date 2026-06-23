@@ -5,6 +5,7 @@ import solidExample from "./intro-solid.jsx?raw"
 import htmlExample from "./intro.html?raw"
 import svelteExample from "./intro.svelte?raw"
 import angularExample from "./intro.angular?raw"
+import markoExample from "./intro.marko?raw"
 
 export default {
   react: {
@@ -35,6 +36,11 @@ export default {
   angular: {
     example: angularExample,
     ext: "angular",
+    language: "html",
+  },
+  marko: {
+    example: markoExample,
+    ext: "marko",
     language: "html",
   },
   js: {

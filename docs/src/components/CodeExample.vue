@@ -11,6 +11,7 @@ import IconPNPM from "./IconPNPM.vue"
 import IconJavaScript from "./IconJavaScript.vue"
 import IconSvelte from "./IconSvelte.vue"
 import IconAngular from "./IconAngular.vue"
+import IconMarko from "./IconMarko.vue"
 import IconNuxt from "./IconNuxt.vue"
 import IconBun from "./IconBun.vue"
 import { computed, ref } from "vue"
@@ -25,6 +26,7 @@ type LanguageOption =
   | "solid"
   | "svelte"
   | "angular"
+  | "marko"
   | "qwik"
   | "js"
   | "yarn"
@@ -34,7 +36,7 @@ type LanguageOption =
   | "bun"
 
 type Language = {
-  ext: "jsx" | "vue" | "html"
+  ext: "jsx" | "vue" | "html" | "marko"
   example: string
   title?: string
   language: string
@@ -153,6 +155,13 @@ function copyCode(value: string) {
           :data-selected="current === 'angular' || null"
         >
           <IconAngular />Angular
+        </li>
+        <li
+          v-if="'marko' in props.examples"
+          @click="current = 'marko'"
+          :data-selected="current === 'marko' || null"
+        >
+          <IconMarko />Marko
         </li>
         <li
           v-if="'qwik' in props.examples"

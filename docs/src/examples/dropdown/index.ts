@@ -2,6 +2,7 @@ import vueExample from "./dropdown.vue?raw"
 import reactExample from "./dropdown.jsx?raw"
 import solidExample from "./dropdown-solid.tsx?raw"
 import nativeExample from "./dropdown.html?raw"
+import markoExample from "./dropdown.marko?raw"
 export default {
   react: {
     language: "jsx",
@@ -17,6 +18,11 @@ export default {
     language: "html",
     ext: "vue",
     example: vueExample,
+  },
+  marko: {
+    language: "html",
+    ext: "marko",
+    example: markoExample,
   },
   js: {
     language: "html",
