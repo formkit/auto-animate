@@ -17,10 +17,7 @@ export interface Input {
   enabled?: boolean;
 }
 
-<lifecycle<{
-  controller?: AnimationController;
-  lastEnabled?: boolean;
-}>
+<lifecycle<{ controller?: AnimationController; lastEnabled?: boolean }>
   onMount() {
     const el = input.parent();
     if (!el) return;

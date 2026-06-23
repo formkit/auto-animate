@@ -78,7 +78,7 @@ import AutoAnimate from "../../src/marko/auto-animate.marko"
     }>Reverse numbers</button>
 
     <ul/primRef data-testid="prim-list">
-      <for|n| of=nums by=n => n>
+      <for|n| of=nums by=(n => String(n))>
         <li data-testid=`num-${n}`>${n}</li>
       </for>
     </ul>

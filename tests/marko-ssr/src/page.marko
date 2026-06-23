@@ -1,5 +1,10 @@
 import AutoAnimate from "../../../src/marko/auto-animate.marko"
 
+export interface Input {
+  // Chosen per route in src/index.js: default / plain object / inline plugin.
+  mode?: "default" | "plain" | "plugin";
+}
+
 <!doctype html>
 <html lang="en">
 <head>

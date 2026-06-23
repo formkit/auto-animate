@@ -79,6 +79,7 @@
     "@angular/core": "^17.1.0",
     "@formkit/vue": "^1.6.5",
     "@marko/compiler": "^5.39.65",
+    "@marko/type-check": "^3.0.4",
     "@marko/vite": "^5.4.10",
     "@nuxt/kit": "^3.12.4",
     "@nuxt/module-builder": "^0.8.3",
