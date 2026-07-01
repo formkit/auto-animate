@@ -7,6 +7,7 @@ const year = new Date().getFullYear()
     <p class="copyright">
       Released under the <a href="https://opensource.org/licenses/MIT">MIT License</a>.<br>
       Copyright &copy; {{ year }} FormKit, Inc.
+      <a href="https://www.wearebraid.com" target="_blank" class="attribution">Site by Braid.</a>
     </p>
   </footer>
 </template>
@@ -28,5 +29,12 @@ footer {
   margin: 0 auto;
   padding: 3em 2em;
   text-align: center;
+}
+.attribution {
+  color: inherit;
+  text-decoration: none;
+}
+.attribution:hover {
+  text-decoration: underline;
 }
 </style>
