@@ -29,7 +29,24 @@ test.describe('Framework examples animate on interaction', () => {
   test('React example animates on add', async ({ page }) => {
     const assertNoErrorsLater = await assertNoConsoleErrors(page)
     const observer = await withAnimationObserver(page, '.react-example ul')
-    await page.getByRole('button', { name: 'Add number' }).click()
+    await page
+      .locator('.react-example')
+      .getByRole('button', { name: 'Add number' })
+      .click()
+    await page.waitForTimeout(50)
+    expect(await observer.count()).toBeGreaterThan(0)
+    await assertNoErrorsLater()
+  })
+
+  test('Marko example animates on add', async ({ page }) => {
+    const assertNoErrorsLater = await assertNoConsoleErrors(page)
+    await page.locator('.marko-example').scrollIntoViewIfNeeded()
+    await page.waitForTimeout(100)
+    const observer = await withAnimationObserver(page, '.marko-example ul')
+    await page
+      .locator('.marko-example')
+      .getByRole('button', { name: 'Add number' })
+      .click()
     await page.waitForTimeout(50)
     expect(await observer.count()).toBeGreaterThan(0)
     await assertNoErrorsLater()

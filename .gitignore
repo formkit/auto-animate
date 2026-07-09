@@ -22,3 +22,4 @@ temp
 *.local.json
 .pnpm-store/
 .node_modules_tmp
+*.tsbuildinfo

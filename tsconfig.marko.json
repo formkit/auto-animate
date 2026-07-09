@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "module": "esnext",
+    "target": "es2020",
+    "lib": ["es2020", "dom"],
+    "strict": true,
+    "noEmit": true,
+    "skipLibCheck": true,
+    "moduleResolution": "bundler",
+    "allowSyntheticDefaultImports": true,
+    "types": []
+  },
+  "include": [
+    "src/index.ts",
+    "src/marko/**/*.marko",
+    "tests/e2e/utils.ts",
+    "tests/marko/**/*",
+    "tests/marko-ssr/src/**/*"
+  ]
+}
