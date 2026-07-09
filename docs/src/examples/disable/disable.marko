@@ -1,0 +1,23 @@
+import AutoAnimate from "@formkit/auto-animate/marko"
+
+<let/balls = ["red", "green", "blue"]>
+<let/isEnabled = true>
+
+<script>
+  // Rotate the list every 600ms so there is always something to animate.
+  const id = setInterval(() => {
+    balls = [...balls.slice(1), balls[0]];
+  }, 600);
+  $signal.onabort = () => clearInterval(id);
+</script>
+
+<ul/listRef class="balls">
+  <for|color| of=balls by=(color => color)>
+    <li class=color>${color}</li>
+  </for>
+</ul>
+<AutoAnimate parent=listRef options=({ duration: 500 }) enabled=isEnabled/>
+
+<button onClick() { isEnabled = !isEnabled }>
+  ${isEnabled ? "🚫 Disable" : "✅ Enable"} animations
+</button>

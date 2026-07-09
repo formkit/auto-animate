@@ -1,0 +1,13 @@
+import AutoAnimate from "@formkit/auto-animate/marko"
+
+<let/show = false>
+
+<div/dropdown class="dropdown">
+  <strong class="dropdown-label" onClick() { show = !show }>
+    Click me to open!
+  </strong>
+  <if=show>
+    <p class="dropdown-content">Lorum ipsum...</p>
+  </if>
+</div>
+<AutoAnimate parent=dropdown/>

@@ -18,6 +18,8 @@ import ActualPreactApp from "../examples/preact/ActualPreactApp.vue"
 import ActualSolidApp from "../examples/solid/ActualSolidApp.vue"
 import ActualDropdown from "../examples/dropdown/ActualDropdown.vue"
 import svelteAction from "../examples/svelte"
+import markoTag from "../examples/marko"
+import ActualMarkoApp from "../examples/marko/ActualMarkoApp.vue"
 import qwikHook from "../examples/qwik"
 import ActualSvelteApp from "../examples/svelte/ActualSvelteApp.vue"
 import ActualVueApp from "../examples/vue/ActualVueApp.vue"
@@ -30,6 +32,7 @@ import IconVue from "../components/IconVue.vue"
 import IconAngular from "../components/IconAngular.vue"
 import IconSvelte from "../components/IconSvelte.vue"
 import IconSolid from "../components/IconSolid.vue"
+import IconMarko from "../components/IconMarko.vue"
 import IconQwik from "../components/IconQwik.vue"
 </script>
 <template>
@@ -139,6 +142,9 @@ import IconQwik from "../components/IconQwik.vue"
       </li>
       <li>
         <a href="#usage-angular"><span>Angular</span><IconAngular /></a>
+      </li>
+      <li>
+        <a href="#usage-marko"><span>Marko</span><IconMarko /></a>
       </li>
       <!-- <li>
         <a href="#usage-qwik"><span>Qwik</span><IconQwik /></a>
@@ -275,6 +281,44 @@ import IconQwik from "../components/IconQwik.vue"
       <code>AutoAnimateModule</code> in <code>NgModule</code>s. And you have to
       use auto-animate v0.8.2 or earlier. Angular v16 isn't directly supported,
       but you can easily write a wrapper.
+    </AsideTip>
+
+    <h2 id="usage-marko">Marko tag</h2>
+    <p>
+      Marko users can import the <code>&lt;auto-animate&gt;</code> tag from
+      <code>@formkit/auto-animate/marko</code>. Rather than returning a ref, the
+      tag takes one: give your parent element a
+      <a
+        href="https://markojs.com/docs/reference/language/#tag-variables"
+        target="_blank"
+        rel="noopener noreferrer"
+        >tag variable</a
+      >
+      (for example <code>&lt;ul/listRef&gt;</code>) and pass it to the tag’s
+      <code>parent</code> attribute. The tag attaches AutoAnimate to that element
+      on mount and tears it down automatically when it leaves the DOM.
+    </p>
+    <CodeExample :examples="markoTag" title="App" />
+    <ActualMarkoApp />
+    <AsideTip>
+      To <a href="#usage-disable">enable or disable</a> animations, set the
+      reactive <code>enabled</code> attribute
+      (<code>&lt;auto-animate parent=listRef enabled=animationsOn/&gt;</code>) —
+      flipping it on or off is all that’s needed; the tag is not re-created.
+    </AsideTip>
+    <AsideTip>
+      Options are passed once via the <code>options</code> attribute
+      (<code>options=(&#123; duration: 200 &#125;)</code>) and are read
+      a single time when the tag mounts, mirroring the core’s API (there is no
+      <code>setOptions</code>). To apply different options later, re-mount the tag.
+    </AsideTip>
+    <AsideTip>
+      For reorderable lists, key your <code>&lt;for&gt;</code> by identity so
+      Marko moves nodes instead of recreating them — otherwise moves and exits
+      won’t animate. Use <code>by="id"</code> for objects, or an identity function
+      for primitives (<code>by=(n =&gt; String(n))</code>). Under SSR, prefer
+      plain serializable <code>options</code>; plugin functions are a client-only
+      path.
     </AsideTip>
 
     <!-- <h2 id="usage-qwik">Qwik hook</h2>
