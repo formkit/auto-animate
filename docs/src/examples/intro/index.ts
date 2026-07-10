@@ -41,7 +41,7 @@ export default {
   marko: {
     example: markoExample,
     ext: "marko",
-    language: "html",
+    language: "marko",
   },
   js: {
     example: htmlExample,

@@ -16,7 +16,10 @@ import IconNuxt from "./IconNuxt.vue"
 import IconBun from "./IconBun.vue"
 import { computed, ref } from "vue"
 import { vAutoAnimate } from "../../../src"
+import { registerMarko } from "../utils/prism-marko"
 import "../../assets/prism.css"
+
+registerMarko()
 
 type LanguageOption =
   | "react"

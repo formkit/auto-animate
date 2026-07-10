@@ -5,27 +5,33 @@
 // animation behavior is identical because it all runs on the same auto-animate core.
 import { useAutoAnimate } from "../../../../src/vue/index.ts"
 import { ref } from "vue"
-const [parent, setEnabled] = useAutoAnimate()
-const items = ref([0, 1, 2])
+const [parent] = useAutoAnimate()
+const lineup = ref(["🎸 Nova", "🎤 Rex", "🥁 Juno", "🎹 Iris"])
+function bump(artist) {
+  lineup.value = [artist, ...lineup.value.filter((a) => a !== artist)]
+}
 </script>
 
 <template>
   <div class="example marko-example">
+    <p class="hint">Click an artist to bump them to the top of the bill:</p>
     <ul ref="parent">
-      <li v-for="item in items" :key="item">{{ item }}</li>
+      <li v-for="artist in lineup" :key="artist" @click="bump(artist)">
+        {{ artist }}
+      </li>
     </ul>
-    <button @click="items.push(items.length)" class="button button--alt add">
-      Add number
-    </button>
-    <button @click="setEnabled(false)" class="button button--alt">
-      Disable
-    </button>
   </div>
 </template>
 
 <style scoped>
-ul {
-  list-style-type: disc;
+.hint {
+  margin-bottom: 0.5em;
+  font-size: 0.875em;
+  opacity: 0.7;
+}
+li {
+  cursor: pointer;
+  user-select: none;
 }
 li::before {
   display: none;

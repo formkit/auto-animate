@@ -38,17 +38,18 @@ test.describe('Framework examples animate on interaction', () => {
     await assertNoErrorsLater()
   })
 
-  test('Marko example animates on add', async ({ page }) => {
+  test('Marko example animates on bump-to-top', async ({ page }) => {
     const assertNoErrorsLater = await assertNoConsoleErrors(page)
     await page.locator('.marko-example').scrollIntoViewIfNeeded()
     await page.waitForTimeout(100)
     const observer = await withAnimationObserver(page, '.marko-example ul')
-    await page
-      .locator('.marko-example')
-      .getByRole('button', { name: 'Add number' })
-      .click()
+    const items = page.locator('.marko-example ul li')
+    const bumped = await items.last().textContent()
+    await items.last().click()
     await page.waitForTimeout(50)
     expect(await observer.count()).toBeGreaterThan(0)
+    // The clicked artist moved to the top of the bill.
+    await expect(items.first()).toHaveText(bumped!)
     await assertNoErrorsLater()
   })
 

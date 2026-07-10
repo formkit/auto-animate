@@ -16,7 +16,7 @@ export default {
   },
   marko: {
     ext: "marko",
-    language: "html",
+    language: "marko",
     example: markoExample,
   },
   // js: {

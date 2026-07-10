@@ -20,7 +20,7 @@ export default {
     example: vueExample,
   },
   marko: {
-    language: "html",
+    language: "marko",
     ext: "marko",
     example: markoExample,
   },
