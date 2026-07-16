@@ -1,3 +1,4 @@
+import { defineNuxtPlugin } from "#imports"
 import { vAutoAnimate } from "../../vue/index"
 
 type NuxtAppLike = {
@@ -9,7 +10,7 @@ type NuxtAppLike = {
   }
 }
 
-export default function autoAnimateNuxtPlugin(app: NuxtAppLike) {
+export default defineNuxtPlugin((nuxtApp: NuxtAppLike) => {
   // Register the directive
-  app.vueApp.directive("auto-animate", vAutoAnimate)
-}
+  nuxtApp.vueApp.directive("auto-animate", vAutoAnimate)
+})
