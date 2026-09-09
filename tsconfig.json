@@ -2,8 +2,8 @@
   "compilerOptions": {
     "experimentalDecorators": true,
     "module": "esnext",
-    "target": "es2019",
-    "lib": ["es2019", "dom"],
+    "target": "es2021",
+    "lib": ["es2021", "dom"],
     "strict": true,
     "allowJs": false,
     "moduleResolution": "node",
