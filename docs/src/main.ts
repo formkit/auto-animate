@@ -18,6 +18,10 @@ const routes: RouteRecordRaw[] = [
     component: () => import("./pages/PageBottomJumpTest.vue"),
   },
   {
+    path: "/memory-test",
+    component: () => import("./pages/PageMemoryTest.vue"),
+  },
+  {
     path: "/:catchAll(.*)",
     redirect: "/",
   },
