@@ -8,10 +8,10 @@ import autoAnimate, {
 } from "../index"
 
 export const vAutoAnimate: Directive<
-  HTMLElement | Component,
+  HTMLElement | SVGElement | Component,
   Partial<AutoAnimateOptions>
 > = autoAnimateDirective as unknown as Directive<
-  HTMLElement | Component,
+  HTMLElement | SVGElement | Component,
   Partial<AutoAnimateOptions>
 >
 
@@ -20,7 +20,10 @@ export const vAutoAnimate: Directive<
  */
 export function createVAutoAnimate(
   defaults?: Partial<AutoAnimateOptions> | AutoAnimationPlugin
-): Directive<HTMLElement, Partial<AutoAnimateOptions> | AutoAnimationPlugin> {
+): Directive<
+  HTMLElement | SVGElement,
+  Partial<AutoAnimateOptions> | AutoAnimationPlugin
+> {
   return {
     mounted(el, binding) {
       let resolved: Partial<AutoAnimateOptions> | AutoAnimationPlugin = {}
@@ -44,7 +47,7 @@ export function createVAutoAnimate(
     },
     getSSRProps: () => ({}),
   } as unknown as Directive<
-    HTMLElement,
+    HTMLElement | SVGElement,
     Partial<AutoAnimateOptions> | AutoAnimationPlugin
   >
 }
@@ -73,13 +76,17 @@ export function useAutoAnimate<T extends Element | Component>(
   }
   onMounted(() => {
     watchEffect((onCleanup) => {
-      let el: HTMLElement | undefined
-      if (element.value instanceof HTMLElement) {
+      let el: HTMLElement | SVGElement | undefined
+      if (
+        element.value instanceof HTMLElement ||
+        element.value instanceof SVGElement
+      ) {
         el = element.value
       } else if (
         element.value &&
         "$el" in element.value &&
-        element.value.$el instanceof HTMLElement
+        (element.value.$el instanceof HTMLElement ||
+          element.value.$el instanceof SVGElement)
       ) {
         el = element.value.$el
       }

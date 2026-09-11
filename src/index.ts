@@ -647,7 +647,7 @@ function cleanUp(el: Element, styles?: Partial<CSSStyleDeclaration>) {
   setTimeout(() => {
     if (DEL in el) delete (el as any)[DEL]
     Object.defineProperty(el, NEW, { value: true, configurable: true })
-    if (styles && el instanceof HTMLElement) {
+    if (styles && (el instanceof HTMLElement || el instanceof SVGElement)) {
       for (const style in styles) {
         ;(el.style as any)[style as any] = ""
       }
@@ -877,11 +877,11 @@ export interface AutoAnimationPlugin {
  * A function that automatically adds animation effects to itself and its
  * immediate children. Specifically it adds effects for adding, moving, and
  * removing DOM elements.
- * @param el - A parent element to add animations to.
+ * @param el - An HTML or SVG parent element to add animations to.
  * @param options - An optional object of options.
  */
 export default function autoAnimate(
-  el: HTMLElement,
+  el: HTMLElement | SVGElement,
   config: Partial<AutoAnimateOptions> | AutoAnimationPlugin = {},
 ): AnimationController {
   if (supportedBrowser && resize) {
@@ -978,7 +978,7 @@ export { autoAnimate }
  */
 export const vAutoAnimate = {
   mounted: (
-    el: HTMLElement,
+    el: HTMLElement | SVGElement,
     binding: {
       value: Partial<AutoAnimateOptions> | AutoAnimationPlugin | undefined
     },
@@ -986,7 +986,7 @@ export const vAutoAnimate = {
     const ctl = autoAnimate(el, binding.value || {})
     Object.defineProperty(el, "__aa_ctl", { value: ctl, configurable: true })
   },
-  unmounted: (el: HTMLElement) => {
+  unmounted: (el: HTMLElement | SVGElement) => {
     const ctl = (el as any)["__aa_ctl"] as AnimationController | undefined
     ctl?.destroy?.()
     try {

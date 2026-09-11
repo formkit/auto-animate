@@ -8,7 +8,7 @@ import type {
 export interface Input {
   // A reference to the parent element whose *direct children* will be animated.
   // Pass a native element tag-variable, e.g. `<ul/listRef>` then `parent=listRef`.
-  parent: () => HTMLElement;
+  parent: () => HTMLElement | SVGElement;
   // auto-animate options (duration / easing / disrespectUserMotionPreference)
   // OR a plugin function. Read once when the tag mounts; the core has no setOptions,
   // so changing this later has no effect (remount the tag to apply new options).
