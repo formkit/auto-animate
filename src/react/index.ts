@@ -19,7 +19,7 @@ export function useAutoAnimate<T extends Element>(
   const memoizedOptions = useMemo(() => options, [])
   const element = useCallback(
     (node: T) => {
-      if (node instanceof HTMLElement) {
+      if (node instanceof HTMLElement || node instanceof SVGElement) {
         setController(autoAnimate(node, memoizedOptions))
       } else {
         setController(undefined)
