@@ -84,7 +84,7 @@
     "@nuxt/kit": "^3.12.4",
     "@nuxt/module-builder": "^0.8.3",
     "@nuxt/schema": "^3.12.4",
-    "@playwright/test": "^1.47.2",
+    "@playwright/test": "^1.63.0",
     "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^11.1.6",
     "@types/node": "^20.14.15",
