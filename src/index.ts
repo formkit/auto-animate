@@ -965,6 +965,8 @@ export default function autoAnimate(
     },
     isEnabled: () => enabled.has(el),
     destroy: () => {
+      // Don't destroy an ongoing animation.
+      if (animations.has(el) && animations.get(el)?.playState !== "finished") return
       // Don't destroy the new controller.
       if (animationControllers.get(el) !== controller) return
 
