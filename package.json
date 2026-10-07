@@ -75,6 +75,34 @@
       "default": "./index.mjs"
     }
   },
+  "peerDependencies": {
+    "@angular/core": ">=16.0.0",
+    "@nuxt/kit": ">=3.0.0",
+    "preact": ">=10.0.0",
+    "react": ">=16.8.0",
+    "solid-js": ">=1.0.0",
+    "vue": ">=3.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@angular/core": {
+      "optional": true
+    },
+    "@nuxt/kit": {
+      "optional": true
+    },
+    "preact": {
+      "optional": true
+    },
+    "react": {
+      "optional": true
+    },
+    "solid-js": {
+      "optional": true
+    },
+    "vue": {
+      "optional": true
+    }
+  },
   "devDependencies": {
     "@angular/core": "^17.1.0",
     "@formkit/vue": "^1.6.5",
