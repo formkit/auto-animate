@@ -145,6 +145,10 @@ function isOffscreen(el: Element): boolean {
 function observePosition(el: Element) {
   const oldObserver = intersections.get(el)
   oldObserver?.disconnect()
+  if (!el.isConnected) {
+    intersections.delete(el)
+    return
+  }
   let rect = coords.get(el)
   let invocations = 0
   const buffer = 5
@@ -922,7 +926,8 @@ export default function autoAnimate(
       forEach(el, (node) => {
         const a = animations.get(node)
         try {
-          a?.cancel()
+          if (DEL in node) a?.finish()
+          else a?.cancel()
         } catch {}
         animations.delete(node)
         const d = debounces.get(node)
