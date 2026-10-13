@@ -926,7 +926,8 @@ export default function autoAnimate(
       forEach(el, (node) => {
         const a = animations.get(node)
         try {
-          a?.cancel()
+          if (DEL in node) a?.finish()
+          else a?.cancel()
         } catch {}
         animations.delete(node)
         const d = debounces.get(node)
