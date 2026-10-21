@@ -823,7 +823,7 @@ function deletePosition(
   const parentCoords =
     !animations.has(el) || animations.get(el)?.playState === "finished"
       ? getCoords(offsetParent)
-      : coords.get(offsetParent)!
+      : coords.get(offsetParent) ?? getCoords(offsetParent)
 
   const top =
     Math.round(oldCoords.top - parentCoords.top) -
