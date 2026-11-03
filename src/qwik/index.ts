@@ -20,7 +20,7 @@ import autoAnimate, {
  * @param options - Auto animate options or a plugin
  * @returns
  */
-export function useAutoAnimate<T extends HTMLElement>(
+export function useAutoAnimate<T extends HTMLElement | SVGElement>(
   options?: Partial<AutoAnimateOptions> | AutoAnimationPlugin
 ): [
   Signal<T | undefined>,

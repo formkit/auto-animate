@@ -13,7 +13,7 @@ declare module "solid-js" {
   }
 }
 
-export const createAutoAnimate = <T extends HTMLElement>(
+export const createAutoAnimate = <T extends HTMLElement | SVGElement>(
   options: Partial<AutoAnimateOptions> | AutoAnimationPlugin = {}
 ): [Setter<T | null>, (enabled: boolean) => void] => {
   const [element, setElement] = createSignal<T | null>(null)
@@ -43,7 +43,7 @@ export const createAutoAnimate = <T extends HTMLElement>(
 
 export const createAutoAnimateDirective = () => {
   return (
-    el: HTMLElement,
+    el: HTMLElement | SVGElement,
     options: Accessor<Partial<AutoAnimateOptions> | AutoAnimationPlugin | true>
   ) => {
     let optionsValue = options()

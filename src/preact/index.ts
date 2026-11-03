@@ -23,7 +23,10 @@ export function useAutoAnimate<T extends Element>(
     }
   }
   useEffect(() => {
-    if (element.current instanceof HTMLElement)
+    if (
+      element.current instanceof HTMLElement ||
+      element.current instanceof SVGElement
+    )
       setController(autoAnimate(element.current, options || {}))
   }, [])
   useEffect(() => {
