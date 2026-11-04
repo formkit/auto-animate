@@ -109,51 +109,108 @@ const NEW = "__aa_new"
  * @param mutations - A mutation list
  */
 /**
- * Where each child's auto-animated parent was when the child was last
- * measured. If the parent moves without its children reflowing (e.g. it slides
- * in with a CSS transform), the cached child coordinates are shifted by the
- * same amount before animating (formkit/auto-animate#227).
+ * How far an element is displaced by transforms (its own or any ancestor's),
+ * i.e. its on-screen position minus its layout position and scroll offsets.
+ * Reflow, anchoring and resizing move both equally, so they don't count.
  */
-const parentOffsets = new WeakMap<Element, { top: number; left: number }>()
+function transformShift(el: Element): { top: number; left: number } {
+  const rect = el.getBoundingClientRect()
+  let left = 0
+  let top = 0
+  let n = el as HTMLElement | null
+  let last = n
+  while (n) {
+    left += n.offsetLeft
+    top += n.offsetTop
+    last = n
+    n = n.offsetParent as HTMLElement | null
+  }
+  // Scroll offsets above a fixed-position ancestor don't move it.
+  const fixed =
+    last && last !== document.body && getComputedStyle(last).position === "fixed"
+      ? last
+      : null
+  let a: Element | null = el.parentElement
+  while (a) {
+    if (fixed && !fixed.contains(a)) break
+    left -= a.scrollLeft
+    top -= a.scrollTop
+    a = a.parentElement
+  }
+  return { left: rect.left - left, top: rect.top - top }
+}
+
+/**
+ * The transform displacement of each auto-animated parent, cached for the
+ * current task so measuring many children costs a single parent measurement.
+ */
+const shiftCache = new Map<Element, { top: number; left: number }>()
+let shiftCacheFlush = false
+function parentShift(parent: Element) {
+  let shift = shiftCache.get(parent)
+  if (!shift) {
+    shift = transformShift(parent)
+    shiftCache.set(parent, shift)
+    if (!shiftCacheFlush) {
+      shiftCacheFlush = true
+      queueMicrotask(() => {
+        shiftCache.clear()
+        shiftCacheFlush = false
+      })
+    }
+  }
+  return shift
+}
+
+/**
+ * True when auto-animate itself is animating the element or an ancestor: its
+ * FLIP transforms must not be mistaken for a user's transform.
+ */
+function isAnimating(el: Element) {
+  let n: Element | null = el
+  while (n) {
+    const animation = animations.get(n)
+    if (animation && animation.playState === "running") return true
+    n = n.parentElement
+  }
+  return false
+}
+
+/**
+ * The parent's transform displacement when each element (a child, or the
+ * parent itself) was last measured. If the parent is moved by a transform
+ * (e.g. a menu sliding in) without anything reflowing, cached coordinates are
+ * shifted by the same amount before animating (formkit/auto-animate#227).
+ */
+const parentShifts = new WeakMap<Element, { top: number; left: number }>()
 
 function setCoords(el: Element, rect: Coordinates) {
   coords.set(el, rect)
-  const parent = el.parentElement
-  if (parent && parents.has(parent)) {
-    const { top, left } = getCoords(parent)
-    parentOffsets.set(el, { top, left })
+  const parent = parents.has(el) ? el : el.parentElement
+  if (parent && parents.has(parent) && !isAnimating(parent)) {
+    parentShifts.set(el, parentShift(parent))
   }
 }
 
 /**
- * Shift the cached coordinates of a parent's children (including ones that
- * were just removed) by however far the parent itself has moved since each
- * child was measured.
+ * Shift the cached coordinates of a parent and its children (including ones
+ * that were just removed) by however far transforms moved the parent since
+ * each was measured.
  */
 function realignToParent(parent: Element, removed: Node[]) {
-  const now = getCoords(parent)
-  const children = [...Array.from(parent.children), ...removed]
-  for (const child of children) {
-    if (!(child instanceof Element)) continue
-    const at = parentOffsets.get(child)
-    const cached = coords.get(child)
+  if (isAnimating(parent)) return
+  const now = parentShift(parent)
+  const elements = [parent, ...Array.from(parent.children), ...removed]
+  for (const el of elements) {
+    if (!(el instanceof Element)) continue
+    const at = parentShifts.get(el)
+    const cached = coords.get(el)
     if (!at || !cached) continue
     const dx = now.left - at.left
     const dy = now.top - at.top
     if (Math.abs(dx) < 0.5 && Math.abs(dy) < 0.5) continue
-    coords.set(child, { ...cached, top: cached.top + dy, left: cached.left + dx })
-    parentOffsets.set(child, { top: now.top, left: now.left })
-  }
-  // The parent's own cached position is just as stale; without this it would
-  // FLIP-animate sliding back from its old spot. Keep its cached size so a
-  // resize still animates. Nested animated parents are left alone: their
-  // position is animated by the outer parent.
-  const own = coords.get(parent)
-  const outer = parent.parentElement
-  if (own && !(outer && parents.has(outer))) {
-    if (Math.abs(own.left - now.left) >= 0.5 || Math.abs(own.top - now.top) >= 0.5) {
-      coords.set(parent, { ...own, top: now.top, left: now.left })
-    }
+    coords.set(el, { ...cached, top: cached.top + dy, left: cached.left + dx })
+    parentShifts.set(el, now)
   }
 }
 

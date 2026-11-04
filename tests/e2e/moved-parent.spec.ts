@@ -58,3 +58,42 @@ test('a removed child fades out in place after the parent was moved by a transfo
   expect(Math.abs(result.during!.x - result.before.x)).toBeLessThan(2)
   expect(Math.abs(result.during!.y - result.before.y)).toBeLessThan(2)
 })
+
+// Parents that move *because of* the change itself (anchored to the bottom, or
+// centered) must not be mistaken for a transform move (review of #250).
+for (const [name, html] of [
+  [
+    'bottom-anchored (toast stack)',
+    '<ul id="p" style="position:fixed;bottom:0;right:0;margin:0;padding:0;list-style:none;width:200px"><li id="a" style="height:40px">A</li><li id="b" style="height:40px">B</li></ul>',
+  ],
+  [
+    'vertically centered (modal)',
+    '<div style="height:900px;display:flex;align-items:center;justify-content:center"><ul id="p" style="margin:0;padding:0;list-style:none;width:200px"><li id="a" style="height:40px">A</li><li id="b" style="height:40px">B</li></ul></div>',
+  ],
+] as const) {
+  test(`existing children don't jump when appending to a ${name} parent`, async ({ page }) => {
+    await page.goto(fixtureUrl)
+    const offsets = await page.evaluate(
+      async ({ moduleUrl, html }) => {
+        const { default: autoAnimate } = await import(moduleUrl)
+        document.body.innerHTML = html
+        const parent = document.getElementById('p')!
+        autoAnimate(parent, { duration: 1000 })
+        await new Promise((r) => setTimeout(r, 1300))
+        const before = ['a', 'b'].map((id) => document.getElementById(id)!.getBoundingClientRect().top)
+        const li = document.createElement('li')
+        li.style.height = '100px'
+        parent.append(li)
+        await new Promise(requestAnimationFrame)
+        await new Promise(requestAnimationFrame)
+        document.getAnimations().forEach((a) => {
+          a.pause()
+          a.currentTime = 0
+        })
+        return ['a', 'b'].map((id, i) => document.getElementById(id)!.getBoundingClientRect().top - before[i])
+      },
+      { moduleUrl, html }
+    )
+    for (const offset of offsets) expect(Math.abs(offset)).toBeLessThan(2)
+  })
+}
