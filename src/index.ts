@@ -108,7 +108,65 @@ const NEW = "__aa_new"
  * Callback for handling all mutations.
  * @param mutations - A mutation list
  */
+/**
+ * Where each child's auto-animated parent was when the child was last
+ * measured. If the parent moves without its children reflowing (e.g. it slides
+ * in with a CSS transform), the cached child coordinates are shifted by the
+ * same amount before animating (formkit/auto-animate#227).
+ */
+const parentOffsets = new WeakMap<Element, { top: number; left: number }>()
+
+function setCoords(el: Element, rect: Coordinates) {
+  coords.set(el, rect)
+  const parent = el.parentElement
+  if (parent && parents.has(parent)) {
+    const { top, left } = getCoords(parent)
+    parentOffsets.set(el, { top, left })
+  }
+}
+
+/**
+ * Shift the cached coordinates of a parent's children (including ones that
+ * were just removed) by however far the parent itself has moved since each
+ * child was measured.
+ */
+function realignToParent(parent: Element, removed: Node[]) {
+  const now = getCoords(parent)
+  const children = [...Array.from(parent.children), ...removed]
+  for (const child of children) {
+    if (!(child instanceof Element)) continue
+    const at = parentOffsets.get(child)
+    const cached = coords.get(child)
+    if (!at || !cached) continue
+    const dx = now.left - at.left
+    const dy = now.top - at.top
+    if (Math.abs(dx) < 0.5 && Math.abs(dy) < 0.5) continue
+    coords.set(child, { ...cached, top: cached.top + dy, left: cached.left + dx })
+    parentOffsets.set(child, { top: now.top, left: now.left })
+  }
+  // The parent's own cached position is just as stale; without this it would
+  // FLIP-animate sliding back from its old spot. Keep its cached size so a
+  // resize still animates. Nested animated parents are left alone: their
+  // position is animated by the outer parent.
+  const own = coords.get(parent)
+  const outer = parent.parentElement
+  if (own && !(outer && parents.has(outer))) {
+    if (Math.abs(own.left - now.left) >= 0.5 || Math.abs(own.top - now.top) >= 0.5) {
+      coords.set(parent, { ...own, top: now.top, left: now.left })
+    }
+  }
+}
+
 const handleMutations: MutationCallback = (mutations) => {
+  const removedByParent = new Map<Element, Node[]>()
+  for (const mutation of mutations) {
+    const target = mutation.target
+    if (!(target instanceof Element) || !parents.has(target)) continue
+    const list = removedByParent.get(target) ?? []
+    list.push(...Array.from(mutation.removedNodes))
+    removedByParent.set(target, list)
+  }
+  removedByParent.forEach((removed, parent) => realignToParent(parent, removed))
   const elements = getElements(mutations)
   // If elements is "false" that means this mutation that should be ignored.
   if (elements) {
@@ -154,7 +212,7 @@ function observePosition(el: Element) {
   const buffer = 5
   if (!rect) {
     rect = getCoords(el)
-    coords.set(el, rect)
+    setCoords(el, rect)
   }
   const { offsetWidth, offsetHeight } = root
   const rootMargins = [
@@ -201,7 +259,7 @@ function updatePos(el: Element, debounce = true) {
       try {
         await currentAnimation?.finished
 
-        coords.set(el, getCoords(el))
+        setCoords(el, getCoords(el))
         observePosition(el)
       } catch {
         // ignore errors as the `.finished` promise is rejected when animations were cancelled
@@ -539,10 +597,10 @@ function isPlugin(
 function remain(el: Element) {
   const oldCoords = coords.get(el)
   const newCoords = getCoords(el)
-  if (!isEnabled(el)) return coords.set(el, newCoords)
+  if (!isEnabled(el)) return setCoords(el, newCoords)
   if (isOffscreen(el)) {
     // When element is offscreen, skip FLIP to avoid broken transforms
-    coords.set(el, newCoords)
+    setCoords(el, newCoords)
     observePosition(el)
     return
   }
@@ -592,7 +650,7 @@ function remain(el: Element) {
     animation.play()
   }
   animations.set(el, animation)
-  coords.set(el, newCoords)
+  setCoords(el, newCoords)
   animation.addEventListener("finish", updatePos.bind(null, el, false), {
     once: true,
   })
@@ -605,7 +663,7 @@ function remain(el: Element) {
 function add(el: Element) {
   if (NEW in el) delete (el as any)[NEW]
   const newCoords = getCoords(el)
-  coords.set(el, newCoords)
+  setCoords(el, newCoords)
   const pluginOrOptions = getOptions(el)
   if (!isEnabled(el)) return
   if (isOffscreen(el)) {
