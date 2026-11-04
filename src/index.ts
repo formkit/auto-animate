@@ -108,122 +108,7 @@ const NEW = "__aa_new"
  * Callback for handling all mutations.
  * @param mutations - A mutation list
  */
-/**
- * How far an element is displaced by transforms (its own or any ancestor's),
- * i.e. its on-screen position minus its layout position and scroll offsets.
- * Reflow, anchoring and resizing move both equally, so they don't count.
- */
-function transformShift(el: Element): { top: number; left: number } {
-  const rect = el.getBoundingClientRect()
-  let left = 0
-  let top = 0
-  let n = el as HTMLElement | null
-  let last = n
-  while (n) {
-    left += n.offsetLeft
-    top += n.offsetTop
-    last = n
-    n = n.offsetParent as HTMLElement | null
-  }
-  // Scroll offsets above a fixed-position ancestor don't move it.
-  const fixed =
-    last && last !== document.body && getComputedStyle(last).position === "fixed"
-      ? last
-      : null
-  let a: Element | null = el.parentElement
-  while (a) {
-    if (fixed && !fixed.contains(a)) break
-    left -= a.scrollLeft
-    top -= a.scrollTop
-    a = a.parentElement
-  }
-  return { left: rect.left - left, top: rect.top - top }
-}
-
-/**
- * The transform displacement of each auto-animated parent, cached for the
- * current task so measuring many children costs a single parent measurement.
- */
-const shiftCache = new Map<Element, { top: number; left: number }>()
-let shiftCacheFlush = false
-function parentShift(parent: Element) {
-  let shift = shiftCache.get(parent)
-  if (!shift) {
-    shift = transformShift(parent)
-    shiftCache.set(parent, shift)
-    if (!shiftCacheFlush) {
-      shiftCacheFlush = true
-      queueMicrotask(() => {
-        shiftCache.clear()
-        shiftCacheFlush = false
-      })
-    }
-  }
-  return shift
-}
-
-/**
- * True when auto-animate itself is animating the element or an ancestor: its
- * FLIP transforms must not be mistaken for a user's transform.
- */
-function isAnimating(el: Element) {
-  let n: Element | null = el
-  while (n) {
-    const animation = animations.get(n)
-    if (animation && animation.playState === "running") return true
-    n = n.parentElement
-  }
-  return false
-}
-
-/**
- * The parent's transform displacement when each element (a child, or the
- * parent itself) was last measured. If the parent is moved by a transform
- * (e.g. a menu sliding in) without anything reflowing, cached coordinates are
- * shifted by the same amount before animating (formkit/auto-animate#227).
- */
-const parentShifts = new WeakMap<Element, { top: number; left: number }>()
-
-function setCoords(el: Element, rect: Coordinates) {
-  coords.set(el, rect)
-  const parent = parents.has(el) ? el : el.parentElement
-  if (parent && parents.has(parent) && !isAnimating(parent)) {
-    parentShifts.set(el, parentShift(parent))
-  }
-}
-
-/**
- * Shift the cached coordinates of a parent and its children (including ones
- * that were just removed) by however far transforms moved the parent since
- * each was measured.
- */
-function realignToParent(parent: Element, removed: Node[]) {
-  if (isAnimating(parent)) return
-  const now = parentShift(parent)
-  const elements = [parent, ...Array.from(parent.children), ...removed]
-  for (const el of elements) {
-    if (!(el instanceof Element)) continue
-    const at = parentShifts.get(el)
-    const cached = coords.get(el)
-    if (!at || !cached) continue
-    const dx = now.left - at.left
-    const dy = now.top - at.top
-    if (Math.abs(dx) < 0.5 && Math.abs(dy) < 0.5) continue
-    coords.set(el, { ...cached, top: cached.top + dy, left: cached.left + dx })
-    parentShifts.set(el, now)
-  }
-}
-
 const handleMutations: MutationCallback = (mutations) => {
-  const removedByParent = new Map<Element, Node[]>()
-  for (const mutation of mutations) {
-    const target = mutation.target
-    if (!(target instanceof Element) || !parents.has(target)) continue
-    const list = removedByParent.get(target) ?? []
-    list.push(...Array.from(mutation.removedNodes))
-    removedByParent.set(target, list)
-  }
-  removedByParent.forEach((removed, parent) => realignToParent(parent, removed))
   const elements = getElements(mutations)
   // If elements is "false" that means this mutation that should be ignored.
   if (elements) {
@@ -269,7 +154,7 @@ function observePosition(el: Element) {
   const buffer = 5
   if (!rect) {
     rect = getCoords(el)
-    setCoords(el, rect)
+    coords.set(el, rect)
   }
   const { offsetWidth, offsetHeight } = root
   const rootMargins = [
@@ -316,7 +201,7 @@ function updatePos(el: Element, debounce = true) {
       try {
         await currentAnimation?.finished
 
-        setCoords(el, getCoords(el))
+        coords.set(el, getCoords(el))
         observePosition(el)
       } catch {
         // ignore errors as the `.finished` promise is rejected when animations were cancelled
@@ -400,6 +285,31 @@ if (supportedBrowser) {
     scrollX = window.scrollX
   })
   resize.observe(root)
+  // A CSS transition/animation on an animated parent (or an ancestor) can move
+  // its children without any reflow or resize — e.g. a menu sliding in with
+  // `transform`. Re-measure once it ends, so the next change doesn't animate
+  // children from where they used to be (formkit/auto-animate#227). These
+  // events only fire for CSS transitions/animations, never for our own WAAPI
+  // animations.
+  document.addEventListener("transitionend", remeasureAfterMove, true)
+  document.addEventListener("animationend", remeasureAfterMove, true)
+}
+
+/**
+ * Re-measure every animated parent that is (or is inside) the element whose
+ * CSS transition or animation just ended.
+ * @param e - The transitionend/animationend event.
+ */
+function remeasureAfterMove(e: Event) {
+  const target = e.target
+  if (!(target instanceof Element)) return
+  parents.forEach((parent) => {
+    if (target === parent || target.contains(parent)) {
+      forEach(parent, (el) => {
+        if (coords.has(el)) updatePos(el, false)
+      })
+    }
+  })
 }
 /**
  * Retrieves all the elements that may have been affected by the last mutation
@@ -654,10 +564,10 @@ function isPlugin(
 function remain(el: Element) {
   const oldCoords = coords.get(el)
   const newCoords = getCoords(el)
-  if (!isEnabled(el)) return setCoords(el, newCoords)
+  if (!isEnabled(el)) return coords.set(el, newCoords)
   if (isOffscreen(el)) {
     // When element is offscreen, skip FLIP to avoid broken transforms
-    setCoords(el, newCoords)
+    coords.set(el, newCoords)
     observePosition(el)
     return
   }
@@ -707,7 +617,7 @@ function remain(el: Element) {
     animation.play()
   }
   animations.set(el, animation)
-  setCoords(el, newCoords)
+  coords.set(el, newCoords)
   animation.addEventListener("finish", updatePos.bind(null, el, false), {
     once: true,
   })
@@ -720,7 +630,7 @@ function remain(el: Element) {
 function add(el: Element) {
   if (NEW in el) delete (el as any)[NEW]
   const newCoords = getCoords(el)
-  setCoords(el, newCoords)
+  coords.set(el, newCoords)
   const pluginOrOptions = getOptions(el)
   if (!isEnabled(el)) return
   if (isOffscreen(el)) {

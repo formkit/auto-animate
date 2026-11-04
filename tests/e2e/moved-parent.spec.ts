@@ -16,8 +16,12 @@ test('siblings animate only their own movement after the parent was moved by a t
     // Let auto-animate take its (debounced) initial measurements.
     await new Promise((r) => setTimeout(r, 1300))
     // Slide the parent back into place (like a menu opening).
+    // Slide the parent into place with a CSS transition (like a menu
+    // opening) and let it finish.
+    list.style.transition = 'transform 150ms'
     list.style.transform = 'translateX(0px)'
-    await new Promise(requestAnimationFrame)
+    await new Promise((r) => list.addEventListener('transitionend', r, { once: true }))
+    await new Promise((r) => setTimeout(r, 30))
     // Remove the first item: B and C should only move up by 40px.
     document.getElementById('a')!.remove()
     await new Promise(requestAnimationFrame)
@@ -41,8 +45,12 @@ test('a removed child fades out in place after the parent was moved by a transfo
     const list = document.getElementById('list')!
     autoAnimate(list, { duration: 1000 })
     await new Promise((r) => setTimeout(r, 1300))
+    // Slide the parent into place with a CSS transition (like a menu
+    // opening) and let it finish.
+    list.style.transition = 'transform 150ms'
     list.style.transform = 'translateX(0px)'
-    await new Promise(requestAnimationFrame)
+    await new Promise((r) => list.addEventListener('transitionend', r, { once: true }))
+    await new Promise((r) => setTimeout(r, 30))
     const before = document.getElementById('b')!.getBoundingClientRect()
     document.getElementById('b')!.remove()
     await new Promise(requestAnimationFrame)
