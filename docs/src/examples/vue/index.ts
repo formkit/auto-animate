@@ -7,6 +7,10 @@ import { autoAnimatePlugin } from '@formkit/auto-animate/vue'
 import App from 'App.vue'
 
 createApp(App).use(autoAnimatePlugin).mount('#app')
+
+// Optional: set app-wide defaults for every v-auto-animate
+// (per-element options still win):
+// createApp(App).use(autoAnimatePlugin, { duration: 500, easing: 'ease-out' })
 `,
   },
   nuxt: {
