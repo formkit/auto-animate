@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from "preact/hooks"
+import type { RefObject } from "preact"
 import autoAnimate, {
   AutoAnimateOptions,
   AutoAnimationPlugin,
@@ -12,7 +13,7 @@ import autoAnimate, {
  */
 export function useAutoAnimate<T extends Element>(
   options?: Partial<AutoAnimateOptions> | AutoAnimationPlugin
-): [Object<T>, (enabled: boolean) => void] {
+): [RefObject<T>, (enabled: boolean) => void] {
   const element = useRef<T>(null)
   const [controller, setController] = useState<
     AnimationController | undefined

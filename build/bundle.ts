@@ -206,6 +206,29 @@ async function bundleDeclarations() {
   ])
   await execa("shx", ["rm", "-rf", `${rootDir}/dist/src`])
   await execa("shx", ["rm", `${rootDir}/dist/index.js`])
+  await fixDeclarationImports()
+}
+
+/**
+ * The framework declarations import the core types as `"../index"`, which
+ * TypeScript rejects under `moduleResolution: node16/nodenext` (TS2835) since
+ * this is an ESM package. `"../index.js"` resolves to `index.d.ts` under every
+ * resolution mode (node10, node16/nodenext, bundler). See #110.
+ */
+async function fixDeclarationImports() {
+  for (const framework of ["react", "preact", "solid", "vue", "angular", "qwik"]) {
+    const file = `${rootDir}/dist/${framework}/index.d.ts`
+    let contents: string
+    try {
+      contents = await readFile(file, "utf8")
+    } catch {
+      continue
+    }
+    await writeFile(
+      file,
+      contents.replace(/from (["'])\.\.\/index\1/g, "from $1../index.js$1")
+    )
+  }
 }
 
 async function markoBuild() {
