@@ -3,9 +3,15 @@ import { expect, Page } from '@playwright/test'
 export async function assertNoConsoleErrors(page: Page) {
   const errors: string[] = []
   page.on('console', (msg) => {
-    if (msg.type() === 'error') {
-      errors.push(msg.text())
-    }
+    if (msg.type() !== 'error') return
+    // The docs fetch the repo's star count from the GitHub API; a rate limit
+    // (403) there is unrelated to auto-animate.
+    if (
+      msg.text().startsWith('Failed to load resource') &&
+      msg.location().url.startsWith('https://api.github.com/')
+    )
+      return
+    errors.push(msg.text())
   })
   // Give tests time to run interactions before asserting later
   return () => expect(errors, `Console errors: \n${errors.join('\n')}`).toEqual([])

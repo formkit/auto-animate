@@ -285,7 +285,61 @@ if (supportedBrowser) {
     scrollX = window.scrollX
   })
   resize.observe(root)
+  // A CSS transition/animation on an animated parent (or an ancestor) can move
+  // its children without any reflow or resize — e.g. a menu sliding in with
+  // `transform`. Re-measure once it ends, so the next change doesn't animate
+  // children from where they used to be (formkit/auto-animate#227). These
+  // events only fire for CSS transitions/animations, never for our own WAAPI
+  // animations.
+  document.addEventListener("transitionend", remeasureAfterMove, true)
+  document.addEventListener("animationend", remeasureAfterMove, true)
 }
+
+/**
+ * Transitions of these properties only repaint, so they can't move anything.
+ */
+const paintOnly =
+  /^(color|background|opacity|box-shadow|text-shadow|outline|filter|backdrop-filter|fill|stroke|border-color|caret-color|text-decoration|visibility)/
+
+/**
+ * Animated parents waiting to be re-measured after a CSS transition/animation.
+ */
+const pendingRemeasure = new Set<Element>()
+
+/**
+ * Queue a re-measure of every animated parent that is (or is inside) the
+ * element whose CSS transition or animation just ended. Re-measuring is
+ * coalesced into one pass per frame, so event storms (e.g. a dark-mode toggle
+ * with `* { transition: ... }`) stay cheap.
+ * @param e - The transitionend/animationend event.
+ */
+function remeasureAfterMove(e: Event) {
+  if (
+    e.type === "transitionend" &&
+    paintOnly.test((e as TransitionEvent).propertyName)
+  )
+    return
+  // composedPath() sees through shadow roots (e.target is retargeted).
+  const target = (e.composedPath?.()[0] ?? e.target) as unknown
+  if (!(target instanceof Element)) return
+  const wasEmpty = !pendingRemeasure.size
+  parents.forEach((parent) => {
+    if (target === parent || target.contains(parent)) pendingRemeasure.add(parent)
+  })
+  if (wasEmpty && pendingRemeasure.size) {
+    requestAnimationFrame(() => {
+      const queued = [...pendingRemeasure]
+      pendingRemeasure.clear()
+      queued.forEach((parent) => {
+        if (!parents.has(parent)) return
+        forEach(parent, (el) => {
+          if (coords.has(el)) updatePos(el, false)
+        })
+      })
+    })
+  }
+}
+
 /**
  * Retrieves all the elements that may have been affected by the last mutation
  * including ones that have been removed and are no longer in the DOM.
