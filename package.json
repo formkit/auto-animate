@@ -21,6 +21,9 @@
   "repository": "https://github.com/formkit/auto-animate.git",
   "author": "Justin Schroeder <justin@formkit.com>",
   "license": "MIT",
+  "engines": {
+    "node": "24.x"
+  },
   "scripts": {
     "dev": "cd docs && vite --config=./vite.config.ts",
     "build": "node ./build/build.mjs",
@@ -121,5 +124,14 @@
     "vue-github-button": "^3.1.3",
     "vue-router": "^4.4.3"
   },
-  "packageManager": "pnpm@10.14.0+sha512.ad27a79641b49c3e481a16a805baa71817a04bbe06a38d17e60e2eaee83f6a146c6a688125f5792e48dd5ba30e7da52a5cda4c3992b9ccf333f9ce223af84748"
+  "packageManager": "pnpm@10.14.0+sha512.ad27a79641b49c3e481a16a805baa71817a04bbe06a38d17e60e2eaee83f6a146c6a688125f5792e48dd5ba30e7da52a5cda4c3992b9ccf333f9ce223af84748",
+  "pnpm": {
+    "packageExtensions": {
+      "vue-github-button": {
+        "dependencies": {
+          "@vue/shared": "^3.5.0"
+        }
+      }
+    }
+  }
 }
