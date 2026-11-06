@@ -255,6 +255,7 @@ async function addPackageJSON() {
   delete packageJSON.devDependencies
   delete packageJSON.scripts
   delete packageJSON.pnpm
+  delete packageJSON.engines
   await writeFile(
     resolve(rootDir, "dist/package.json"),
     JSON.stringify(packageJSON, null, 2)

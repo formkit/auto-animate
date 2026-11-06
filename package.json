@@ -21,6 +21,9 @@
   "repository": "https://github.com/formkit/auto-animate.git",
   "author": "Justin Schroeder <justin@formkit.com>",
   "license": "MIT",
+  "engines": {
+    "node": "24.x"
+  },
   "scripts": {
     "dev": "cd docs && vite --config=./vite.config.ts",
     "build": "node ./build/build.mjs",
