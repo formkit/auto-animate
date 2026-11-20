@@ -64,10 +64,6 @@ const intersections = new WeakMap<Element, IntersectionObserver>()
  */
 const mutationObservers = new WeakMap<Element, MutationObserver>()
 /**
- * The active animation controller for each parent.
- */
-const animationControllers = new WeakMap<Element, AnimationController>()
-/**
  * Intervals for automatically checking the position of elements occasionally.
  */
 const intervals = new WeakMap<Element, NodeJS.Timeout>()
@@ -971,9 +967,6 @@ export default function autoAnimate(
   el: HTMLElement | SVGElement,
   config: Partial<AutoAnimateOptions> | AutoAnimationPlugin = {},
 ): AnimationController {
-  // Destroy the old controller.
-  animationControllers.get(el)?.destroy?.()
-
   if (supportedBrowser && resize) {
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)")
     const isDisabledDueToReduceMotion =
@@ -1003,7 +996,7 @@ export default function autoAnimate(
       parents.add(el)
     }
   }
-  const controller: AnimationController = Object.freeze({
+  return Object.freeze({
     parent: el,
     enable: () => {
       enabled.add(el)
@@ -1026,12 +1019,6 @@ export default function autoAnimate(
     },
     isEnabled: () => enabled.has(el),
     destroy: () => {
-      // Don't destroy an ongoing animation.
-      if (animations.has(el) && animations.get(el)?.playState !== "finished") return
-      // Don't destroy the new controller.
-      if (animationControllers.get(el) !== controller) return
-
-      animationControllers.delete(el)
       enabled.delete(el)
       parents.delete(el)
       options.delete(el)
@@ -1041,10 +1028,10 @@ export default function autoAnimate(
       forEach(el, (node) => {
         // unobserve resize
         resize?.unobserve(node)
-        // cancel animations
         const a = animations.get(node)
         try {
-          a?.cancel()
+          if (DEL in node) a?.finish()
+          else a?.cancel()
         } catch {}
         animations.delete(node)
         // disconnect observers
@@ -1062,8 +1049,6 @@ export default function autoAnimate(
       })
     },
   })
-  animationControllers.set(el, controller)
-  return controller
 }
 
 // Also provide a named export for environments expecting it
