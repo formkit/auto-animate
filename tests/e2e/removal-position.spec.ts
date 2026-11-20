@@ -43,26 +43,22 @@ test('preserves active animations on reinitialization and tears them down on des
 test('removes a table row during its entry animation', async ({ page }) => {
   const errors: string[] = []
   page.on('pageerror', error => errors.push(error.message))
+  await page.emulateMedia({ reducedMotion: 'no-preference' })
   await page.goto(fixtureUrl)
-  await page.evaluate(async moduleUrl => {
+  const wasAnimating = await page.evaluate(async moduleUrl => {
     const { default: autoAnimate } = await import(moduleUrl)
     const rows = document.querySelector('tbody')!
     autoAnimate(rows)
     const row = rows.insertRow()
     row.id = 'removed'
     row.insertCell().textContent = 'Remove this row'
-  }, moduleUrl)
-  await page.waitForFunction(() =>
-    document.querySelector('#removed')!.getAnimations().some(a => a.playState === 'running')
-  )
-  const wasAnimating = await page.locator('#removed').evaluate(async row => {
-    const running = row.getAnimations().some(a => a.playState === 'running')
-    row.remove()
     await new Promise(requestAnimationFrame)
+    const running = row.getAnimations().some(animation => animation.playState === 'running')
+    if (running) row.remove()
     return running
-  })
+  }, moduleUrl)
   expect(wasAnimating).toBe(true)
-  expect(errors).toEqual([])
   await expect(page.locator('#removed')).toHaveCount(0)
   await expect(page.locator('#survivor')).toHaveCount(1)
+  expect(errors).toEqual([])
 })
