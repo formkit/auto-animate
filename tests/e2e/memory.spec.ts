@@ -41,42 +41,33 @@ test('memory does not grow unbounded after repeated add/remove', async ({ page, 
   expect(growth).toBeLessThan(threshold)
 })
 
-test.describe('createAutoAnimatePlugin-like memory growth', () => {
-  test.beforeEach(async ({ page }) =>
+test.describe('polling timer leaks', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'no-preference' })
+    await page.clock.install()
     await page.goto('/memory-test')
-  )
-
-  test('releases targets repeatedly initialized like createAutoAnimatePlugin', async ({
-    page,
-    browserName,
-    context,
-  }) => {
-    test.skip(browserName !== 'chromium', 'GC check limited to Chromium')
-
-    await page.getByRole('button', { name: 'Init like FormKit' }).click()
-    await page.waitForTimeout(2000)
-
-    const session = await context.newCDPSession(page)
-    await session.send('HeapProfiler.collectGarbage')
-    await page.getByRole('button', { name: 'Check target' }).click()
-
-    await expect(page.getByRole('status')).toHaveText('collected')
+    await page.evaluate(() => {
+      const setInterval = window.setInterval
+      document.body.dataset.pollingStarts = '0'
+      let pollingStarts = 0
+      window.setInterval = (handler, delay, ...args) => {
+        if (delay === 2000) {
+          document.body.dataset.pollingStarts = String(++pollingStarts)
+        }
+        return setInterval(handler, delay, ...args)
+      }
+    })
   })
 
-  test('releases target destroyed before polling starts', async ({
-    page,
-    browserName,
-    context,
-  }) => {
-    test.skip(browserName !== 'chromium', 'GC check limited to Chromium')
+  test('starts one polling loop after repeated initialization', async ({ page }) => {
+    await page.getByRole('button', { name: 'Init like FormKit' }).click()
+    await page.clock.runFor(2000)
+    await expect(page.locator('body')).toHaveAttribute('data-polling-starts', '1')
+  })
 
+  test('does not start polling after immediate destruction', async ({ page }) => {
     await page.getByRole('button', { name: 'Remove immediately destroyed element' }).click()
-    await page.waitForTimeout(2000)
-
-    const session = await context.newCDPSession(page)
-    await session.send('HeapProfiler.collectGarbage')
-    await page.getByRole('button', { name: 'Check target' }).click()
-
-    await expect(page.getByRole('status')).toHaveText('collected')
+    await page.clock.runFor(2000)
+    await expect(page.locator('body')).toHaveAttribute('data-polling-starts', '0')
   })
 })
