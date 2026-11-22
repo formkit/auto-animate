@@ -10,6 +10,9 @@ export default {
   // When true, this will enable animations even if the user has indicated
   // they don’t want them via prefers-reduced-motion.
   disrespectUserMotionPreference: false,
+  // Milliseconds between the entry animations of items added at the same
+  // time, so a list "cascades" in (default: 0)
+  stagger: 0,
   // Turn individual animations off and keep the defaults for the rest,
   // e.g. { remain: false } when a drag-and-drop library already moves items.
   // (default: all true)

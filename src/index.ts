@@ -116,9 +116,29 @@ const handleMutations: MutationCallback = (mutations) => {
   const elements = getElements(mutations)
   // If elements is "false" that means this mutation that should be ignored.
   if (elements) {
-    elements.forEach((el) => animate(el))
+    // Count the elements added to each parent in this batch (in DOM order) so
+    // the `stagger` option can offset their entry animations.
+    const addCounts = new Map<Element, number>()
+    elements.forEach((el) => {
+      if (NEW in el || !coords.has(el)) {
+        const target = getTarget(el)
+        const count = target ? addCounts.get(target) ?? 0 : 0
+        if (target) addCounts.set(target, count + 1)
+        addIndex = count
+      } else {
+        addIndex = 0
+      }
+      animate(el)
+    })
+    addIndex = 0
   }
 }
+
+/**
+ * The position of the element currently being added within its batch, used
+ * for the `stagger` option.
+ */
+let addIndex = 0
 
 /**
  *
@@ -721,6 +741,9 @@ function add(el: Element) {
       {
         duration: (pluginOrOptions as AutoAnimateOptions).duration * 1.5,
         easing: "ease-in",
+        // Hold the first (hidden) keyframe while waiting for a staggered start.
+        delay: ((pluginOrOptions as AutoAnimateOptions).stagger ?? 0) * addIndex,
+        fill: "backwards",
       },
     )
   } else {
@@ -971,6 +994,12 @@ export interface AutoAnimateOptions {
    * Default: all `true`.
    */
   animations?: Partial<Record<AutoAnimateAction, boolean>>
+  /**
+   * Milliseconds between the entry animations of elements added at the same
+   * time (for example a list loading in), so they appear one after another.
+   * Only affects `add`; plugins control their own timing. Default: 0
+   */
+  stagger?: number
   /**
    * Called when an element's animation finishes (not when it is cancelled or
    * skipped). For `remove`, the element has already been taken out of the DOM.
