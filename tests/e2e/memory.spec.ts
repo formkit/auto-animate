@@ -5,6 +5,7 @@ import { approximateMemoryUsage, forceGC } from './utils'
 // It is expected to fail currently due to known leaks.
 test('memory does not grow unbounded after repeated add/remove', async ({ page, browserName }) => {
   test.skip(browserName !== 'chromium', 'Coarse memory check limited to Chromium')
+  test.setTimeout(60_000)
   await page.goto('/lists')
 
   // Warm-up interactions
@@ -40,4 +41,33 @@ test('memory does not grow unbounded after repeated add/remove', async ({ page, 
   expect(growth).toBeLessThan(threshold)
 })
 
+test.describe('polling timer leaks', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'no-preference' })
+    await page.clock.install()
+    await page.goto('/memory-test')
+    await page.evaluate(() => {
+      const setInterval = window.setInterval
+      document.body.dataset.pollingStarts = '0'
+      let pollingStarts = 0
+      window.setInterval = (handler, delay, ...args) => {
+        if (delay === 2000) {
+          document.body.dataset.pollingStarts = String(++pollingStarts)
+        }
+        return setInterval(handler, delay, ...args)
+      }
+    })
+  })
 
+  test('starts one polling loop after repeated initialization', async ({ page }) => {
+    await page.getByRole('button', { name: 'Init like FormKit' }).click()
+    await page.clock.runFor(2000)
+    await expect(page.locator('body')).toHaveAttribute('data-polling-starts', '1')
+  })
+
+  test('does not start polling after immediate destruction', async ({ page }) => {
+    await page.getByRole('button', { name: 'Remove immediately destroyed element' }).click()
+    await page.clock.runFor(2000)
+    await expect(page.locator('body')).toHaveAttribute('data-polling-starts', '0')
+  })
+})

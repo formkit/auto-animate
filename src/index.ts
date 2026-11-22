@@ -68,6 +68,10 @@ const mutationObservers = new WeakMap<Element, MutationObserver>()
  */
 const intervals = new WeakMap<Element, NodeJS.Timeout>()
 /**
+ * Pending timers that start position polling.
+ */
+const pollTimers = new WeakMap<Element, NodeJS.Timeout>()
+/**
  * The configuration options for each group of elements.
  */
 const options = new WeakMap<Element, AutoAnimateOptions | AutoAnimationPlugin>()
@@ -226,23 +230,41 @@ function updateAllPos() {
 }
 
 /**
- * Its possible for a quick scroll or other fast events to get past the
- * intersection observer, so occasionally we need want "cold-poll" for the
- * latests and greatest position. We try to do this in the most non-disruptive
- * fashion possible. First we only do this ever couple seconds, staggard by a
- * random offset.
+ * It's possible for a quick scroll or other fast events to get past the
+ * intersection observer, so occasionally we need to "cold-poll" for the
+ * latest and greatest position. We try to do this in the most non-disruptive
+ * fashion possible. First, we only do this every couple of seconds, staggered
+ * by a random offset. Second, we keep track of the timers and intervals so we
+ * can clear them when the element is destroyed.
  * @param el - Element
  */
 function poll(el: Element) {
-  setTimeout(
-    () => {
-      intervals.set(
-        el,
-        setInterval(() => lowPriority(updatePos.bind(null, el)), 2000),
-      )
-    },
-    Math.round(2000 * Math.random()),
+  if (pollTimers.has(el) || intervals.has(el)) return
+  pollTimers.set(el,
+    setTimeout(
+      () => {
+        pollTimers.delete(el)
+        intervals.set(
+          el,
+          setInterval(() => lowPriority(updatePos.bind(null, el)), 2000),
+        )
+      },
+      Math.round(2000 * Math.random()),
+    ),
   )
+}
+
+/**
+ * Cleanup function for timers/intervals.
+ */
+function stopPolling(el: Element) {
+  const pollTimer = pollTimers.get(el)
+  if (pollTimer) clearTimeout(pollTimer)
+  pollTimers.delete(el)
+
+  const interval = intervals.get(el)
+  if (interval) clearInterval(interval)
+  intervals.delete(el)
 }
 
 /**
@@ -702,6 +724,9 @@ function cleanUp(el: Element, styles?: Partial<CSSStyleDeclaration>) {
   siblings.delete(el)
   animations.delete(el)
   intersections.get(el)?.disconnect()
+  intersections.delete(el)
+  resize?.unobserve(el)
+  stopPolling(el)
   setTimeout(() => {
     if (DEL in el) delete (el as any)[DEL]
     Object.defineProperty(el, NEW, { value: true, configurable: true })
@@ -936,7 +961,7 @@ export interface AutoAnimationPlugin {
  * immediate children. Specifically it adds effects for adding, moving, and
  * removing DOM elements.
  * @param el - An HTML or SVG parent element to add animations to.
- * @param options - An optional object of options.
+ * @param config - An optional object of options.
  */
 export default function autoAnimate(
   el: HTMLElement | SVGElement,
@@ -971,7 +996,7 @@ export default function autoAnimate(
       parents.add(el)
     }
   }
-  const controller: AnimationController = Object.freeze({
+  return Object.freeze({
     parent: el,
     enable: () => {
       enabled.add(el)
@@ -989,9 +1014,7 @@ export default function autoAnimate(
         const d = debounces.get(node)
         if (d) clearTimeout(d)
         debounces.delete(node)
-        const i = intervals.get(node)
-        if (i) clearInterval(i)
-        intervals.delete(node)
+        stopPolling(node)
       })
     },
     isEnabled: () => enabled.has(el),
@@ -1005,10 +1028,10 @@ export default function autoAnimate(
       forEach(el, (node) => {
         // unobserve resize
         resize?.unobserve(node)
-        // cancel animations
         const a = animations.get(node)
         try {
-          a?.cancel()
+          if (DEL in node) a?.finish()
+          else a?.cancel()
         } catch {}
         animations.delete(node)
         // disconnect observers
@@ -1016,9 +1039,7 @@ export default function autoAnimate(
         io?.disconnect()
         intersections.delete(node)
         // clear intervals and debounces
-        const i = intervals.get(node)
-        if (i) clearInterval(i)
-        intervals.delete(node)
+        stopPolling(node)
         const d = debounces.get(node)
         if (d) clearTimeout(d)
         debounces.delete(node)
@@ -1028,7 +1049,6 @@ export default function autoAnimate(
       })
     },
   })
-  return controller
 }
 
 // Also provide a named export for environments expecting it

@@ -1,4 +1,4 @@
-import { expect, Page } from '@playwright/test'
+import { expect, type Locator, type Page } from '@playwright/test'
 
 export async function assertNoConsoleErrors(page: Page) {
   const errors: string[] = []
@@ -15,6 +15,21 @@ export async function assertNoConsoleErrors(page: Page) {
   })
   // Give tests time to run interactions before asserting later
   return () => expect(errors, `Console errors: \n${errors.join('\n')}`).toEqual([])
+}
+
+export async function recordAnimationStarts(example: Locator) {
+  const starts = await example.evaluateHandle(root => {
+    let count = 0
+    const animate = Element.prototype.animate
+    Element.prototype.animate = function (this: Element, ...args: Parameters<Element['animate']>) {
+      const animation = animate.apply(this, args)
+      if (root.contains(this)) count++
+      return animation
+    }
+    return () => count
+  })
+
+  return () => starts.evaluate(count => count())
 }
 
 export async function withAnimationObserver(page: Page, selector: string) {
