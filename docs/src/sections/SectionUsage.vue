@@ -17,7 +17,7 @@ import ActualReactApp from "../examples/react/ActualReactApp.vue"
 import ActualPreactApp from "../examples/preact/ActualPreactApp.vue"
 import ActualSolidApp from "../examples/solid/ActualSolidApp.vue"
 import ActualDropdown from "../examples/dropdown/ActualDropdown.vue"
-import svelteAction from "../examples/svelte"
+import svelteAction, { svelteAttachment } from "../examples/svelte"
 import markoTag from "../examples/marko"
 import ActualMarkoApp from "../examples/marko/ActualMarkoApp.vue"
 import qwikHook from "../examples/qwik"
@@ -261,6 +261,14 @@ import IconQwik from "../components/IconQwik.vue"
         &#125;&#125;&gt;</code
       >
     </AsideTip>
+    <h3 id="usage-svelte-attach">Svelte 5 attachment</h3>
+    <p>
+      On Svelte 5, import <code>autoAnimate</code> from
+      <code>@formkit/auto-animate/svelte</code> and use it as an
+      <a href="https://svelte.dev/docs/svelte/@attach">attachment</a> — bare,
+      or called with options (which stay reactive):
+    </p>
+    <CodeExample :examples="svelteAttachment" title="App" />
 
     <h2 id="usage-angular">Angular directive</h2>
     <p>

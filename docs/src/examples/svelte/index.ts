@@ -38,3 +38,26 @@ export default {
 `,
   },
 }
+
+export const svelteAttachment = {
+  svelte: {
+    ext: "svelte",
+    language: "html",
+    example: `<script>
+  import { autoAnimate } from '@formkit/auto-animate/svelte'
+  let tags = $state(['Rock', 'Punk'])
+  let duration = $state(250)
+</script>
+
+<!-- 👀 bare -->
+<ul {@attach autoAnimate}>
+  {#each tags as tag (tag)}<li>{tag}</li>{/each}
+</ul>
+
+<!-- with options (reactive) -->
+<ul {@attach autoAnimate({ duration })}>
+  {#each tags as tag (tag)}<li>{tag}</li>{/each}
+</ul>
+`,
+  },
+}

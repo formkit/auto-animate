@@ -48,6 +48,11 @@
       "import": "./preact/index.mjs",
       "default": "./preact/index.mjs"
     },
+    "./svelte": {
+      "types": "./svelte/index.d.ts",
+      "import": "./svelte/index.mjs",
+      "default": "./svelte/index.mjs"
+    },
     "./react": {
       "types": "./react/index.d.ts",
       "import": "./react/index.mjs",
