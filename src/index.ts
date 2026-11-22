@@ -784,7 +784,85 @@ function cleanUp(el: Element, styles?: Partial<CSSStyleDeclaration>) {
         ;(el.style as any)[style as any] = ""
       }
     }
+    pinnedCells.get(el)?.forEach(([cell, cssText]) => (cell.style.cssText = cssText))
+    pinnedCells.delete(el)
   }, 0)
+}
+
+/**
+ * Inline styles of table cells that were pinned while their row animates out,
+ * restored when the row is cleaned up (so a re-inserted row lays out normally).
+ */
+const pinnedCells = new WeakMap<Element, Array<[HTMLElement, string]>>()
+
+/**
+ * Where the first cell of a leaving row was, used to put the row back exactly.
+ */
+const rowAnchors = new WeakMap<Element, Coordinates>()
+
+/**
+ * A table row taken out of flow (position: absolute) loses its table layout:
+ * its cells collapse to their content. Render the leaving row as its own
+ * fixed-layout table with each cell pinned to its measured width instead.
+ * @param el - The row being removed.
+ * @param styleReset - The removal styles, extended in place.
+ */
+function preserveRowLayout(
+  el: Element,
+  styleReset: Partial<CSSStyleDeclaration>,
+) {
+  if (!(el instanceof HTMLElement) || getComputedStyle(el).display !== "table-row")
+    return
+  const table = el.closest("table")
+  const tableStyles = table ? getComputedStyle(table) : null
+  const cells = Array.from(el.children) as HTMLElement[]
+  const widths = cells.map((cell) => cell.getBoundingClientRect().width)
+  if (cells[0]) rowAnchors.set(el, getCoords(cells[0]))
+  pinnedCells.set(
+    el,
+    cells.map((cell) => [cell, cell.style.cssText]),
+  )
+  cells.forEach((cell, i) => {
+    cell.style.boxSizing = "border-box"
+    cell.style.width = `${widths[i]}px`
+  })
+  styleReset.display = "table"
+  styleReset.tableLayout = "fixed"
+  if (tableStyles) {
+    styleReset.borderCollapse = tableStyles.borderCollapse
+    styleReset.borderSpacing = tableStyles.borderSpacing
+    if (tableStyles.borderCollapse !== "collapse") {
+      // The row is now its own table, so border-spacing also wraps its outer
+      // edges: pull it back by that much and make room for the gaps.
+      const [h, v = h] = tableStyles.borderSpacing.split(" ").map(raw)
+      if (h || v) {
+        styleReset.margin = `${-v}px ${-h}px`
+        styleReset.width = `${
+          widths.reduce((sum, w) => sum + w, 0) + h * (cells.length + 1)
+        }px`
+        styleReset.height = `${el.getBoundingClientRect().height + 2 * v}px`
+      }
+    }
+  }
+}
+
+/**
+ * Firefox doesn't place an absolutely positioned table row exactly where its
+ * computed top/left say. For rows (only), measure where it landed and nudge it
+ * back onto its original position.
+ */
+function correctDeletePosition(el: Element) {
+  const anchor = rowAnchors.get(el)
+  const firstCell = el.firstElementChild
+  rowAnchors.delete(el)
+  if (!(el instanceof HTMLElement) || !anchor || !firstCell) return
+  // Line the first cell back up with where it was; browsers disagree on how a
+  // row's own box relates to border-spacing.
+  const now = getCoords(firstCell)
+  const dx = Math.round(anchor.left - now.left)
+  const dy = Math.round(anchor.top - now.top)
+  if (dx) el.style.left = `${raw(el.style.left) + dx}px`
+  if (dy) el.style.top = `${raw(el.style.top) + dy}px`
 }
 
 /**
@@ -832,8 +910,11 @@ function remove(el: Element) {
     zIndex: "100",
   }
 
+  preserveRowLayout(el, styleReset)
+
   if (!isPlugin(optionsOrPlugin)) {
     Object.assign((el as HTMLElement).style, styleReset)
+    correctDeletePosition(el)
     animation = (el as HTMLElement).animate(
       [
         {
@@ -861,6 +942,7 @@ function remove(el: Element) {
         (options as AutoAnimationPluginOptions | undefined)?.styleReset ||
         styleReset
       Object.assign((el as HTMLElement).style, styleReset)
+      correctDeletePosition(el)
     }
     animation = new Animation(keyframes)
     animation.play()
