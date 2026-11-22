@@ -91,6 +91,20 @@ async function preactBuild() {
   await writeFile(resolve(rootDir, "dist/preact/index.mjs"), raw)
 }
 
+async function svelteBuild() {
+  info("Rolling up Svelte attachment")
+  await execa("npx", [
+    "rollup",
+    "-c",
+    "rollup.config.js",
+    "--environment",
+    "FRAMEWORK:svelte",
+  ])
+  let raw = await readFile(resolve(rootDir, "dist/svelte/index.mjs"), "utf8")
+  raw = raw.replace("from '../index'", "from '../index.mjs'")
+  await writeFile(resolve(rootDir, "dist/svelte/index.mjs"), raw)
+}
+
 async function vueBuild() {
   info("Rolling up Vue package")
   await execa("npx", [
@@ -204,6 +218,11 @@ async function bundleDeclarations() {
     `${rootDir}/dist/src/qwik/index.d.ts`,
     `${rootDir}/dist/qwik/index.d.ts`,
   ])
+  await execa("shx", [
+    "mv",
+    `${rootDir}/dist/src/svelte/index.d.ts`,
+    `${rootDir}/dist/svelte/index.d.ts`,
+  ])
   await execa("shx", ["rm", "-rf", `${rootDir}/dist/src`])
   await execa("shx", ["rm", `${rootDir}/dist/index.js`])
   await fixDeclarationImports()
@@ -216,7 +235,7 @@ async function bundleDeclarations() {
  * resolution mode (node10, node16/nodenext, bundler). See #110.
  */
 async function fixDeclarationImports() {
-  for (const framework of ["react", "preact", "solid", "vue", "angular", "qwik"]) {
+  for (const framework of ["react", "preact", "solid", "vue", "angular", "qwik", "svelte"]) {
     const file = `${rootDir}/dist/${framework}/index.d.ts`
     let contents: string
     try {
@@ -330,6 +349,7 @@ async function main() {
   await baseBuildMin()
   await reactBuild()
   await preactBuild()
+  await svelteBuild()
   await solidBuild()
   await vueBuild()
   await angularBuild()
