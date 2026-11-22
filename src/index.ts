@@ -608,6 +608,22 @@ function isPlugin(
 }
 
 /**
+ * Whether the given animation is turned on for the element (plugins always
+ * decide for themselves).
+ */
+function allowed(el: Element, action: AutoAnimateAction): boolean {
+  const opts = getOptions(el)
+  return isPlugin(opts) || opts.animations?.[action] !== false
+}
+
+/**
+ * Notify the onAnimationEnd option, if any, that an animation finished.
+ */
+function ended(el: Element, action: AutoAnimateAction, opts = getOptions(el)) {
+  if (!isPlugin(opts)) opts.onAnimationEnd?.(el, action)
+}
+
+/**
  * The element in question is remaining in the DOM.
  * @param el - Element to flip
  * @returns
@@ -615,7 +631,7 @@ function isPlugin(
 function remain(el: Element) {
   const oldCoords = coords.get(el)
   const newCoords = getCoords(el)
-  if (!isEnabled(el)) return coords.set(el, newCoords)
+  if (!isEnabled(el) || !allowed(el, "remain")) return coords.set(el, newCoords)
   if (isOffscreen(el)) {
     // When element is offscreen, skip FLIP to avoid broken transforms
     coords.set(el, newCoords)
@@ -669,9 +685,14 @@ function remain(el: Element) {
   }
   animations.set(el, animation)
   coords.set(el, newCoords)
-  animation.addEventListener("finish", updatePos.bind(null, el, false), {
-    once: true,
-  })
+  animation.addEventListener(
+    "finish",
+    () => {
+      updatePos(el, false)
+      ended(el, "remain")
+    },
+    { once: true },
+  )
 }
 
 /**
@@ -683,7 +704,7 @@ function add(el: Element) {
   const newCoords = getCoords(el)
   coords.set(el, newCoords)
   const pluginOrOptions = getOptions(el)
-  if (!isEnabled(el)) return
+  if (!isEnabled(el) || !allowed(el, "add")) return
   if (isOffscreen(el)) {
     // Skip entry animation if element is not visible in viewport
     observePosition(el)
@@ -708,9 +729,14 @@ function add(el: Element) {
     animation.play()
   }
   animations.set(el, animation)
-  animation.addEventListener("finish", updatePos.bind(null, el, false), {
-    once: true,
-  })
+  animation.addEventListener(
+    "finish",
+    () => {
+      updatePos(el, false)
+      ended(el, "add")
+    },
+    { once: true },
+  )
 }
 
 /**
@@ -761,7 +787,7 @@ function remove(el: Element) {
   } else {
     getTarget(el)?.appendChild(el)
   }
-  if (!isEnabled(el)) return cleanUp(el)
+  if (!isEnabled(el) || !allowed(el, "remove")) return cleanUp(el)
 
   const [top, left, width, height] = deletePosition(el)
   const optionsOrPlugin = getOptions(el)
@@ -817,9 +843,16 @@ function remove(el: Element) {
     animation.play()
   }
   animations.set(el, animation)
-  animation.addEventListener("finish", () => cleanUp(el, styleReset), {
-    once: true,
-  })
+  animation.addEventListener(
+    "finish",
+    () => {
+      // Read the options before cleanUp detaches the element from its parent.
+      const opts = getOptions(el)
+      cleanUp(el, styleReset)
+      ended(el, "remove", opts)
+    },
+    { once: true },
+  )
 }
 
 /**
@@ -932,7 +965,23 @@ export interface AutoAnimateOptions {
    * recommended to use this.
    */
   disrespectUserMotionPreference?: boolean
+  /**
+   * Turn individual animations off while keeping the defaults for the rest,
+   * e.g. `{ remain: false }` when another library already moves items.
+   * Default: all `true`.
+   */
+  animations?: Partial<Record<AutoAnimateAction, boolean>>
+  /**
+   * Called when an element's animation finishes (not when it is cancelled or
+   * skipped). For `remove`, the element has already been taken out of the DOM.
+   */
+  onAnimationEnd?: (el: Element, action: AutoAnimateAction) => void
 }
+
+/**
+ * The kinds of animation AutoAnimate runs.
+ */
+export type AutoAnimateAction = "add" | "remove" | "remain"
 
 /**
  * A custom plugin config object
