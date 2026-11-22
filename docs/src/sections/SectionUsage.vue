@@ -122,6 +122,15 @@ import IconQwik from "../components/IconQwik.vue"
       container to reserve the scrollbar’s space, and
       <code>overflow-x: clip</code> if horizontal scrolling isn’t needed.
     </AsideTip>
+    <AsideTip>
+      Flex and grid layouts (including <code>gap</code> and wrapping) animate
+      smoothly when items have their own size. Items that <em>stretch</em> to
+      share space (<code>flex: 1</code>, <code>flex-grow</code>) change size
+      when a sibling is added or removed, and that resize can’t be smoothly
+      animated alongside the movement — give them a fixed basis
+      (<code>flex: 0 0 120px</code>) or use a grid with fixed tracks for the
+      smoothest result.
+    </AsideTip>
     <p>
       If your project’s specific requirements make it necessary to dramatically
       change the default animations, then you should
