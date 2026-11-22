@@ -784,48 +784,72 @@ function cleanUp(el: Element, styles?: Partial<CSSStyleDeclaration>) {
         ;(el.style as any)[style as any] = ""
       }
     }
-    pinnedCells.get(el)?.forEach(([cell, cssText]) => (cell.style.cssText = cssText))
-    pinnedCells.delete(el)
+    unpinCells(el)
   }, 0)
 }
 
 /**
- * Inline styles of table cells that were pinned while their row animates out,
- * restored when the row is cleaned up (so a re-inserted row lays out normally).
+ * Table cells whose width was pinned while their row animates out:
+ * [cell, original width, original box-sizing, pinned width]. Restored on
+ * cleanup (only if still ours) so a re-inserted row lays out normally.
  */
-const pinnedCells = new WeakMap<Element, Array<[HTMLElement, string]>>()
+const pinnedCells = new WeakMap<
+  Element,
+  Array<[HTMLElement, string, string, string]>
+>()
 
 /**
- * Where the first cell of a leaving row was, used to put the row back exactly.
+ * Where the first cell of a leaving row should be (page coordinates), used to
+ * put the row back exactly.
  */
-const rowAnchors = new WeakMap<Element, Coordinates>()
+const rowAnchors = new WeakMap<Element, { left: number; top: number }>()
 
 /**
  * A table row taken out of flow (position: absolute) loses its table layout:
  * its cells collapse to their content. Render the leaving row as its own
- * fixed-layout table with each cell pinned to its measured width instead.
+ * fixed-layout table with each cell pinned to its width instead.
  * @param el - The row being removed.
+ * @param oldCoords - The row's coordinates before it was removed.
  * @param styleReset - The removal styles, extended in place.
  */
 function preserveRowLayout(
   el: Element,
+  oldCoords: Coordinates,
   styleReset: Partial<CSSStyleDeclaration>,
 ) {
   if (!(el instanceof HTMLElement) || getComputedStyle(el).display !== "table-row")
     return
   const table = el.closest("table")
   const tableStyles = table ? getComputedStyle(table) : null
-  const cells = Array.from(el.children) as HTMLElement[]
-  const widths = cells.map((cell) => cell.getBoundingClientRect().width)
-  if (cells[0]) rowAnchors.set(el, getCoords(cells[0]))
+  const cells = Array.from(el.children).filter(
+    (cell): cell is HTMLElement => cell instanceof HTMLElement,
+  )
+  // Layout sizes (not getBoundingClientRect) so transformed tables aren't scaled twice.
+  const widths = cells.map((cell) => cell.offsetWidth)
+  if (cells[0]) {
+    // The first cell's offset inside the row, applied to the row's pre-removal
+    // position (the layout may already have shifted by now).
+    const row = getCoords(el)
+    const cell = getCoords(cells[0])
+    rowAnchors.set(el, {
+      left: oldCoords.left + cell.left - row.left,
+      top: oldCoords.top + cell.top - row.top,
+    })
+  }
   pinnedCells.set(
     el,
-    cells.map((cell) => [cell, cell.style.cssText]),
+    cells.map((cell, i) => {
+      const entry: [HTMLElement, string, string, string] = [
+        cell,
+        cell.style.width,
+        cell.style.boxSizing,
+        `${widths[i]}px`,
+      ]
+      cell.style.boxSizing = "border-box"
+      cell.style.width = `${widths[i]}px`
+      return entry
+    }),
   )
-  cells.forEach((cell, i) => {
-    cell.style.boxSizing = "border-box"
-    cell.style.width = `${widths[i]}px`
-  })
   styleReset.display = "table"
   styleReset.tableLayout = "fixed"
   if (tableStyles) {
@@ -840,27 +864,40 @@ function preserveRowLayout(
         styleReset.width = `${
           widths.reduce((sum, w) => sum + w, 0) + h * (cells.length + 1)
         }px`
-        styleReset.height = `${el.getBoundingClientRect().height + 2 * v}px`
+        styleReset.height = `${el.offsetHeight + 2 * v}px`
       }
     }
   }
 }
 
 /**
- * Firefox doesn't place an absolutely positioned table row exactly where its
- * computed top/left say. For rows (only), measure where it landed and nudge it
- * back onto its original position.
+ * Restore pinned cell styles, leaving any the app changed in the meantime.
+ */
+function unpinCells(el: Element) {
+  pinnedCells.get(el)?.forEach(([cell, width, boxSizing, pinned]) => {
+    if (cell.style.width === pinned) {
+      cell.style.width = width
+      if (cell.style.boxSizing === "border-box") cell.style.boxSizing = boxSizing
+    }
+  })
+  pinnedCells.delete(el)
+}
+
+/**
+ * Browsers disagree on where an absolutely positioned table row lands relative
+ * to its computed top/left (Firefox and border-spacing especially). For rows
+ * (only), line the first cell back up with where it was.
  */
 function correctDeletePosition(el: Element) {
   const anchor = rowAnchors.get(el)
   const firstCell = el.firstElementChild
   rowAnchors.delete(el)
   if (!(el instanceof HTMLElement) || !anchor || !firstCell) return
-  // Line the first cell back up with where it was; browsers disagree on how a
-  // row's own box relates to border-spacing.
   const now = getCoords(firstCell)
-  const dx = Math.round(anchor.left - now.left)
-  const dy = Math.round(anchor.top - now.top)
+  // Page pixels → CSS pixels inside a transformed (scaled) table.
+  const scale = el.offsetWidth ? el.getBoundingClientRect().width / el.offsetWidth : 1
+  const dx = Math.round((anchor.left - now.left) / (scale || 1))
+  const dy = Math.round((anchor.top - now.top) / (scale || 1))
   if (dx) el.style.left = `${raw(el.style.left) + dx}px`
   if (dy) el.style.top = `${raw(el.style.top) + dy}px`
 }
@@ -910,9 +947,9 @@ function remove(el: Element) {
     zIndex: "100",
   }
 
-  preserveRowLayout(el, styleReset)
-
   if (!isPlugin(optionsOrPlugin)) {
+    // Plugins own their removal styles, so rows are only adjusted here.
+    preserveRowLayout(el, oldCoords, styleReset)
     Object.assign((el as HTMLElement).style, styleReset)
     correctDeletePosition(el)
     animation = (el as HTMLElement).animate(
@@ -942,7 +979,6 @@ function remove(el: Element) {
         (options as AutoAnimationPluginOptions | undefined)?.styleReset ||
         styleReset
       Object.assign((el as HTMLElement).style, styleReset)
-      correctDeletePosition(el)
     }
     animation = new Animation(keyframes)
     animation.play()
