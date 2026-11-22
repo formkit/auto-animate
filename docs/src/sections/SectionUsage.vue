@@ -115,6 +115,13 @@ import IconQwik from "../components/IconQwik.vue"
       following options:
     </p>
     <CodeExample :examples="config" title="config" />
+    <AsideTip>
+      Animating inside a scroll container (<code>overflow: auto</code>)? Moving
+      and leaving items can briefly change the content size and make the
+      scrollbar flicker. Add <code>scrollbar-gutter: stable</code> to the
+      container to reserve the scrollbar’s space, and
+      <code>overflow-x: clip</code> if horizontal scrolling isn’t needed.
+    </AsideTip>
     <p>
       If your project’s specific requirements make it necessary to dramatically
       change the default animations, then you should
