@@ -322,6 +322,8 @@ if (supportedBrowser) {
   root = document.documentElement
   mutations = new MutationObserver(handleMutations)
   resize = new ResizeObserver(handleResizes)
+  scrollY = window.scrollY
+  scrollX = window.scrollX
   window.addEventListener("scroll", () => {
     scrollY = window.scrollY
     scrollX = window.scrollX
@@ -644,12 +646,49 @@ function ended(el: Element, action: AutoAnimateAction, opts = getOptions(el)) {
 }
 
 /**
+ * How far the page was scrolled by the browser itself since the last scroll
+ * event, which is what CSS scroll anchoring does when content is inserted or
+ * removed above the viewport (Chrome, Firefox). Scroll events are dispatched a
+ * frame later, so at mutation time the event-tracked position still reflects
+ * where the user had scrolled. Only for elements scrolled by the page itself
+ * (nested scroll containers are measured relative to themselves).
+ */
+function anchorShift(el: Element): { x: number; y: number } {
+  return anchorShiftFrom(el.parentElement)
+}
+
+/**
+ * anchorShift, starting from a given parent (for detached elements).
+ */
+function anchorShiftFrom(parent: Element | null): { x: number; y: number } {
+  let p = parent
+  while (p && p !== root) {
+    if (p.scrollTop || p.scrollLeft) return { x: 0, y: 0 }
+    p = p.parentElement
+  }
+  return { x: window.scrollX - scrollX, y: window.scrollY - scrollY }
+}
+
+/**
+ * Putting a removed element back (to animate it out) can make some browsers
+ * re-scroll after they already scroll-anchored the removal. Return the page to
+ * the anchored position so visible content keeps its spot.
+ */
+function keepAnchoredScroll(x: number, y: number) {
+  if (window.scrollX === x && window.scrollY === y) return
+  const before = root.style.scrollBehavior
+  root.style.scrollBehavior = "auto"
+  window.scrollTo(x, y)
+  root.style.scrollBehavior = before
+}
+
+/**
  * The element in question is remaining in the DOM.
  * @param el - Element to flip
  * @returns
  */
 function remain(el: Element) {
-  const oldCoords = coords.get(el)
+  let oldCoords = coords.get(el)
   const newCoords = getCoords(el)
   if (!isEnabled(el) || !allowed(el, "remain")) return coords.set(el, newCoords)
   if (isOffscreen(el)) {
@@ -660,6 +699,16 @@ function remain(el: Element) {
   }
   let animation: Animation
   if (!oldCoords) return
+  // If scroll anchoring moved the page, items that kept their on-screen spot
+  // didn't visually move: compare against where they were on screen (#222).
+  const shift = anchorShift(el)
+  if (shift.x || shift.y) {
+    oldCoords = {
+      ...oldCoords,
+      top: oldCoords.top + shift.y,
+      left: oldCoords.left + shift.x,
+    }
+  }
   const pluginOrOptions = getOptions(el)
   if (typeof pluginOrOptions !== "function") {
     let deltaLeft = oldCoords.left - newCoords.left
@@ -913,6 +962,17 @@ function remove(el: Element) {
   Object.defineProperty(el, DEL, { value: true, configurable: true })
   const finalX = window.scrollX
   const finalY = window.scrollY
+  // Measured before the element is put back (which can re-trigger anchoring).
+  const removalShift = anchorShiftFrom(
+    (next?.parentNode as Element | null) ??
+      (prev?.parentNode as Element | null) ??
+      getTarget(el) ??
+      null,
+  )
+  // Never let the leaving element serve as a scroll anchor: putting it back
+  // (briefly in flow, then absolute) would make the browser re-scroll (#222).
+  if (el instanceof HTMLElement || el instanceof SVGElement)
+    el.style.overflowAnchor = "none"
 
   if (
     next &&
@@ -930,7 +990,12 @@ function remove(el: Element) {
   const [top, left, width, height] = deletePosition(el)
   const optionsOrPlugin = getOptions(el)
   const oldCoords = coords.get(el)!
-  if (finalX !== scrollX || finalY !== scrollY) {
+  // An element that was entirely above the viewport moved the page through
+  // CSS scroll anchoring (visible content kept its spot): don't undo that
+  // (#222). adjustScroll is for removals that made the page shorter.
+  const wasAboveViewport =
+    removalShift.y !== 0 && oldCoords.top + oldCoords.height <= scrollY
+  if ((finalX !== scrollX || finalY !== scrollY) && !wasAboveViewport) {
     adjustScroll(el, finalX, finalY, optionsOrPlugin)
   }
 
@@ -945,6 +1010,7 @@ function remove(el: Element) {
     pointerEvents: "none",
     transformOrigin: "center",
     zIndex: "100",
+    overflowAnchor: "none",
   }
 
   if (!isPlugin(optionsOrPlugin)) {
@@ -983,6 +1049,7 @@ function remove(el: Element) {
     animation = new Animation(keyframes)
     animation.play()
   }
+  if (wasAboveViewport) keepAnchoredScroll(finalX, finalY)
   animations.set(el, animation)
   animation.addEventListener(
     "finish",
